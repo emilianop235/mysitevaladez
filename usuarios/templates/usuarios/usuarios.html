@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Acceso al Sistema</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ================= VARIABLES DE COLOR ================= */
+        :root {
+            --primary: #10b981; /* Verde esmeralda que hemos estado usando */
+            --primary-dark: #047857; /* Verde oscuro */
+            --bg-gradient: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%); /* Fondo degradado verde muy suave */
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --white: #ffffff;
+        }
+
+        /* ================= ESTILOS GENERALES ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* En lugar de alinear a la izquierda, centramos todo en la pantalla */
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ================= CAJA DE LOGIN ================= */
+        .login-container {
+            background-color: var(--white);
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.15); /* Sombra con un toque verde */
+            text-align: center;
+        }
+
+        .logo-area {
+            margin-bottom: 30px;
+        }
+
+        .logo-area i {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .logo-area h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .logo-area p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* ================= FORMULARIO ================= */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        /* Contenedor del input para poner el ícono adentro */
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 12px 12px 40px; /* Espacio extra a la izquierda para el ícono */
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        }
+
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+        .options a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .options a:hover {
+            text-decoration: underline;
+        }
+
+        /* ================= BOTÓN DE ACCESO ================= */
+        .btn-login {
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-login:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .footer-text {
+            margin-top: 25px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .footer-text a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="logo-area">
+            <i class="fa-solid fa-leaf"></i>
+            <h2>EcoCRM</h2>
+            <p>Ingresa tus datos para acceder</p>
+        </div>
+
+        <form onsubmit="iniciarSesion(event)">
+            
+            <div class="form-group">
+                <label>Correo Electrónico</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="emailInput" placeholder="usuario@empresa.com" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Contraseña</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="passwordInput" placeholder="••••••••" required>
+                </div>
+            </div>
+
+            <div class="options">
+                <label style="display: flex; align-items: center; gap: 5px; cursor: pointer; color: var(--text-muted);">
+                    <input type="checkbox"> Recordarme
+                </label>
+                <a href="#">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <button type="submit" class="btn-login">
+                Iniciar Sesión
+            </button>
+
+        </form>
+
+        <div class="footer-text">
+            ¿No tienes una cuenta? <a href="#">Solicitar acceso</a>
+        </div>
+    </div>
+
+    <script>
+        function iniciarSesion(evento) {
+            evento.preventDefault(); // Evita que la página recargue
+            
+            let email = document.getElementById("emailInput").value;
+            
+            // Simulación visual de que está cargando
+            let btn = document.querySelector(".btn-login");
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Accediendo...';
+            btn.style.opacity = "0.8";
+
+            // Esperamos 1 segundo simulando conexión con Python
+            setTimeout(() => {
+                alert("¡Bienvenido! Has iniciado sesión con: " + email + "\n\n(En tu app real, aquí Python te redirigiría a la pantalla de Clientes o Proveedores).");
+                
+                // Restaurar botón
+                btn.innerHTML = 'Iniciar Sesión';
+                btn.style.opacity = "1";
+                evento.target.reset(); // Limpia el formulario
+            }, 1000);
+        }
+    </script>
+
+</body>
+</html>
