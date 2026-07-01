@@ -6,3 +6,6 @@ class Cliente(models.Model):
     sexo = models.CharField()
     tipo = models.CharField()
     direccion = models.CharField()
+
+
+
