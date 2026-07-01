@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'clientes',
     'proveedores',
     'empleados',
+    'nomina',
     'usuarios',
     'productos',
     'django.contrib.admin',
