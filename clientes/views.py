@@ -1,16 +1,21 @@
 from django.shortcuts import redirect, render
-from django.http import HttpResponse
+from .models import Cliente  # <-- Importamos Cliente con mayúscula
 
-def clientes(request):
-    return render(request, 'clientes/clientes.html')
+# 1. Función para mostrar la página y los datos de la tabla
+def listaclientes(request): 
+    # Usamos Cliente.objects.all()
+    consultaclientes = Cliente.objects.all() 
+    return render(request, 'clientes/clientes.html', {'consultaclientes': consultaclientes}) 
 
+# 2. Función para guardar los datos
 def crearclientes(request):
-    nvocliente = clientes(
+    # Creamos el objeto usando Cliente(...)
+    nvocliente = Cliente(
         nombre = request.POST['nombre'],
         apellido = request.POST['apellido'],
         sexo = request.POST['sexo'],
         tipo = request.POST['tipo'],
         direccion = request.POST['direccion']
     )
-    nvocliente.save()
-    return redirect('pageclientes')
+    nvocliente.save() 
+    return redirect('/pageclientes/')
