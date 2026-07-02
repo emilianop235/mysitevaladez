@@ -1,6 +1,8 @@
 from django.urls import path
-from . import views
+from .views import listarproductos, crearproducto
 
 urlpatterns = [
-    path('form-productos/', views.productos)
+    # La ruta vacía lista los productos y 'nuevo/' procesa el formulario
+    path('', listarproductos),
+    path('nuevo/', crearproducto),
 ]
