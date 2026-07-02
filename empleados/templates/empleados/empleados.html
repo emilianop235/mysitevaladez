@@ -13,17 +13,13 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
 
-        /* Sidebar */
         .sidebar { width: 250px; background-color: var(--primary-dark); color: var(--white); display: flex; flex-direction: column; padding: 20px 0; box-shadow: 4px 0 10px rgba(0,0,0,0.1); }
         .sidebar h2 { text-align: center; margin-bottom: 30px; font-weight: 700; }
         .nav-link { padding: 15px 25px; color: #d1fae5; text-decoration: none; display: flex; align-items: center; gap: 15px; }
-        .nav-link:hover, .nav-link.active { background-color: var(--primary); color: var(--white); border-left: 5px solid var(--white); }
+        .nav-link.active { background-color: var(--primary); color: var(--white); border-left: 5px solid var(--white); }
 
-        /* Contenido */
         .main-content { flex: 1; padding: 30px; overflow-y: auto; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         
-        /* Formulario */
         .form-card { background: var(--white); border-radius: 12px; padding: 25px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 4px solid var(--primary); }
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .form-group { display: flex; flex-direction: column; }
@@ -32,7 +28,6 @@
         
         .btn-submit { background-color: var(--primary); color: var(--white); border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600; }
         
-        /* Tabla */
         .table-container { background: var(--white); border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 15px; text-align: left; border-bottom: 1px solid #e5e7eb; }
@@ -42,14 +37,12 @@
 
     <aside class="sidebar">
         <h2><i class="fa-solid fa-leaf"></i> EcoCRM</h2>
-        <a href="#" class="nav-link"><i class="fa-solid fa-users"></i> Clientes</a>
-        <a href="#" class="nav-link active"><i class="fa-solid fa-id-badge"></i> Empleados</a>
+        <a href="/pageclientes/" class="nav-link"><i class="fa-solid fa-users"></i> Clientes</a>
+        <a href="/pageempleados/" class="nav-link active"><i class="fa-solid fa-id-badge"></i> Empleados</a>
     </aside>
 
     <main class="main-content">
-        <header class="header">
-            <h2>Gestión de Personal</h2>
-        </header>
+        <h2>Gestión de Personal</h2>
 
         <div class="form-card">
             <h3><i class="fa-solid fa-user-plus"></i> Registrar Nuevo Empleado</h3>

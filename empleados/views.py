@@ -3,7 +3,8 @@ from .models import Empleado
 
 def listarempleados(request):
     consultarempleados = Empleado.objects.all()
-    return render(request, 'empleado/empleados.html', {'consultarempleados': consultarempleados})
+    # Cambiamos la ruta a 'empleados/empleados.html' para que coincida con tu carpeta
+    return render(request, 'empleados/empleados.html', {'consultarempleados': consultarempleados})
 
 def crearempleado(request):
     Empleado.objects.create(
