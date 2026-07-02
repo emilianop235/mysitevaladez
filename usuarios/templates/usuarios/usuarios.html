@@ -2,106 +2,134 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Acceso al Sistema</title>
+    <title>Panel de Usuarios</title>
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* ================= VARIABLES DE COLOR ================= */
         :root {
-            --primary: #10b981;
-            --primary-dark: #047857;
-            --bg-gradient: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%);
+            --primary: #10b981; 
+            --primary-dark: #047857; 
+            --bg-color: #f3f4f6; 
             --text-main: #1f2937;
             --text-muted: #6b7280;
             --white: #ffffff;
         }
 
+        /* ================= ESTILOS GENERALES ================= */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
 
-        body {
-            background: var(--bg-gradient);
-            color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-        }
+        /* ================= BARRA LATERAL (SIDEBAR) ================= */
+        .sidebar { width: 250px; background-color: var(--primary-dark); color: var(--white); display: flex; flex-direction: column; padding: 20px 0; box-shadow: 4px 0 10px rgba(0,0,0,0.1); }
+        .sidebar h2 { text-align: center; margin-bottom: 30px; font-weight: 700; letter-spacing: 1px; }
+        .sidebar h2 i { color: var(--primary); }
+        .nav-link { padding: 15px 25px; color: #d1fae5; text-decoration: none; display: flex; align-items: center; gap: 15px; transition: all 0.3s; }
+        .nav-link:hover, .nav-link.active { background-color: var(--primary); color: var(--white); border-left: 5px solid var(--white); }
 
-        .login-container {
-            background-color: var(--white);
-            width: 100%;
-            max-width: 400px;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.15);
-            text-align: center;
-        }
-
-        .logo-area { margin-bottom: 30px; }
-        .logo-area i { font-size: 48px; color: var(--primary); margin-bottom: 10px; }
-        .logo-area h2 { font-size: 24px; font-weight: 700; }
-        .logo-area p { color: var(--text-muted); font-size: 14px; margin-top: 5px; }
-
-        .form-group { margin-bottom: 20px; text-align: left; }
-        .form-group label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; }
-        .input-wrapper { position: relative; }
-        .input-wrapper i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-        .form-group input { 
-            width: 100%; padding: 12px 12px 12px 40px; border: 1px solid #d1d5db; 
-            border-radius: 8px; outline: none; font-size: 14px; transition: 0.3s; 
-        }
-        .form-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); }
-
-        .btn-login { 
-            background-color: var(--primary); color: var(--white); border: none; 
-            width: 100%; padding: 12px; border-radius: 8px; font-size: 16px; 
-            font-weight: 600; cursor: pointer; transition: 0.3s; 
-        }
-        .btn-login:hover { background-color: var(--primary-dark); }
+        /* ================= CONTENIDO PRINCIPAL ================= */
+        .main-content { flex: 1; padding: 30px; overflow-y: auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         
-        .error-msg { color: #ef4444; font-size: 13px; margin-bottom: 15px; }
+        .form-card { 
+            background: var(--white); border-radius: 12px; padding: 25px; margin-bottom: 30px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 4px solid var(--primary); 
+        }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { margin-bottom: 5px; font-size: 13px; color: var(--text-muted); font-weight: 600; }
+        .form-group input { padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; outline: none; transition: 0.3s; }
+        .form-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2); }
+        
+        .btn-add { 
+            background-color: var(--primary); color: var(--white); border: none; padding: 12px 25px; 
+            border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s; 
+            display: inline-flex; align-items: center; gap: 8px; 
+        }
+        .btn-add:hover { background-color: var(--primary-dark); }
+
+        /* ================= TABLA DE USUARIOS ================= */
+        .table-container { background: var(--white); border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+        th { color: var(--text-muted); font-weight: 600; }
+        tr:hover { background-color: #f9fafb; }
     </style>
 </head>
 <body>
 
-    <div class="login-container">
-        <div class="logo-area">
-            <i class="fa-solid fa-leaf"></i>
-            <h2>EcoCRM</h2>
-            <p>Ingresa tus datos para acceder</p>
+    <aside class="sidebar">
+        <h2><i class="fa-solid fa-leaf"></i> EcoCRM</h2>
+        <a href="/pageclientes/" class="nav-link"><i class="fa-solid fa-users"></i> Clientes</a>
+        <a href="/pageempleados/" class="nav-link"><i class="fa-solid fa-id-badge"></i> Empleados</a>
+        <a href="/pageproductos/" class="nav-link"><i class="fa-solid fa-box-open"></i> Productos</a>
+        <a href="/pageproveedores/" class="nav-link"><i class="fa-solid fa-truck-fast"></i> Proveedores</a>
+        <a href="/pageusuarios/" class="nav-link active"><i class="fa-solid fa-user-gear"></i> Usuarios</a>
+    </aside>
+
+    <main class="main-content">
+        
+        <header class="header">
+            <h2>Control de Usuarios del Sistema</h2>
+        </header>
+
+        <div class="form-card">
+            <h3><i class="fa-solid fa-user-shield"></i> Registrar Nuevo Usuario</h3>
+            <form action="/pageusuarios/nuevo/" method="POST">
+                {% csrf_token %}
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Nombre de Usuario (Username)</label>
+                        <input type="text" name="usuario" placeholder="Ej. rosa_admin" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Correo Electrónico</label>
+                        <input type="email" name="correo" placeholder="correo@empresa.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Contraseña de Acceso</label>
+                        <input type="password" name="contraseña" placeholder="••••••••" required>
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <button type="submit" class="btn-add">
+                        <i class="fa-solid fa-floppy-disk"></i> Guardar Usuario
+                    </button>
+                </div>
+            </form>
         </div>
 
-        {% if error %}
-            <p class="error-msg">{{ error }}</p>
-        {% endif %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Correo Electrónico</th>
+                        <th>Contraseña (Texto Plano)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in consultausuarios %}
+                    <tr>
+                        <td><strong>{{ u.usuario }}</strong></td>
+                        <td>{{ u.correo }}</td>
+                        <td><code>{{ u.contraseña }}</code></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" style="text-align: center; color: #6b7280; padding: 30px;">
+                            No hay credenciales registradas en el sistema.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
-        <form action="/pageusuarios/login/" method="POST">
-            {% csrf_token %}
-            
-            <div class="form-group">
-                <label>Correo Electrónico</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-envelope"></i>
-                    <input type="email" name="correo" placeholder="usuario@empresa.com" required>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Contraseña</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" name="contraseña" placeholder="••••••••" required>
-                </div>
-            </div>
-
-            <button type="submit" class="btn-login">
-                Iniciar Sesión
-            </button>
-        </form>
-    </div>
+    </main>
 
 </body>
 </html>
