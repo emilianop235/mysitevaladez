@@ -6,3 +6,10 @@ class proveedores(models.Model):
     direccion = models.CharField(max_length=200)
     telefono = models.CharField(max_length=20)
     
+class productos(models.Model):
+    nombre = models.CharField(max_length=100)
+    marca = models.CharField(max_length=100)
+    peso = models.FloatField()
+    categoria = models.CharField(max_length=100)
+    descripcion = models.TextField()
+    color = models.CharField(max_length=100)
