@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import Empleado, nomina 
+from empleados.models import Empleado
+from .models import nomina 
 
 def listarnominas(request):
     consultanominas = nomina.objects.all().order_by('-fecha')

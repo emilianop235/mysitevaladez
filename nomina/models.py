@@ -9,7 +9,7 @@ class nomina(models.Model):
     total = models.FloatField()
     
     # Llave foránea conectada a tu clase empleados en minúscula
-    empleado = models.ForeignKey('empleados.Empleados', on_delete=models.CASCADE, related_name='nominas')
+    empleado = models.ForeignKey('empleados.Empleado', on_delete=models.CASCADE, related_name='nominas')
 
     def __str__(self):
         return f"Periodo {self.numperiodo} - {self.empleado.nombre}"
