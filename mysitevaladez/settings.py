@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'nomina',
     'compras',
     'grupos',
-    'inventario',
+    'inventarios',
     'sucursal',
     'ventas',
     'usuarios',
