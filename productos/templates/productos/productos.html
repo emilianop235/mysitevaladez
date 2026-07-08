@@ -2,97 +2,89 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Panel de Productos</title>
+    <title>EcoCRM - Productos</title>
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        :root { --primary: #10b981; --primary-dark: #047857; --bg-color: #f3f4f6; --text-main: #1f2937; --text-muted: #6b7280; --white: #ffffff; }
+        :root {
+            --primary: #10b981; --primary-dark: #059669; --bg-color: #f8fafc; --text-main: #1f2937; --text-muted: #6b7280; --white: #ffffff; --border-color: #e2e8f0;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
-
-        /* Sidebar */
-        .sidebar { width: 250px; background-color: var(--primary-dark); color: var(--white); display: flex; flex-direction: column; padding: 20px 0; box-shadow: 4px 0 10px rgba(0,0,0,0.1); }
-        .sidebar h2 { text-align: center; margin-bottom: 30px; font-weight: 700; }
-        .nav-link { padding: 15px 25px; color: #d1fae5; text-decoration: none; display: flex; align-items: center; gap: 15px; }
-        .nav-link.active { background-color: var(--primary); color: var(--white); border-left: 5px solid var(--white); }
-
-        .main-content { flex: 1; padding: 30px; overflow-y: auto; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .btn-add { background-color: var(--primary); color: var(--white); border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; }
-        
-        /* Grid de productos */
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
-        .product-card { background: var(--white); border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .product-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
-        .product-price { font-size: 18px; color: var(--primary-dark); font-weight: bold; }
-        
-        /* Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: var(--white); padding: 30px; border-radius: 12px; width: 400px; }
+        .sidebar { width: 260px; background-color: #0f172a; color: var(--white); display: flex; flex-direction: column; padding: 20px 0; }
+        .sidebar h2 { text-align: center; margin-bottom: 30px; font-weight: 800; font-size: 24px; color: var(--primary); }
+        .sidebar h2 span { color: var(--white); }
+        .nav-link { padding: 14px 25px; color: #94a3b8; text-decoration: none; display: flex; align-items: center; gap: 12px; font-weight: 500; transition: 0.2s; }
+        .nav-link:hover { background-color: #1e293b; color: var(--white); }
+        .nav-link.active { background-color: #1e293b; color: var(--primary); border-left: 4px solid var(--primary); font-weight: 600; }
+        .main-content { flex: 1; display: flex; flex-direction: column; height: 100vh; }
+        .navbar { background-color: var(--white); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
+        .navbar h2 { font-size: 18px; font-weight: 700; color: #111827; }
+        .workspace { display: flex; gap: 30px; padding: 30px; flex: 1; overflow: hidden; }
+        .form-section { flex: 0 0 360px; background: var(--white); padding: 25px; border-radius: 10px; border: 1px solid var(--border-color); height: fit-content; }
+        .section-title { font-size: 15px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
         .form-group { margin-bottom: 15px; }
-        .form-group input { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; color: var(--text-muted); }
+        .form-group input { width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 14px; outline: none; }
+        .btn-submit { width: 100%; background-color: var(--primary); color: var(--white); border: none; padding: 11px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; }
+        .btn-submit:hover { background-color: var(--primary-dark); }
+        .table-section { flex: 1; background: var(--white); padding: 25px; border-radius: 10px; border: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden; }
+        .table-container { flex: 1; overflow-y: auto; margin-top: 10px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 14px; }
+        th { background-color: #f8fafc; color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; position: sticky; top: 0; }
+        tr:hover { background-color: #f0fdf4; }
     </style>
 </head>
 <body>
-
-   <aside class="sidebar">
-    <h2>Eco<span>CRM</span></h2>
-    <a href="/pageclientes/" class="nav-link"><i class="fa-solid fa-users"></i> Clientes</a>
-    <a href="/pagecompras/" class="nav-link"><i class="fa-solid fa-bag-shopping"></i> Compras</a>
-    <a href="/pageempleados/" class="nav-link"><i class="fa-solid fa-id-badge"></i> Empleados</a>
-    <a href="/pagegrupos/" class="nav-link"><i class="fa-solid fa-folder-tree"></i> Grupos / Roles</a>
-    <a href="/pageinventarios/" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Inventarios</a>
-    <a href="/pagenomina/" class="nav-link"><i class="fa-solid fa-money-check-dollar"></i> Nómina</a>
-    <a href="/pageproductos/" class="nav-link"><i class="fa-solid fa-box"></i> Productos</a>
-    <a href="/pageproveedores/" class="nav-link"><i class="fa-solid fa-truck-ramp-box"></i> Proveedores</a>
-    <a href="/pagesucursal/" class="nav-link"><i class="fa-solid fa-shop"></i> Sucursales</a>
-    <a href="/pageventas/" class="nav-link"><i class="fa-solid fa-barcode"></i> Ventas</a>
-</aside>
-
+    <aside class="sidebar">
+        <h2>Eco<span>CRM</span></h2>
+        <a href="/pageclientes/" class="nav-link"><i class="fa-solid fa-users"></i> Clientes</a>
+        <a href="/pagecompras/" class="nav-link"><i class="fa-solid fa-bag-shopping"></i> Compras</a>
+        <a href="/pageempleados/" class="nav-link"><i class="fa-solid fa-id-badge"></i> Empleados</a>
+        <a href="/pagegrupos/" class="nav-link"><i class="fa-solid fa-folder-tree"></i> Grupos / Roles</a>
+        <a href="/pageinventarios/" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Inventarios</a>
+        <a href="/pagenomina/" class="nav-link"><i class="fa-solid fa-money-check-dollar"></i> Nómina</a>
+        <a href="/pageproductos/" class="nav-link active"><i class="fa-solid fa-box"></i> Productos</a>
+        <a href="/pageproveedores/" class="nav-link"><i class="fa-solid fa-truck-ramp-box"></i> Proveedores</a>
+        <a href="/pagesucursal/" class="nav-link"><i class="fa-solid fa-shop"></i> Sucursales</a>
+        <a href="/pageventas/" class="nav-link"><i class="fa-solid fa-barcode"></i> Ventas</a>
+    </aside>
     <main class="main-content">
-        <header class="header">
-            <h2>Catálogo de Productos</h2>
-            <button class="btn-add" onclick="document.getElementById('modalProducto').style.display='flex'">
-                <i class="fa-solid fa-plus"></i> Agregar Producto
-            </button>
-        </header>
-
-        <div class="products-grid">
-            {% for p in consultaproductos %}
-            <div class="product-card">
-                <h3 class="product-title">{{ p.nombre }}</h3>
-                <p>{{ p.descripcion }}</p>
-                <p class="product-price">${{ p.precio }}</p>
-                <p>Stock: {{ p.stock }}</p>
+        <nav class="navbar">
+            <h2>Catálogo Comercial / Productos</h2>
+            <div class="user-info"><i class="fa-solid fa-cubes" style="color: var(--primary);"></i> Línea de Artículos</div>
+        </nav>
+        <div class="workspace">
+            <div class="form-section">
+                <h3 class="section-title"><i class="fa-solid fa-plus" style="color: var(--primary);"></i> Agregar Producto</h3>
+                <form action="/pageproductos/nuevo/" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group"><label>Nombre del Producto</label><input type="text" name="nombre" required></div>
+                    <div class="form-group"><label>Precio de Venta ($)</label><input type="number" step="0.01" name="precio" required></div>
+                    <button type="submit" class="btn-submit">Guardar Producto</button>
+                </form>
             </div>
-            {% empty %}
-            <p>No hay productos registrados.</p>
-            {% endfor %}
+            <div class="table-section">
+                <h3 class="section-title"><i class="fa-solid fa-boxes-packing" style="color: var(--text-muted);"></i> Oferta Vigente</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Artículo</th><th>Precio Público</th></tr>
+                        </thead>
+                        <tbody>
+                            {% for p in consultaproductos %}
+                            <tr><td><strong>{{ p.nombre }}</strong></td><td style="color: var(--primary-dark); font-weight: 600;">${{ p.precio }}</td></tr>
+                            {% empty %}
+                            <tr><td colspan="2" style="text-align: center; color: var(--text-muted);">No hay productos registrados.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </main>
-
-    <div class="modal" id="modalProducto">
-        <div class="modal-content">
-            <h3>Nuevo Producto</h3>
-            <form action="/pageproductos/nuevo/" method="POST" style="margin-top:20px;">
-                {% csrf_token %}
-                <div class="form-group"><input type="text" name="nombre" placeholder="Nombre" required></div>
-                <div class="form-group"><input type="text" name="descripcion" placeholder="Descripción" required></div>
-                <div class="form-group"><input type="number" step="0.01" name="precio" placeholder="Precio" required></div>
-                <div class="form-group"><input type="number" name="stock" placeholder="Stock" required></div>
-                <button type="submit" class="btn-submit" style="width:100%">Guardar</button>
-            </form>
-        </div>
-    </div>
-    
-    <script>
-        window.onclick = function(e) { 
-            let m = document.getElementById('modalProducto'); 
-            if (e.target == m) m.style.display = 'none'; 
-        }
-    </script>
 </body>
 </html>

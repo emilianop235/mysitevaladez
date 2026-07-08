@@ -2,143 +2,90 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Panel de Proveedores</title>
+    <title>EcoCRM - Proveedores</title>
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        /* ================= VARIABLES DE COLOR ================= */
         :root {
-            --primary: #10b981; 
-            --primary-dark: #047857; 
-            --bg-color: #f3f4f6; 
-            --text-main: #1f2937;
-            --text-muted: #6b7280;
-            --white: #ffffff;
+            --primary: #10b981; --primary-dark: #059669; --bg-color: #f8fafc; --text-main: #1f2937; --text-muted: #6b7280; --white: #ffffff; --border-color: #e2e8f0;
         }
-
-        /* ================= ESTILOS GENERALES ================= */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
-
-        /* ================= BARRA LATERAL (SIDEBAR) ================= */
-        .sidebar { width: 250px; background-color: var(--primary-dark); color: var(--white); display: flex; flex-direction: column; padding: 20px 0; box-shadow: 4px 0 10px rgba(0,0,0,0.1); }
-        .sidebar h2 { text-align: center; margin-bottom: 30px; font-weight: 700; letter-spacing: 1px; }
-        .sidebar h2 i { color: var(--primary); }
-        .nav-link { padding: 15px 25px; color: #d1fae5; text-decoration: none; display: flex; align-items: center; gap: 15px; transition: all 0.3s; }
-        .nav-link:hover, .nav-link.active { background-color: var(--primary); color: var(--white); border-left: 5px solid var(--white); }
-
-        /* ================= CONTENIDO PRINCIPAL ================= */
-        .main-content { flex: 1; padding: 30px; overflow-y: auto; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        
-        .form-card { 
-            background: var(--white); border-radius: 12px; padding: 25px; margin-bottom: 30px; 
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 4px solid var(--primary); 
-        }
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .form-group { display: flex; flex-direction: column; }
-        .form-group label { margin-bottom: 5px; font-size: 13px; color: var(--text-muted); font-weight: 600; }
-        .form-group input { padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; outline: none; transition: 0.3s; }
-        .form-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2); }
-        
-        .btn-add { 
-            background-color: var(--primary); color: var(--white); border: none; padding: 12px 25px; 
-            border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s; 
-            display: inline-flex; align-items: center; gap: 8px; 
-        }
-        .btn-add:hover { background-color: var(--primary-dark); }
-
-        /* ================= TABLA DE PROVEEDORES ================= */
-        .table-container { background: var(--white); border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .sidebar { width: 260px; background-color: #0f172a; color: var(--white); display: flex; flex-direction: column; padding: 20px 0; }
+        .sidebar h2 { text-align: center; margin-bottom: 30px; font-weight: 800; font-size: 24px; color: var(--primary); }
+        .sidebar h2 span { color: var(--white); }
+        .nav-link { padding: 14px 25px; color: #94a3b8; text-decoration: none; display: flex; align-items: center; gap: 12px; font-weight: 500; transition: 0.2s; }
+        .nav-link:hover { background-color: #1e293b; color: var(--white); }
+        .nav-link.active { background-color: #1e293b; color: var(--primary); border-left: 4px solid var(--primary); font-weight: 600; }
+        .main-content { flex: 1; display: flex; flex-direction: column; height: 100vh; }
+        .navbar { background-color: var(--white); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
+        .navbar h2 { font-size: 18px; font-weight: 700; color: #111827; }
+        .workspace { display: flex; gap: 30px; padding: 30px; flex: 1; overflow: hidden; }
+        .form-section { flex: 0 0 360px; background: var(--white); padding: 25px; border-radius: 10px; border: 1px solid var(--border-color); height: fit-content; }
+        .section-title { font-size: 15px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; color: var(--text-muted); }
+        .form-group input { width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 14px; outline: none; }
+        .btn-submit { width: 100%; background-color: var(--primary); color: var(--white); border: none; padding: 11px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; }
+        .btn-submit:hover { background-color: var(--primary-dark); }
+        .table-section { flex: 1; background: var(--white); padding: 25px; border-radius: 10px; border: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden; }
+        .table-container { flex: 1; overflow-y: auto; margin-top: 10px; }
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #e5e7eb; }
-        th { color: var(--text-muted); font-weight: 600; }
-        tr:hover { background-color: #f9fafb; }
+        th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 14px; }
+        th { background-color: #f8fafc; color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; position: sticky; top: 0; }
+        tr:hover { background-color: #f0fdf4; }
     </style>
 </head>
 <body>
-
     <aside class="sidebar">
-    <h2>Eco<span>CRM</span></h2>
-    <a href="/pageclientes/" class="nav-link"><i class="fa-solid fa-users"></i> Clientes</a>
-    <a href="/pagecompras/" class="nav-link"><i class="fa-solid fa-bag-shopping"></i> Compras</a>
-    <a href="/pageempleados/" class="nav-link"><i class="fa-solid fa-id-badge"></i> Empleados</a>
-    <a href="/pagegrupos/" class="nav-link"><i class="fa-solid fa-folder-tree"></i> Grupos / Roles</a>
-    <a href="/pageinventarios/" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Inventarios</a>
-    <a href="/pagenomina/" class="nav-link"><i class="fa-solid fa-money-check-dollar"></i> Nómina</a>
-    <a href="/pageproductos/" class="nav-link"><i class="fa-solid fa-box"></i> Productos</a>
-    <a href="/pageproveedores/" class="nav-link"><i class="fa-solid fa-truck-ramp-box"></i> Proveedores</a>
-    <a href="/pagesucursal/" class="nav-link"><i class="fa-solid fa-shop"></i> Sucursales</a>
-    <a href="/pageventas/" class="nav-link"><i class="fa-solid fa-barcode"></i> Ventas</a>
-</aside>
-
+        <h2>Eco<span>CRM</span></h2>
+        <a href="/pageclientes/" class="nav-link"><i class="fa-solid fa-users"></i> Clientes</a>
+        <a href="/pagecompras/" class="nav-link"><i class="fa-solid fa-bag-shopping"></i> Compras</a>
+        <a href="/pageempleados/" class="nav-link"><i class="fa-solid fa-id-badge"></i> Empleados</a>
+        <a href="/pagegrupos/" class="nav-link"><i class="fa-solid fa-folder-tree"></i> Grupos / Roles</a>
+        <a href="/pageinventarios/" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Inventarios</a>
+        <a href="/pagenomina/" class="nav-link"><i class="fa-solid fa-money-check-dollar"></i> Nómina</a>
+        <a href="/pageproductos/" class="nav-link"><i class="fa-solid fa-box"></i> Productos</a>
+        <a href="/pageproveedores/" class="nav-link active"><i class="fa-solid fa-truck-ramp-box"></i> Proveedores</a>
+        <a href="/pagesucursal/" class="nav-link"><i class="fa-solid fa-shop"></i> Sucursales</a>
+        <a href="/pageventas/" class="nav-link"><i class="fa-solid fa-barcode"></i> Ventas</a>
+    </aside>
     <main class="main-content">
-        
-        <header class="header">
-            <h2>Directorio de Proveedores</h2>
-        </header>
-
-        <div class="form-card">
-            <h3><i class="fa-solid fa-building"></i> Registrar Nuevo Proveedor</h3>
-            <form action="/pageproveedores/nuevo/" method="POST">
-                {% csrf_token %}
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Nombre de la Empresa / Proveedor</label>
-                        <input type="text" name="nombre" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Apellido (Contacto)</label>
-                        <input type="text" name="apellido" required>
-                    </div>
-                    <div class="form-group" style="grid-column: 1 / -1;">
-                        <label>Dirección</label>
-                        <input type="text" name="direccion" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Teléfono</label>
-                        <input type="text" name="telefono" required>
-                    </div>
+        <nav class="navbar">
+            <h2>Cadena de Suministro / Proveedores</h2>
+            <div class="user-info"><i class="fa-solid fa-truck" style="color: var(--primary);"></i> Socios Comerciales</div>
+        </nav>
+        <div class="workspace">
+            <div class="form-section">
+                <h3 class="section-title"><i class="fa-solid fa-plus" style="color: var(--primary);"></i> Nuevo Proveedor</h3>
+                <form action="/pageproveedores/nuevo/" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group"><label>Razón Social / Nombre</label><input type="text" name="nombre" required></div>
+                    <div class="form-group"><label>Dirección</label><input type="text" name="direccion" required></div>
+                    <div class="form-group"><label>Teléfono Corporativo</label><input type="text" name="telefono" required></div>
+                    <button type="submit" class="btn-submit">Guardar Proveedor</button>
+                </form>
+            </div>
+            <div class="table-section">
+                <h3 class="section-title"><i class="fa-solid fa-address-book" style="color: var(--text-muted);"></i> Directorio de Aliados</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>Proveedor</th><th>Ubicación</th><th>Contacto</th></tr>
+                        </thead>
+                        <tbody>
+                            {% for p in consultaproveedores %}
+                            <tr><td><strong>{{ p.nombre }}</strong></td><td>{{ p.direccion }}</td><td style="color: var(--text-muted);">{{ p.telefono }}</td></tr>
+                            {% empty %}
+                            <tr><td colspan="3" style="text-align: center; color: var(--text-muted);">No hay proveedores registrados.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
-                <div style="text-align: right;">
-                    <button type="submit" class="btn-add">Guardar Registro</button>
-                </div>
-            </form>
+            </div>
         </div>
-
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Dirección</th>
-                        <th>Teléfono</th>
-                    </tr>
-                </thead>
-                <tbody id="tablaProveedores">
-                    {% for p in consultaproveedores %}
-                    <tr>
-                        <td><strong>{{ p.nombre }}</strong></td>
-                        <td>{{ p.apellido }}</td>
-                        <td>{{ p.direccion }}</td>
-                        <td>{{ p.telefono }}</td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="4" style="text-align: center; color: #6b7280; padding: 30px;">
-                            No hay proveedores registrados en la base de datos.
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
     </main>
-
 </body>
 </html>
