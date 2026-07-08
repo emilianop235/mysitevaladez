@@ -27,4 +27,8 @@ urlpatterns = [
     path('pagecompras/', include('compras.urls')),
     path('pageinventarios/', include('inventarios.urls')),
     path('pagesucursal/', include('sucursal.urls')),
+    path('pagegrupos/', include('grupos.urls')),
+    path('pageventas/', include('ventas.urls')),
+    path('pageusuarios/', include('usuarios.urls')),
+    path('pagenomina/', include('nomina.urls')),
 ]

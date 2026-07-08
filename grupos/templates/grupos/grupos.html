@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>EcoCRM - Clasificación de Grupos</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ================= VARIABLES DE COLOR ECOCRM ================= */
+        :root {
+            --primary: #10b981; /* Verde EcoCRM */
+            --primary-dark: #059669; 
+            --bg-color: #f8fafc; 
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --white: #ffffff;
+            --border-color: #e2e8f0;
+        }
+
+        /* ================= ESTILOS GENERALES ================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+
+        /* ================= BARRA LATERAL (SIDEBAR GLOBAL) ================= */
+        .sidebar { width: 260px; background-color: #0f172a; color: var(--white); display: flex; flex-direction: column; padding: 20px 0; }
+        .sidebar h2 { text-align: center; margin-bottom: 30px; font-weight: 800; font-size: 24px; color: var(--primary); }
+        .sidebar h2 span { color: var(--white); }
+        .nav-link { padding: 14px 25px; color: #94a3b8; text-decoration: none; display: flex; align-items: center; gap: 12px; font-weight: 500; transition: 0.2s; }
+        .nav-link:hover { background-color: #1e293b; color: var(--white); }
+        .nav-link.active { background-color: #1e293b; color: var(--primary); border-left: 4px solid var(--primary); font-weight: 600; }
+
+        /* ================= CONTENIDO PRINCIPAL ================= */
+        .main-content { flex: 1; display: flex; flex-direction: column; height: 100vh; }
+        
+        /* Navbar */
+        .navbar { background-color: var(--white); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.02); border-bottom: 1px solid var(--border-color); }
+        .navbar h2 { font-size: 18px; font-weight: 700; color: #111827; }
+        .user-info { font-size: 14px; font-weight: 500; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
+
+        /* Workspace Dos Columnas */
+        .workspace { display: flex; gap: 30px; padding: 30px; flex: 1; overflow: hidden; }
+
+        /* Formulario (Izquierda) */
+        .form-section { flex: 0 0 360px; background: var(--white); padding: 25px; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color); height: fit-content; }
+        .section-title { font-size: 15px; font-weight: 700; margin-bottom: 20px; color: #111827; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; color: var(--text-muted); }
+        .form-group input, .form-group textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 14px; outline: none; transition: 0.2s; }
+        .form-group textarea { resize: none; height: 80px; }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
+        
+        /* Checkbox Estilizado */
+        .checkbox-group { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+        .checkbox-group input { width: auto; cursor: pointer; }
+
+        .btn-submit { width: 100%; background-color: var(--primary); color: var(--white); border: none; padding: 11px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: 0.2s; margin-top: 10px; }
+        .btn-submit:hover { background-color: var(--primary-dark); }
+
+        /* Tabla (Derecha) */
+        .table-section { flex: 1; background: var(--white); padding: 25px; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden; }
+        .table-container { flex: 1; overflow-y: auto; margin-top: 10px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        th { background-color: #f8fafc; color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; position: sticky; top: 0; }
+        td { font-size: 14px; color: var(--text-main); }
+        tr:hover { background-color: #f0fdf4; }
+        
+        /* Badges de Estatus */
+        .status-badge { padding: 3px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+        .status-active { background-color: #d1fae5; color: #065f46; }
+        .status-inactive { background-color: #fee2e2; color: #991b1b; }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <h2>Eco<span>CRM</span></h2>
+        <a href="/pageclientes/" class="nav-link"><i class="fa-solid fa-users"></i> Clientes</a>
+        <a href="/pagecompras/" class="nav-link"><i class="fa-solid fa-bag-shopping"></i> Compras</a>
+        <a href="/pageempleados/" class="nav-link"><i class="fa-solid fa-id-badge"></i> Empleados</a>
+        <a href="/pagegrupos/" class="nav-link active"><i class="fa-solid fa-folder-tree"></i> Grupos / Roles</a>
+        <a href="/pageinventarios/" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Inventarios</a>
+        <a href="/pageproductos/" class="nav-link"><i class="fa-solid fa-box"></i> Productos</a>
+        <a href="/pageproveedores/" class="nav-link"><i class="fa-solid fa-truck-ramp-box"></i> Proveedores</a>
+        <a href="/pagesucursal/" class="nav-link"><i class="fa-solid fa-shop"></i> Sucursales</a>
+        <a href="/pageventas/" class="nav-link"><i class="fa-solid fa-barcode"></i> Ventas</a>
+    </aside>
+
+    <main class="main-content">
+        <nav class="navbar">
+            <h2>Configuración de Seguridad / Roles de Usuario</h2>
+            <div class="user-info">
+                <i class="fa-solid fa-shield-halved" style="color: var(--primary);"></i> Control de Accesos EcoCRM
+            </div>
+        </nav>
+
+        <div class="workspace">
+            <div class="form-section">
+                <h3 class="section-title"><i class="fa-solid fa-folder-plus" style="color: var(--primary);"></i> Crear Clasificación</h3>
+                <form action="/pagegrupos/nuevo/" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Nombre del Grupo / Rol</label>
+                        <input type="text" name="nombre" placeholder="Ej. Administrador, Vendedor" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Descripción de Permisos</label>
+                        <textarea name="descripcion" placeholder="¿Qué acciones puede realizar este rol en el CRM?..." required></textarea>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" name="estatus" id="estatusCheck" checked>
+                        <label style="margin-bottom: 0;" for="estatusCheck">Habilitar grupo inmediatamente</label>
+                    </div>
+                    <button type="submit" class="btn-submit">Guardar Grupo</button>
+                </form>
+            </div>
+
+            <div class="table-section">
+                <h3 class="section-title"><i class="fa-solid fa-layer-group" style="color: var(--text-muted);"></i> Grupos Configurados</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Grupo / Rol</th>
+                                <th>Descripción de Accesos</th>
+                                <th>Fecha Alta</th>
+                                <th>Estatus</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for g in consultagrupos %}
+                            <tr>
+                                <td><strong>{{ g.nombre }}</strong></td>
+                                <td style="font-size: 13px; color: var(--text-muted);">{{ g.descripcion }}</td>
+                                <td style="font-size: 13px;">{{ g.fecha_creacion|date:"d/m/Y" }}</td>
+                                <td>
+                                    {% if g.estatus %}
+                                        <span class="status-badge status-active">Activo</span>
+                                    {% else %}
+                                        <span class="status-badge status-inactive">Inactivo</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 30px;">
+                                    No hay clasificaciones creadas en el sistema.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
