@@ -4,7 +4,7 @@ from .models import ventas
 
 # Importamos las clases en minúscula de tus otras carpetas
 from clientes.models import Cliente
-from empleados.models import empleados
+from empleados.models import Empleado
 from productos.models import producto
 
 def listar_ventas(request):
@@ -13,7 +13,7 @@ def listar_ventas(request):
     
     # Traemos todos los catálogos en minúsculas para las listas desplegables
     consultaclientes = Cliente.objects.all()
-    consultaempleados = empleados.objects.all()
+    consultaempleados = Empleado.objects.all()
     consultaproductos = producto.objects.all()
 
     # Empaquetamos todo para enviarlo al archivo HTML
