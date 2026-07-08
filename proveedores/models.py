@@ -12,4 +12,4 @@ class productos(models.Model):
     peso = models.FloatField()
     categoria = models.CharField(max_length=100)
     descripcion = models.TextField()
-    color = models.CharField(max_length=100)
+    color = models.CharField(max_length=1000)
