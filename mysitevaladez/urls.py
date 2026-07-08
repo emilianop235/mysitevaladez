@@ -16,19 +16,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+# Importamos tus funciones de nómina desde la app de empleados
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    
     path('pageclientes/', include('clientes.urls')),
-    path('pageproveedores/', include('proveedores.urls')),
     path('pageempleados/', include('empleados.urls')),
-    path('pageusuarios/', include('usuarios.urls')),
     path('pageproductos/', include('productos.urls')),
+    path('pageproveedores/', include('proveedores.urls')),
     path('pagecompras/', include('compras.urls')),
     path('pageinventarios/', include('inventarios.urls')),
     path('pagesucursal/', include('sucursal.urls')),
     path('pagegrupos/', include('grupos.urls')),
     path('pageventas/', include('ventas.urls')),
-    path('pageusuarios/', include('usuarios.urls')),
     path('pagenomina/', include('nomina.urls')),
 ]
