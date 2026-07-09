@@ -8,15 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #10b981;
-            --primary-dark: #059669; 
-            --bg-color: #f8fafc; 
-            --text-main: #1f2937;
-            --text-muted: #6b7280;
-            --white: #ffffff;
-            --border-color: #e2e8f0;
-        }
+        :root { --primary: #10b981; --primary-dark: #059669; --bg-color: #f8fafc; --text-main: #1f2937; --text-muted: #6b7280; --white: #ffffff; --border-color: #e2e8f0; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
         .sidebar { width: 260px; background-color: #0f172a; color: var(--white); display: flex; flex-direction: column; padding: 20px 0; }
@@ -35,7 +27,7 @@
         .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; color: var(--text-muted); }
         .form-group input { width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 14px; outline: none; }
         .form-group input:focus { border-color: var(--primary); }
-        .btn-submit { width: 100%; background-color: var(--primary); color: var(--white); border: none; padding: 11px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; }
+        .btn-submit { width: 100%; background-color: var(--primary); color: var(--white); border: none; padding: 11px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; display: inline-block; text-align: center; text-decoration: none; }
         .btn-submit:hover { background-color: var(--primary-dark); }
         .table-section { flex: 1; background: var(--white); padding: 25px; border-radius: 10px; border: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden; }
         .table-container { flex: 1; overflow-y: auto; margin-top: 10px; }
@@ -43,6 +35,11 @@
         th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 14px; }
         th { background-color: #f8fafc; color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; position: sticky; top: 0; }
         tr:hover { background-color: #f0fdf4; }
+        .btn-accion { background: none; border: none; cursor: pointer; font-size: 16px; transition: transform 0.2s; text-decoration: none; display: inline-block; }
+        .btn-accion:hover { transform: scale(1.15); }
+        .btn-consultar { color: #3b82f6; margin-right: 12px; }
+        .btn-editar { color: #f59e0b; margin-right: 12px; }
+        .btn-desactivar { color: #ef4444; }
     </style>
 </head>
 <body>
@@ -76,17 +73,41 @@
                 </form>
             </div>
             <div class="table-section">
-                <h3 class="section-title"><i class="fa-solid fa-list" style="color: var(--text-muted);"></i> Lista de Contactos</h3>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 class="section-title" style="margin-bottom: 0;">
+                        <i class="fa-solid fa-list" style="color: var(--text-muted);"></i> 
+                        {% if mostrar_todos %}Todos los Contactos{% else %}Últimos 5 Registros{% endif %}
+                    </h3>
+                    {% if mostrar_todos %}
+                        <a href="/pageclientes/" class="btn-submit" style="width: auto; padding: 8px 15px; background: #64748b;"><i class="fa-solid fa-clock-rotate-left"></i> Ver Recientes</a>
+                    {% else %}
+                        <a href="/pageclientes/todos/" class="btn-submit" style="width: auto; padding: 8px 15px;"><i class="fa-solid fa-table-list"></i> Ver Todos</a>
+                    {% endif %}
+                </div>
                 <div class="table-container">
                     <table>
                         <thead>
-                            <tr><th>Nombre</th><th>Apellido</th><th>Teléfono</th></tr>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Teléfono</th>
+                                <th style="text-align: center;">Acciones</th>
+                            </tr>
                         </thead>
                         <tbody>
                             {% for c in consultaclientes %}
-                            <tr><td><strong>{{ c.nombre }}</strong></td><td>{{ c.apellido }}</td><td>{{ c.telefono }}</td></tr>
+                                <tr>
+                                    <td><strong>{{ c.nombre }}</strong></td>
+                                    <td>{{ c.apellido }}</td>
+                                    <td>{{ c.telefono }}</td>
+                                    <td style="text-align: center;">
+                                        <a href="/pageclientes/consultar/{{ c.id }}/" class="btn-accion btn-consultar" title="Ver Detalles"><i class="fa-solid fa-eye"></i></a>
+                                        <a href="/pageclientes/editar/{{ c.id }}/" class="btn-accion btn-editar" title="Editar"><i class="fa-solid fa-pen"></i></a>
+                                        <a href="/pageclientes/desactivar/{{ c.id }}/" class="btn-accion btn-desactivar" title="Desactivar" onclick="return confirm('¿Desactivar a este cliente del sistema?');"><i class="fa-solid fa-trash"></i></a>
+                                    </td>
+                                </tr>
                             {% empty %}
-                            <tr><td colspan="3" style="text-align: center; color: var(--text-muted);">No hay clientes registrados.</td></tr>
+                                <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">No hay clientes registrados en el sistema.</td></tr>
                             {% endfor %}
                         </tbody>
                     </table>

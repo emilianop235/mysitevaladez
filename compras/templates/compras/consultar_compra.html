@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Consultar Compra - EcoCRM</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #3b82f6; --bg-color: #f8fafc; --text-main: #1f2937; --text-muted: #6b7280; --white: #ffffff; --border-color: #e2e8f0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; align-items: center; justify-content: center; }
+        .view-card { background: var(--white); padding: 40px; border-radius: 12px; border: 1px solid var(--border-color); width: 400px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+        .info-group { margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .info-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 4px; color: var(--text-muted); text-transform: uppercase; }
+        .info-group p { font-size: 16px; color: var(--text-main); font-weight: 500; }
+        .btn-back { width: 100%; background-color: var(--primary); color: var(--white); border: none; padding: 12px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; display: block; text-align: center; text-decoration: none; margin-top: 25px; }
+    </style>
+</head>
+<body>
+    <div class="view-card">
+        <h2 style="margin-bottom: 25px; text-align: center; color: var(--primary);"><i class="fa-solid fa-file-invoice-dollar"></i> Detalle de Compra</h2>
+        
+        <div class="info-group">
+            <label>Folio de Documento</label>
+            <p><strong>{{ compra.folio }}</strong></p>
+        </div>
+        <div class="info-group">
+            <label>Fecha de Transacción</label>
+            <p>{{ compra.fecha|date:"d/m/Y" }}</p>
+        </div>
+        <div class="info-group">
+            <label>Desglose</label>
+            <p style="font-size: 14px;">Subtotal: ${{ compra.subtotal }} <br> IVA: ${{ compra.iva }}</p>
+        </div>
+        <div class="info-group">
+            <label>Importe Total</label>
+            <p style="color: #059669; font-weight: 700; font-size: 20px;">${{ compra.total }}</p>
+        </div>
+        <div class="info-group">
+            <label>Estado en Sistema</label>
+            <p style="color: #10b981; font-weight: 700;"><i class="fa-solid fa-circle-check"></i> Activo</p>
+        </div>
+        
+        <a href="/pagecompras/" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver a la Lista</a>
+    </div>
+</body>
+</html>
