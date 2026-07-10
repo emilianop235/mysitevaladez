@@ -8,8 +8,11 @@ class nomina(models.Model):
     deducciones = models.FloatField()
     total = models.FloatField()
     
-    # Llave foránea conectada a tu clase empleados en minúscula
+    # Llave foránea conectada a tu clase empleado
     empleado = models.ForeignKey('empleados.Empleado', on_delete=models.CASCADE, related_name='nominas')
+    
+    # Campo para borrado lógico
+    estatus = models.BooleanField(default=True)
 
     def __str__(self):
         return f"Periodo {self.numperiodo} - {self.empleado.nombre}"

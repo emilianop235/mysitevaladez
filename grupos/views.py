@@ -1,19 +1,40 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import grupos
 
 def listargrupos(request):
-    # Consultamos todas las clasificaciones de la base de datos
-    consultagrupos = grupos.objects.all().order_by('nombre')
-    return render(request, 'grupos/grupos.html', {'consultagrupos': consultagrupos})
+    consultagrupos = grupos.objects.filter(estatus=True).order_by('-id')[:5]
+    context = {'consultagrupos': consultagrupos, 'mostrar_todos': False}
+    return render(request, 'grupos/grupos.html', context)
+
+def listar_todos_grupos(request):
+    consultagrupos = grupos.objects.filter(estatus=True).order_by('-id')
+    context = {'consultagrupos': consultagrupos, 'mostrar_todos': True}
+    return render(request, 'grupos/grupos.html', context)
 
 def creargrupo(request):
     if request.method == 'POST':
-        # Para el estatus, revisamos si viene marcado desde el formulario
-        estatus_form = request.POST.get('estatus') == 'on'
-        
         grupos.objects.create(
             nombre=request.POST['nombre'],
-            descripcion=request.POST['descripcion'],
-            estatus=estatus_form
+            descripcion=request.POST['descripcion']
+            # fecha_creacion y estatus se ponen solos por defecto en el modelo
         )
     return redirect('/pagegrupos/')
+
+def desactivargrupo(request, id):
+    grupo = get_object_or_404(grupos, id=id)
+    grupo.estatus = False
+    grupo.save()
+    return redirect('/pagegrupos/')
+
+def editargrupo(request, id):
+    grupo = get_object_or_404(grupos, id=id)
+    if request.method == 'POST':
+        grupo.nombre = request.POST['nombre']
+        grupo.descripcion = request.POST['descripcion']
+        grupo.save()
+        return redirect('/pagegrupos/')
+    return render(request, 'grupos/editar_grupo.html', {'grupo': grupo})
+
+def consultargrupo(request, id):
+    grupo = get_object_or_404(grupos, id=id)
+    return render(request, 'grupos/consultar_grupo.html', {'grupo': grupo})
