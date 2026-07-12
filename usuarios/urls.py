@@ -1,8 +1,18 @@
 from django.urls import path
-from .views import validar_login, listar_usuarios, crear_usuario
+from .views import (
+    listarusuarios, 
+    listar_todos_usuarios, 
+    crearusuario, 
+    desactivarusuario, 
+    editarusuario, 
+    consultarusuario
+)
 
 urlpatterns = [
-    path('', listar_usuarios),          # Carga la tabla con el menú lateral
-    path('nuevo/', crear_usuario),      # Procesa el formulario de registro
-    path('login/', validar_login),      # Mantiene la ruta de acceso independiente
+    path('', listarusuarios),
+    path('todos/', listar_todos_usuarios),
+    path('nuevo/', crearusuario),
+    path('desactivar/<int:id>/', desactivarusuario),
+    path('editar/<int:id>/', editarusuario),
+    path('consultar/<int:id>/', consultarusuario),
 ]

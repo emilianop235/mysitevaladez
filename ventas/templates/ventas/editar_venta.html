@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Venta - EcoCRM</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #f59e0b; --primary-dark: #d97706; --bg-color: #f8fafc; --text-main: #1f2937; --text-muted: #6b7280; --white: #ffffff; --border-color: #e2e8f0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; align-items: center; justify-content: center; }
+        .edit-card { background: var(--white); padding: 30px 40px; border-radius: 12px; border: 1px solid var(--border-color); width: 400px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; color: var(--text-muted); }
+        .form-group input { width: 100%; padding: 9px 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 14px; outline: none; }
+        .form-group input:focus { border-color: var(--primary); }
+        .btn-submit { width: 100%; background-color: var(--primary); color: var(--white); border: none; padding: 11px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; margin-bottom: 10px; margin-top: 10px;}
+        .btn-submit:hover { background-color: var(--primary-dark); }
+        .btn-cancel { width: 100%; background-color: #94a3b8; color: var(--white); border: none; padding: 11px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; display: block; text-align: center; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="edit-card">
+        <h2 style="margin-bottom: 20px; text-align: center; color: var(--primary);"><i class="fa-solid fa-pen-to-square"></i> Modificar Venta</h2>
+        <form method="POST" action="/pageventas/editar/{{ venta.id }}/">
+            {% csrf_token %}
+            <div class="form-group"><label>Folio</label><input type="text" name="folio" value="{{ venta.folio }}" required></div>
+            <div class="form-group"><label>Total ($)</label><input type="number" step="0.01" name="total" value="{{ venta.total }}" required></div>
+            <button type="submit" class="btn-submit">Guardar Cambios</button>
+            <a href="/pageventas/" class="btn-cancel">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>

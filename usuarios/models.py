@@ -7,6 +7,9 @@ class usuarios(models.Model):
     correo = models.EmailField()
     # Referencia en texto, con null=True para evitar choques con datos viejos
     grupo = models.ForeignKey('grupos.grupos', on_delete=models.CASCADE, null=True)
+    
+    # Campo para borrado lógico
+    estatus = models.BooleanField(default=True)
 
     def __str__(self):
         return self.usuario

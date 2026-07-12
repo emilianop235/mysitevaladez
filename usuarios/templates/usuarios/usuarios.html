@@ -2,33 +2,32 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>EcoCRM - Cuentas de Usuario</title>
+    <title>EcoCRM - Usuarios</title>
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #10b981; --primary-dark: #059669; --bg-color: #f8fafc; --text-main: #1f2937; --text-muted: #6b7280; --white: #ffffff; --border-color: #e2e8f0;
-        }
+        :root { --primary: #10b981; --primary-dark: #059669; --bg-color: #f8fafc; --text-main: #1f2937; --text-muted: #6b7280; --white: #ffffff; --border-color: #e2e8f0; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
-        .sidebar { width: 260px; background-color: #0f172a; color: var(--white); display: flex; flex-direction: column; padding: 20px 0; }
-        .sidebar h2 { text-align: center; margin-bottom: 30px; font-weight: 800; font-size: 24px; color: var(--primary); }
+        .sidebar { width: 260px; background-color: #0f172a; color: var(--white); display: flex; flex-direction: column; padding: 20px 0; overflow-y: auto; }
+        .sidebar h2 { text-align: center; margin-bottom: 20px; font-weight: 800; font-size: 24px; color: var(--primary); }
         .sidebar h2 span { color: var(--white); }
-        .nav-link { padding: 14px 25px; color: #94a3b8; text-decoration: none; display: flex; align-items: center; gap: 12px; font-weight: 500; transition: 0.2s; }
+        .nav-link { padding: 12px 25px; color: #94a3b8; text-decoration: none; display: flex; align-items: center; gap: 12px; font-weight: 500; transition: 0.2s; font-size: 14px;}
         .nav-link:hover { background-color: #1e293b; color: var(--white); }
         .nav-link.active { background-color: #1e293b; color: var(--primary); border-left: 4px solid var(--primary); font-weight: 600; }
         .main-content { flex: 1; display: flex; flex-direction: column; height: 100vh; }
         .navbar { background-color: var(--white); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
         .navbar h2 { font-size: 18px; font-weight: 700; color: #111827; }
         .workspace { display: flex; gap: 30px; padding: 30px; flex: 1; overflow: hidden; }
-        .form-section { flex: 0 0 360px; background: var(--white); padding: 25px; border-radius: 10px; border: 1px solid var(--border-color); height: fit-content; }
+        .form-section { flex: 0 0 360px; background: var(--white); padding: 25px; border-radius: 10px; border: 1px solid var(--border-color); height: fit-content; overflow-y: auto;}
         .section-title { font-size: 15px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; color: var(--text-muted); }
-        .form-group input, .form-group select { width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 14px; outline: none; background: var(--white); }
-        .btn-submit { width: 100%; background-color: var(--primary); color: var(--white); border: none; padding: 11px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: var(--text-muted); }
+        .form-group input, .form-group select { width: 100%; padding: 9px 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 14px; outline: none; background: var(--white); }
+        .form-group input:focus, .form-group select:focus { border-color: var(--primary); }
+        .btn-submit { width: 100%; background-color: var(--primary); color: var(--white); border: none; padding: 11px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; display: inline-block; text-align: center; text-decoration: none; margin-top: 5px;}
         .btn-submit:hover { background-color: var(--primary-dark); }
         .table-section { flex: 1; background: var(--white); padding: 25px; border-radius: 10px; border: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden; }
         .table-container { flex: 1; overflow-y: auto; margin-top: 10px; }
@@ -36,6 +35,11 @@
         th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 14px; }
         th { background-color: #f8fafc; color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; position: sticky; top: 0; }
         tr:hover { background-color: #f0fdf4; }
+        .btn-accion { background: none; border: none; cursor: pointer; font-size: 16px; transition: transform 0.2s; text-decoration: none; display: inline-block; }
+        .btn-accion:hover { transform: scale(1.15); }
+        .btn-consultar { color: #3b82f6; margin-right: 12px; }
+        .btn-editar { color: #f59e0b; margin-right: 12px; }
+        .btn-desactivar { color: #ef4444; }
     </style>
 </head>
 <body>
@@ -50,52 +54,77 @@
         <a href="/pageproductos/" class="nav-link"><i class="fa-solid fa-box"></i> Productos</a>
         <a href="/pageproveedores/" class="nav-link"><i class="fa-solid fa-truck-ramp-box"></i> Proveedores</a>
         <a href="/pagesucursal/" class="nav-link"><i class="fa-solid fa-shop"></i> Sucursales</a>
+        <a href="/pageusuarios/" class="nav-link active"><i class="fa-solid fa-user-shield"></i> Usuarios</a>
         <a href="/pageventas/" class="nav-link"><i class="fa-solid fa-barcode"></i> Ventas</a>
     </aside>
     <main class="main-content">
         <nav class="navbar">
-            <h2>Seguridad de Acceso / Usuarios del Sistema</h2>
-            <div class="user-info"><i class="fa-solid fa-user-gear" style="color: var(--primary);"></i> Credenciales Activas</div>
+            <h2>Sistema / Control de Accesos</h2>
+            <div class="user-info"><i class="fa-solid fa-users-gear" style="color: var(--primary);"></i> Administración de Cuentas</div>
         </nav>
         <div class="workspace">
             <div class="form-section">
-                <h3 class="section-title"><i class="fa-solid fa-user-plus" style="color: var(--primary);"></i> Crear Usuario</h3>
+                <h3 class="section-title"><i class="fa-solid fa-user-plus" style="color: var(--primary);"></i> Alta de Usuario</h3>
                 <form action="/pageusuarios/nuevo/" method="POST">
                     {% csrf_token %}
                     <div class="form-group"><label>Nombre Completo</label><input type="text" name="nombre" required></div>
-                    <div class="form-group"><label>Nombre de Usuario (Login)</label><input type="text" name="usuario" required></div>
-                    <div class="form-group"><label>Contraseña</label><input type="password" name="passwd" required></div>
+                    <div class="form-group"><label>Usuario (Username)</label><input type="text" name="usuario" required></div>
+                    <div class="form-group"><label>Contraseña</label><input type="text" name="passwd" required></div>
                     <div class="form-group"><label>Correo Electrónico</label><input type="email" name="correo" required></div>
-                    
                     <div class="form-group">
-                        <label>Rol de Acceso (Grupo)</label>
-                        <select name="grupo">
-                            {% for g in consultagrupos %}
+                        <label>Asignar Grupo / Rol</label>
+                        <select name="grupo_id" required>
+                            <option value="">-- Selecciona un Rol --</option>
+                            {% for g in grupos_lista %}
                                 <option value="{{ g.id }}">{{ g.nombre }}</option>
                             {% endfor %}
                         </select>
                     </div>
-                    
-                    <button type="submit" class="btn-submit">Dar de Alta Cuenta</button>
+                    <button type="submit" class="btn-submit">Crear Cuenta</button>
                 </form>
             </div>
             <div class="table-section">
-                <h3 class="section-title"><i class="fa-solid fa-shield" style="color: var(--text-muted);"></i> Cuentas en Servidor</h3>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 class="section-title" style="margin-bottom: 0;">
+                        <i class="fa-solid fa-address-card" style="color: var(--text-muted);"></i> 
+                        {% if mostrar_todos %}Todos los Usuarios{% else %}Últimos 5 Creados{% endif %}
+                    </h3>
+                    {% if mostrar_todos %}
+                        <a href="/pageusuarios/" class="btn-submit" style="width: auto; padding: 8px 15px; background: #64748b;"><i class="fa-solid fa-clock-rotate-left"></i> Ver Recientes</a>
+                    {% else %}
+                        <a href="/pageusuarios/todos/" class="btn-submit" style="width: auto; padding: 8px 15px;"><i class="fa-solid fa-table-list"></i> Ver Todos</a>
+                    {% endif %}
+                </div>
                 <div class="table-container">
                     <table>
                         <thead>
-                            <tr><th>Nombre</th><th>Usuario</th><th>Correo</th><th>Grupo</th></tr>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Nombre</th>
+                                <th>Grupo Asignado</th>
+                                <th style="text-align: center;">Acciones</th>
+                            </tr>
                         </thead>
                         <tbody>
                             {% for u in consultausuarios %}
-                            <tr>
-                                <td><strong>{{ u.nombre }}</strong></td>
-                                <td>{{ u.usuario }}</td>
-                                <td style="color: var(--text-muted);">{{ u.correo }}</td>
-                                <td><span style="background: #e0f2fe; color: #0369a1; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-weight: 600;">{{ u.grupo.nombre }}</span></td>
-                            </tr>
+                                <tr>
+                                    <td style="color: var(--primary-dark); font-weight: 600;">@{{ u.usuario }}</td>
+                                    <td>{{ u.nombre }}</td>
+                                    <td>
+                                        {% if u.grupo %}
+                                            <span style="background: #e2e8f0; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">{{ u.grupo.nombre }}</span>
+                                        {% else %}
+                                            <span style="color: var(--text-muted);">Sin grupo</span>
+                                        {% endif %}
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <a href="/pageusuarios/consultar/{{ u.id }}/" class="btn-accion btn-consultar" title="Ver Detalles"><i class="fa-solid fa-eye"></i></a>
+                                        <a href="/pageusuarios/editar/{{ u.id }}/" class="btn-accion btn-editar" title="Editar"><i class="fa-solid fa-pen"></i></a>
+                                        <a href="/pageusuarios/desactivar/{{ u.id }}/" class="btn-accion btn-desactivar" title="Bloquear Usuario" onclick="return confirm('¿Bloquear acceso a este usuario en el sistema?');"><i class="fa-solid fa-ban"></i></a>
+                                    </td>
+                                </tr>
                             {% empty %}
-                            <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">No hay cuentas de usuario configuradas.</td></tr>
+                                <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">No hay cuentas de usuario activas.</td></tr>
                             {% endfor %}
                         </tbody>
                     </table>

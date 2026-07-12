@@ -1,39 +1,60 @@
-from django.shortcuts import render, redirect
-from .models import usuario
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import usuarios
+from grupos.models import grupos  # Importamos para el Select del formulario
 
-# Además de tu función de validar_login, pon estas dos:
+def listarusuarios(request):
+    consultausuarios = usuarios.objects.filter(estatus=True).order_by('-id')[:5]
+    grupos_activos = grupos.objects.filter(estatus=True)
+    context = {'consultausuarios': consultausuarios, 'grupos_lista': grupos_activos, 'mostrar_todos': False}
+    return render(request, 'usuarios/usuarios.html', context)
 
-from django.shortcuts import render, redirect
-from .models import usuario  # Importamos tu clase del modelo para poder consultar PostgreSQL
+def listar_todos_usuarios(request):
+    consultausuarios = usuarios.objects.filter(estatus=True).order_by('-id')
+    grupos_activos = grupos.objects.filter(estatus=True)
+    context = {'consultausuarios': consultausuarios, 'grupos_lista': grupos_activos, 'mostrar_todos': True}
+    return render(request, 'usuarios/usuarios.html', context)
 
-# 1. Función para la pantalla de Login (Independiente, sin barra lateral)
-def validar_login(request):
+def crearusuario(request):
     if request.method == 'POST':
-        email = request.POST.get('correo')
-        pwd = request.POST.get('contraseña')
+        grupo_id = request.POST.get('grupo_id')
+        grupo_seleccionado = get_object_or_404(grupos, id=grupo_id) if grupo_id else None
         
-        # Filtramos en PostgreSQL para ver si el correo y la contraseña coinciden
-        user = usuario.objects.filter(correo=email, contraseña=pwd).first()
-        
-        if user:
-            return redirect('/pageclientes/')  # Si es correcto, lo deja pasar al CRM
-        else:
-            # Si falla, recarga el login mandando un mensaje de error
-            return render(request, 'usuarios/login.html', {'error': 'Usuario o contraseña incorrectos'})
-    
-    return render(request, 'usuarios/login.html')
-
-# 2. Función para la pantalla de Gestión (Con la tabla y barra lateral)
-def listar_usuarios(request):
-    consultausuarios = usuario.objects.all()
-    return render(request, 'usuarios/usuarios.html', {'consultausuarios': consultausuarios})
-
-# 3. Función para registrar nuevos usuarios desde el panel
-def crear_usuario(request):
-    if request.method == 'POST':
-        usuario.objects.create(
+        usuarios.objects.create(
+            nombre=request.POST['nombre'],
             usuario=request.POST['usuario'],
+            passwd=request.POST['passwd'],
             correo=request.POST['correo'],
-            contraseña=request.POST['contraseña']
+            grupo=grupo_seleccionado
         )
     return redirect('/pageusuarios/')
+
+def desactivarusuario(request, id):
+    item_usuario = get_object_or_404(usuarios, id=id)
+    item_usuario.estatus = False
+    item_usuario.save()
+    return redirect('/pageusuarios/')
+
+def editarusuario(request, id):
+    item_usuario = get_object_or_404(usuarios, id=id)
+    grupos_activos = grupos.objects.filter(estatus=True)
+    
+    if request.method == 'POST':
+        grupo_id = request.POST.get('grupo_id')
+        grupo_seleccionado = get_object_or_404(grupos, id=grupo_id) if grupo_id else None
+        
+        item_usuario.nombre = request.POST['nombre']
+        item_usuario.usuario = request.POST['usuario']
+        item_usuario.passwd = request.POST['passwd']
+        item_usuario.correo = request.POST['correo']
+        item_usuario.grupo = grupo_seleccionado
+        item_usuario.save()
+        return redirect('/pageusuarios/')
+        
+    return render(request, 'usuarios/editar_usuario.html', {
+        'usuario_obj': item_usuario, 
+        'grupos_lista': grupos_activos
+    })
+
+def consultarusuario(request, id):
+    item_usuario = get_object_or_404(usuarios, id=id)
+    return render(request, 'usuarios/consultar_usuario.html', {'usuario_obj': item_usuario})

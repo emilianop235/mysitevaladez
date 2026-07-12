@@ -8,5 +8,8 @@ class ventas(models.Model):
     cliente = models.ManyToManyField('clientes.Cliente')
     producto = models.ManyToManyField('productos.Producto')
 
+    # Campo para borrado lógico
+    estatus = models.BooleanField(default=True)
+
     def __str__(self):
         return self.folio

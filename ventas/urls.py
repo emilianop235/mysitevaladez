@@ -1,7 +1,18 @@
 from django.urls import path
-from .views import listar_ventas, crear_venta
+from .views import (
+    listarventas, 
+    listar_todas_ventas, 
+    crearventa, 
+    desactivarventa, 
+    editarventa, 
+    consultarventa
+)
 
 urlpatterns = [
-    path('', listar_ventas),
-    path('nuevo/', crear_venta),
+    path('', listarventas),
+    path('todos/', listar_todas_ventas),
+    path('nuevo/', crearventa),
+    path('desactivar/<int:id>/', desactivarventa),
+    path('editar/<int:id>/', editarventa),
+    path('consultar/<int:id>/', consultarventa),
 ]
