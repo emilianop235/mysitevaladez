@@ -7,11 +7,10 @@ class Cliente(models.Model):
     tipo = models.CharField(max_length=50)
     direccion = models.CharField(max_length=200)
 
-    status = models.BooleanField(default=True)
+    estatus = models.BooleanField(default=True)
 
-
-def __str__(self):
-    return self.nombre
+    def __str__(self):
+        return self.nombre
 
 
 

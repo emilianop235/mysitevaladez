@@ -19,7 +19,7 @@ class nomina(models.Model):
     percepciones = models.FloatField()
     deducciones = models.FloatField()
     total = models.FloatField()
-    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, related_name='nominas')
+    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, related_name='empleados_nominas')
 
     def __str__(self):
         return f"Periodo {self.numperiodo} - {self.empleado.nombre}"

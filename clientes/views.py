@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Cliente
-import Cliente
+
 def listarclientes(request):
     consultaclientes = Cliente.objects.filter(estatus=True).order_by('-id')[:5]
     context = {'consultaclientes': consultaclientes, 'mostrar_todos': False}

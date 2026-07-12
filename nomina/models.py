@@ -9,7 +9,7 @@ class nomina(models.Model):
     total = models.FloatField()
     
     # Llave foránea conectada a tu clase empleado
-    empleado = models.ForeignKey('empleados.Empleado', on_delete=models.CASCADE, related_name='nominas')
+    empleado = models.ForeignKey('empleados.Empleado', on_delete=models.CASCADE, related_name='nomina_nominas')
     
     # Campo para borrado lógico
     estatus = models.BooleanField(default=True)
