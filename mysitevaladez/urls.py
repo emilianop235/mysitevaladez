@@ -16,11 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-# Importamos tus funciones de nómina desde la app de empleados
+# Importa la vista del menú (ajusta la ruta según dónde hayas guardado la función)
+from .views import menu_principal 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
+    path('', menu_principal, name='menu'),
     path('pageclientes/', include('clientes.urls')),
     path('pageempleados/', include('empleados.urls')),
     path('pageproductos/', include('productos.urls')),
@@ -31,4 +32,5 @@ urlpatterns = [
     path('pagegrupos/', include('grupos.urls')),
     path('pageventas/', include('ventas.urls')),
     path('pagenomina/', include('nomina.urls')),
+    path('pageusuarios/', include('usuarios.urls')),
 ]

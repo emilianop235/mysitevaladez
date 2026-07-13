@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>EcoCRM - Panel Principal</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #10b981; --primary-dark: #059669; --bg-color: #f8fafc; --text-main: #1f2937; --text-muted: #6b7280; --white: #ffffff; --border-color: #e2e8f0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+        
+        /* Sidebar */
+        .sidebar { width: 260px; background-color: #0f172a; color: var(--white); display: flex; flex-direction: column; padding: 20px 0; }
+        .sidebar h2 { text-align: center; margin-bottom: 30px; font-weight: 800; font-size: 24px; color: var(--primary); }
+        .sidebar h2 span { color: var(--white); }
+        .nav-link { padding: 14px 25px; color: #94a3b8; text-decoration: none; display: flex; align-items: center; gap: 12px; font-weight: 500; transition: 0.2s; }
+        .nav-link:hover { background-color: #1e293b; color: var(--white); }
+        .nav-link.active { background-color: #1e293b; color: var(--primary); border-left: 4px solid var(--primary); font-weight: 600; }
+        
+        /* Contenido Principal */
+        .main-content { flex: 1; display: flex; flex-direction: column; height: 100vh; }
+        .navbar { background-color: var(--white); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
+        .navbar h2 { font-size: 18px; font-weight: 700; color: #111827; }
+        
+        /* Área de Módulos (Grid) */
+        .workspace { padding: 30px; flex: 1; overflow-y: auto; }
+        .welcome-banner { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: var(--white); padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .welcome-banner h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+        .welcome-banner p { color: #94a3b8; font-size: 14px; }
+        
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding-bottom: 20px; }
+        
+        /* Tarjetas de Módulos */
+        .module-card { background: var(--white); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s ease-in-out; text-decoration: none; color: inherit; }
+        .module-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); border-color: var(--primary); }
+        
+        .module-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+        .module-icon { width: 48px; height: 48px; background-color: #f0fdf4; color: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; transition: 0.2s; }
+        .module-card:hover .module-icon { background-color: var(--primary); color: var(--white); }
+        
+        .module-title { font-size: 16px; font-weight: 700; color: #111827; }
+        .module-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px; }
+        
+        .module-action { font-size: 13px; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 6px; margin-top: auto; }
+        .module-card:hover .module-action { color: var(--primary-dark); }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <h2>Eco<span>CRM</span></h2>
+        <a href="/pageclientes/" class="nav-link"><i class="fa-solid fa-users"></i> Clientes</a>
+        <a href="/pagecompras/" class="nav-link"><i class="fa-solid fa-bag-shopping"></i> Compras</a>
+        <a href="/pageempleados/" class="nav-link"><i class="fa-solid fa-id-badge"></i> Empleados</a>
+        <a href="/pagegrupos/" class="nav-link"><i class="fa-solid fa-folder-tree"></i> Grupos / Roles</a>
+        <a href="/pageinventarios/" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Inventarios</a>
+        <a href="/pagenomina/" class="nav-link"><i class="fa-solid fa-money-check-dollar"></i> Nómina</a>
+        <a href="/pageproductos/" class="nav-link"><i class="fa-solid fa-box"></i> Productos</a>
+        <a href="/pageproveedores/" class="nav-link"><i class="fa-solid fa-truck-ramp-box"></i> Proveedores</a>
+        <a href="/pagesucursal/" class="nav-link"><i class="fa-solid fa-shop"></i> Sucursales</a>
+        <a href="/pageusuarios/" class="nav-link"><i class="fa-solid fa-user-shield"></i> Usuarios</a>
+        <a href="/pageventas/" class="nav-link"><i class="fa-solid fa-barcode"></i> Ventas</a>
+    </aside>
+
+    <main class="main-content">
+        <nav class="navbar">
+            <h2>Panel de Control General</h2>
+            <div class="user-info"><i class="fa-solid fa-circle-user" style="color: var(--primary); font-size: 20px;"></i> Administrador</div>
+        </nav>
+        
+        <div class="workspace">
+            <div class="welcome-banner">
+                <h1>Bienvenido a Eco<span>CRM</span></h1>
+                <p>Selecciona cualquiera de los módulos operativos a continuación para comenzar a gestionar el sistema.</p>
+            </div>
+
+            <div class="menu-grid">
+                
+                <a href="/pageclientes/" class="module-card">
+                    <div>
+                        <div class="module-header">
+                            <div class="module-icon"><i class="fa-solid fa-users"></i></div>
+                            <h3 class="module-title">Clientes</h3>
+                        </div>
+                        <p class="module-desc">Administración de la cartera de clientes, registros de contacto y seguimientos comerciales.</p>
+                    </div>
+                    <div class="module-action">Gestionar Módulo <i class="fa-solid fa-arrow-right"></i></div>
+                </a>
+
+                <a href="/pagecompras/" class="module-card">
+                    <div>
+                        <div class="module-header">
+                            <div class="module-icon"><i class="fa-solid fa-bag-shopping"></i></div>
+                            <h3 class="module-title">Compras</h3>
+                        </div>
+                        <p class="module-desc">Control de solicitudes de adquisición, órdenes de compra y abastecimiento.</p>
+                    </div>
+                    <div class="module-action">Gestionar Módulo <i class="fa-solid fa-arrow-right"></i></div>
+                </a>
+
+                <a href="/pageempleados/" class="module-card">
+                    <div>
+                        <div class="module-header">
+                            <div class="module-icon"><i class="fa-solid fa-id-badge"></i></div>
+                            <h3 class="module-title">Empleados</h3>
+                        </div>
+                        <p class="module-desc">Registro y expedientes del personal, control interno de la plantilla operativa.</p>
+                    </div>
+                    <div class="module-action">Gestionar Módulo <i class="fa-solid fa-arrow-right"></i></div>
+                </a>
+
+                <a href="/pagegrupos/" class="module-card">
+                    <div>
+                        <div class="module-header">
+                            <div class="module-icon"><i class="fa-solid fa-folder-tree"></i></div>
+                            <h3 class="module-title">Grupos y Roles</h3>
+                        </div>
+                        <p class="module-desc">Configuración de niveles de acceso y perfiles de seguridad para el sistema.</p>
+                    </div>
+                    <div class="module-action">Gestionar Módulo <i class="fa-solid fa-arrow-right"></i></div>
+                </a>
+
+                <a href="/pageinventarios/" class="module-card">
+                    <div>
+                        <div class="module-header">
+                            <div class="module-icon"><i class="fa-solid fa-boxes-stacked"></i></div>
+                            <h3 class="module-title">Inventarios</h3>
+                        </div>
+                        <p class="module-desc">Monitoreo de entradas, almacén general, valor unitario de existencias y stocks.</p>
+                    </div>
+                    <div class="module-action">Gestionar Módulo <i class="fa-solid fa-arrow-right"></i></div>
+                </a>
+
+                <a href="/pagenomina/" class="module-card">
+                    <div>
+                        <div class="module-header">
+                            <div class="module-icon"><i class="fa-solid fa-money-check-dollar"></i></div>
+                            <h3 class="module-title">Nómina</h3>
+                        </div>
+                        <p class="module-desc">Cálculo financiero de percepciones, deducciones y emisión de recibos de pago.</p>
+                    </div>
+                    <div class="module-action">Gestionar Módulo <i class="fa-solid fa-arrow-right"></i></div>
+                </a>
+
+                <a href="/pageproductos/" class="module-card">
+                    <div>
+                        <div class="module-header">
+                            <div class="module-icon"><i class="fa-solid fa-box"></i></div>
+                            <h3 class="module-title">Productos</h3>
+                        </div>
+                        <p class="module-desc">Catálogo comercial detallado, especificaciones físicas y marcas de artículos.</p>
+                    </div>
+                    <div class="module-action">Gestionar Módulo <i class="fa-solid fa-arrow-right"></i></div>
+                </a>
+
+                <a href="/pageproveedores/" class="module-card">
+                    <div>
+                        <div class="module-header">
+                            <div class="module-icon"><i class="fa-solid fa-truck-ramp-box"></i></div>
+                            <h3 class="module-title">Proveedores</h3>
+                        </div>
+                        <p class="module-desc">Directorio corporativo de socios de negocio, ubicaciones y números de contacto.</p>
+                    </div>
+                    <div class="module-action">Gestionar Módulo <i class="fa-solid fa-arrow-right"></i></div>
+                </a>
+
+                <a href="/pagesucursal/" class="module-card">
+                    <div>
+                        <div class="module-header">
+                            <div class="module-icon"><i class="fa-solid fa-shop"></i></div>
+                            <h3 class="module-title">Sucursales</h3>
+                        </div>
+                        <p class="module-desc">Control geográfico de puntos de venta activos y asignación de gerencias.</p>
+                    </div>
+                    <div class="module-action">Gestionar Módulo <i class="fa-solid fa-arrow-right"></i></div>
+                </a>
+
+                <a href="/pageusuarios/" class="module-card">
+                    <div>
+                        <div class="module-header">
+                            <div class="module-icon"><i class="fa-solid fa-user-shield"></i></div>
+                            <h3 class="module-title">Usuarios</h3>
+                        </div>
+                        <p class="module-desc">Administración de cuentas con credenciales activas vinculadas a roles del CRM.</p>
+                    </div>
+                    <div class="module-action">Gestionar Módulo <i class="fa-solid fa-arrow-right"></i></div>
+                </a>
+
+                <a href="/pageventas/" class="module-card">
+                    <div>
+                        <div class="module-header">
+                            <div class="module-icon"><i class="fa-solid fa-barcode"></i></div>
+                            <h3 class="module-title">Ventas</h3>
+                        </div>
+                        <p class="module-desc">Punto de venta y registro histórico automatizado de folios y tickets cobrados.</p>
+                    </div>
+                    <div class="module-action">Gestionar Módulo <i class="fa-solid fa-arrow-right"></i></div>
+                </a>
+
+            </div>
+        </div>
+    </main>
+</body>
+</html>
