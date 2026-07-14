@@ -1,55 +1,34 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Consultar Nómina - EcoCRM</title>
-    <base href="/">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root { --primary: #3b82f6; --bg-color: #f8fafc; --text-main: #1f2937; --text-muted: #6b7280; --white: #ffffff; --border-color: #e2e8f0; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; align-items: center; justify-content: center; }
-        .view-card { background: var(--white); padding: 40px; border-radius: 12px; border: 1px solid var(--border-color); width: 450px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-        .info-group { margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        .info-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 4px; color: var(--text-muted); text-transform: uppercase; }
-        .info-group p { font-size: 15px; color: var(--text-main); font-weight: 500; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .btn-back { width: 100%; background-color: var(--primary); color: var(--white); border: none; padding: 12px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; display: block; text-align: center; text-decoration: none; margin-top: 25px; }
-    </style>
-</head>
-<body>
-    <div class="view-card">
-        <h2 style="margin-bottom: 25px; text-align: center; color: var(--primary);"><i class="fa-solid fa-file-invoice-dollar"></i> Recibo de Nómina</h2>
-        
-        <div class="grid-2">
-            <div class="info-group">
-                <label>Periodo</label>
-                <p><strong>{{ nomina.numperiodo }}</strong></p>
-            </div>
-            <div class="info-group">
-                <label>Fecha de Pago</label>
-                <p>{{ nomina.fecha|date:"d/m/Y" }}</p>
-            </div>
-        </div>
+{% extends 'base.html' %}
 
-        <div class="info-group">
-            <label>Empleado</label>
-            <p>{{ nomina.empleado.nombre }} {{ nomina.empleado.apellido }}</p>
-        </div>
-        
-        <div class="grid-2">
-            <div class="info-group"><label>Salario Base</label><p>${{ nomina.salario }}</p></div>
-            <div class="info-group"><label>Percepciones</label><p>${{ nomina.perceciones }}</p></div>
-        </div>
-        
-        <div class="grid-2">
-            <div class="info-group"><label>Deducciones</label><p style="color: #ef4444;">- ${{ nomina.deducciones }}</p></div>
-            <div class="info-group"><label>Total Neto</label><p style="color: #059669; font-weight: bold; font-size: 18px;">${{ nomina.total }}</p></div>
-        </div>
-        
-        <a href="/pagenomina/" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver a Nóminas</a>
+{% block title %}Detalle de Recibo - EcoCRM{% endblock %}
+
+{% block section_title %}
+    <i class="fa-solid fa-money-check" style="color: var(--neon-cyan);"></i> Auditoría de Pago Individual
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 35px; box-shadow: var(--glass-glow); width: 460px; margin: 20px auto; }
+    .info-group { margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
+    .info-group label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
+    .info-group p { font-size: 15px; color: var(--white); font-weight: 500; }
+    .btn-back { width: 100%; background: rgba(255,255,255,0.05); color: var(--white); border: 1px solid var(--glass-border); padding: 12px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; display: block; text-align: center; text-decoration: none; margin-top: 25px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="glass-panel">
+    <h3 style="text-align: center; color: var(--neon-cyan); margin-bottom: 25px;"><i class="fa-solid fa-receipt"></i> Recibo del Colaborador</h3>
+    
+    <div class="info-group"><label>Colaborador Asignado</label><p style="color: var(--neon-cyan); font-weight: 700; font-size: 18px;">{{ nomina.empleado.nombre }} {{ nomina.empleado.apellido }}</p></div>
+    <div class="info-group"><label>Periodo / Fecha de Emisión</label><p>{{ nomina.numperiodo }} — Págado el {{ nomina.fecha|date:"d/m/Y" }}</p></div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <div class="info-group"><label>Salario Base</label><p>${{ nomina.salario }}</p></div>
+        <div class="info-group"><label>Percepciones</label><p>${{ nomina.perceciones }}</p></div>
     </div>
-</body>
-</html>
+    <div class="info-group"><label>Deducciones Aplicadas</label><p style="color: var(--danger);">${{ nomina.deducciones }}</p></div>
+    <div class="info-group" style="border: none;"><label>Monto Neto Depositado</label><p style="color: var(--neon-green); font-size: 22px; font-weight: 800;">${{ nomina.total }}</p></div>
+    
+    <a href="/pagenomina/" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver a Nóminas</a>
+</div>
+{% endblock %}

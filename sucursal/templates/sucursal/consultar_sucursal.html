@@ -1,53 +1,19 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Consultar Sucursal - EcoCRM</title>
-    <base href="/">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root { --primary: #3b82f6; --bg-color: #f8fafc; --text-main: #1f2937; --text-muted: #6b7280; --white: #ffffff; --border-color: #e2e8f0; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; align-items: center; justify-content: center; }
-        .view-card { background: var(--white); padding: 40px; border-radius: 12px; border: 1px solid var(--border-color); width: 450px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-        .info-group { margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        .info-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 4px; color: var(--text-muted); text-transform: uppercase; }
-        .info-group p { font-size: 15px; color: var(--text-main); font-weight: 500; }
-        .btn-back { width: 100%; background-color: var(--primary); color: var(--white); border: none; padding: 12px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; display: block; text-align: center; text-decoration: none; margin-top: 25px; }
-    </style>
-</head>
-<body>
-    <div class="view-card">
-        <h2 style="margin-bottom: 25px; text-align: center; color: var(--primary);"><i class="fa-solid fa-shop"></i> Detalles de la Sucursal</h2>
-        
-        <div class="info-group">
-            <label>Nombre Comercial</label>
-            <p><strong>{{ sucursal.nombre }}</strong></p>
-        </div>
-        
-        <div class="info-group">
-            <label>Gerente / Encargado</label>
-            <p style="color: #059669; font-weight: bold;">{{ sucursal.encargado }}</p>
-        </div>
-        
-        <div class="info-group">
-            <label>Ubicación</label>
-            <p style="font-size: 14px; color: #4b5563;">{{ sucursal.direccion }}</p>
-        </div>
-        
-        <div class="info-group">
-            <label>Teléfono de Atención</label>
-            <p>{{ sucursal.telefono }}</p>
-        </div>
-        
-        <div class="info-group" style="border: none;">
-            <label>Estado Operativo</label>
-            <p style="color: #10b981; font-weight: 700;"><i class="fa-solid fa-circle-check"></i> Activa en el Sistema</p>
-        </div>
-        
-        <a href="/pagesucursal/" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver a Sucursales</a>
-    </div>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Detalle de Sucursal - EcoCRM{% endblock %}
+{% block section_title %}<i class="fa-solid fa-eye" style="color: var(--neon-cyan);"></i> Ficha de Locación{% endblock %}
+{% block extra_css %}
+<style>
+    .glass-panel-center { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 35px; width: 420px; margin: 15px auto; box-shadow: var(--glass-glow); }
+    .btn-back { width: 100%; background: rgba(255,255,255,0.05); color: var(--white); border: 1px solid var(--glass-border); padding: 12px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; display: block; text-align: center; text-decoration: none; margin-top: 30px; }
+</style>
+{% endblock %}
+{% block content %}
+<div class="glass-panel-center">
+    <h3 style="text-align: center; color: var(--neon-cyan); margin-bottom: 25px;"><i class="fa-solid fa-map-pin"></i> Punto de Venta</h3>
+    <div class="info-group"><label>Nombre Comercial</label><p style="color: var(--neon-cyan); font-weight: 700; font-size: 18px;">{{ sucursal.nombre }}</p></div>
+    <div class="info-group"><label>Titular / Gerencia</label><p>{{ sucursal.encargado }}</p></div>
+    <div class="info-group"><label>Teléfono Sucursal</label><p style="color: var(--neon-green);">{{ sucursal.telefono }}</p></div>
+    <div class="info-group"><label>Domicilio Físico</label><p>{{ sucursal.direccion }}</p></div>
+    <a href="/pagesucursal/" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver a Sucursales</a>
+</div>
+{% endblock %}

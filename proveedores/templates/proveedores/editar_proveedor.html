@@ -1,38 +1,26 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Editar Proveedor - EcoCRM</title>
-    <base href="/">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root { --primary: #f59e0b; --primary-dark: #d97706; --bg-color: #f8fafc; --text-main: #1f2937; --text-muted: #6b7280; --white: #ffffff; --border-color: #e2e8f0; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; align-items: center; justify-content: center; }
-        .edit-card { background: var(--white); padding: 30px 40px; border-radius: 12px; border: 1px solid var(--border-color); width: 450px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-        .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; color: var(--text-muted); }
-        .form-group input { width: 100%; padding: 9px 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 14px; outline: none; }
-        .form-group input:focus { border-color: var(--primary); }
-        .btn-submit { width: 100%; background-color: var(--primary); color: var(--white); border: none; padding: 11px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; margin-bottom: 10px; margin-top: 10px;}
-        .btn-submit:hover { background-color: var(--primary-dark); }
-        .btn-cancel { width: 100%; background-color: #94a3b8; color: var(--white); border: none; padding: 11px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; display: block; text-align: center; text-decoration: none; }
-    </style>
-</head>
-<body>
-    <div class="edit-card">
-        <h2 style="margin-bottom: 20px; text-align: center; color: var(--primary);"><i class="fa-solid fa-pen-to-square"></i> Editar Proveedor</h2>
+{% extends 'base.html' %}
+{% block title %}Editar Proveedor - EcoCRM{% endblock %}
+{% block section_title %}<i class="fa-solid fa-pen-to-square" style="color: var(--warning);"></i> Modificar Proveedor{% endblock %}
+{% block extra_css %}
+<style>
+    .glass-panel-center { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 35px; width: 420px; margin: 15px auto; box-shadow: var(--glass-glow); }
+    .btn-update { width: 100%; background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%); color: black; border: none; padding: 12px; font-size: 14px; font-weight: 700; border-radius: 8px; cursor: pointer; margin-top: 15px; margin-bottom: 10px; }
+    .btn-cancel { width: 100%; background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--glass-border); padding: 12px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; display: block; text-align: center; text-decoration: none; }
+</style>
+{% endblock %}
+{% block content %}
+<div style="width: 100%; display: flex; justify-content: center;">
+    <div class="glass-panel-center">
+        <h3 style="text-align: center; color: var(--warning); margin-bottom: 25px;"><i class="fa-solid fa-handshake"></i> Ajustar Socio Comercial</h3>
         <form method="POST" action="/pageproveedores/editar/{{ proveedor.id }}/">
             {% csrf_token %}
-            <div class="form-group"><label>Nombre</label><input type="text" name="nombre" value="{{ proveedor.nombre }}" required></div>
-            <div class="form-group"><label>Apellido / Contacto</label><input type="text" name="apellido" value="{{ proveedor.apellido }}" required></div>
-            <div class="form-group"><label>Dirección</label><input type="text" name="direccion" value="{{ proveedor.direccion }}" required></div>
-            <div class="form-group"><label>Teléfono</label><input type="text" name="telefono" value="{{ proveedor.telefono }}" required></div>
-            <button type="submit" class="btn-submit">Guardar Cambios</button>
+            <div class="form-group"><label>Empresa / Razón Social</label><input type="text" name="nombre" value="{{ proveedor.nombre }}" class="glass-input" required></div>
+            <div class="form-group"><label>Contacto / Apellidos</label><input type="text" name="apellido" value="{{ proveedor.apellido }}" class="glass-input" required></div>
+            <div class="form-group"><label>Línea Telefónica</label><input type="text" name="telefono" value="{{ proveedor.telefono }}" class="glass-input" required></div>
+            <div class="form-group"><label>Dirección Fiscal</label><input type="text" name="direccion" value="{{ proveedor.direccion }}" class="glass-input" required></div>
+            <button type="submit" class="btn-update">Actualizar Perfil</button>
             <a href="/pageproveedores/" class="btn-cancel">Cancelar</a>
         </form>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

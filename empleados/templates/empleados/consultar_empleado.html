@@ -1,48 +1,29 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Consultar Empleado - EcoCRM</title>
-    <base href="/">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root { --primary: #3b82f6; --bg-color: #f8fafc; --text-main: #1f2937; --text-muted: #6b7280; --white: #ffffff; --border-color: #e2e8f0; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; align-items: center; justify-content: center; }
-        .view-card { background: var(--white); padding: 40px; border-radius: 12px; border: 1px solid var(--border-color); width: 450px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-        .info-group { margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
-        .info-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 4px; color: var(--text-muted); text-transform: uppercase; }
-        .info-group p { font-size: 15px; color: var(--text-main); font-weight: 500; }
-        .btn-back { width: 100%; background-color: var(--primary); color: var(--white); border: none; padding: 12px; font-size: 14px; font-weight: 600; border-radius: 6px; cursor: pointer; display: block; text-align: center; text-decoration: none; margin-top: 25px; }
-    </style>
-</head>
-<body>
-    <div class="view-card">
-        <h2 style="margin-bottom: 25px; text-align: center; color: var(--primary);"><i class="fa-solid fa-id-badge"></i> Expediente de Personal</h2>
-        
-        <div class="info-group">
-            <label>Nombre Completo</label>
-            <p><strong>{{ empleado.nombre }} {{ empleado.apellido }}</strong></p>
-        </div>
-        
-        <div class="info-group">
-            <label>Sexo</label>
-            <p>{{ empleado.sexo }}</p>
-        </div>
-        
-        <div class="info-group">
-            <label>Tipo de Contrato</label>
-            <p>{{ empleado.tipo }}</p>
-        </div>
-        
-        <div class="info-group" style="border: none;">
-            <label>Estado Laboral</label>
-            <p style="color: #10b981; font-weight: 700;"><i class="fa-solid fa-circle-check"></i> Plantilla Activa</p>
-        </div>
-        
-        <a href="/pageempleados/" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver a la Lista</a>
+{% extends 'base.html' %}
+{% block title %}Ficha Operativa - EcoCRM{% endblock %}
+
+{% block section_title %}
+    <i class="fa-solid fa-address-card" style="color: var(--neon-cyan);"></i> Expediente del Empleado
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 35px; box-shadow: var(--glass-glow); width: 450px; margin: 20px auto; }
+    .info-group { margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; }
+    .info-group label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; }
+    .info-group p { font-size: 16px; color: var(--white); font-weight: 500; }
+    .btn-back { width: 100%; background: rgba(255,255,255,0.05); color: var(--white); border: 1px solid var(--glass-border); padding: 12px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; display: block; text-align: center; text-decoration: none; margin-top: 30px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="glass-panel">
+    <h3 style="text-align: center; color: var(--neon-cyan); margin-bottom: 25px;"><i class="fa-solid fa-user-tie"></i> Perfil Laboral</h3>
+    <div class="info-group"><label>Nombre Oficial</label><p style="color: var(--neon-cyan); font-weight: 700; font-size: 18px;">{{ empleado.nombre }} {{ empleado.apellido }}</p></div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <div class="info-group"><label>Género Registrado</label><p>{{ empleado.sexo }}</p></div>
+        <div class="info-group"><label>Esquema Laboral</label><p style="color: var(--neon-green);">{{ empleado.tipo }}</p></div>
     </div>
-</body>
-</html>
+    <div class="info-group" style="border: none;"><label>Estatus en Sistema</label><p style="color: var(--neon-green);"><i class="fa-solid fa-circle-check"></i> Activo en la Plantilla</p></div>
+    <a href="/pageempleados/" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver al Directorio</a>
+</div>
+{% endblock %}
