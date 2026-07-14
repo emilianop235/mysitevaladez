@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}EcoCRM - Sistema Integral{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Variables de Diseño - Paleta de Colores Profesional SaaS Dark */
+        :root {
+            --bg-gradient: radial-gradient(circle at 50% 50%, #111827 0%, #030712 100%);
+            --glass-bg: rgba(17, 24, 39, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.07);
+            --glass-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            
+            /* Colores de Marca y Acciones */
+            --primary: #10b981;       /* Verde Esmeralda Neon */
+            --primary-glow: rgba(16, 185, 129, 0.25);
+            --info: #3b82f6;          /* Azul Eléctrico */
+            --info-glow: rgba(59, 130, 246, 0.25);
+            --warning: #f59e0b;       /* Ámbar Cálido */
+            --warning-glow: rgba(245, 158, 11, 0.25);
+            --danger: #ef4444;        /* Rojo Coral */
+            --danger-glow: rgba(239, 68, 68, 0.25);
+            
+            /* Textos */
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --text-dark: #111827;
+            --white: #ffffff;
+        }
+
+        /* Reseteo General de Estilos */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Efectos de Luces de Fondo (Simulación de Brillo Líquido) */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+            top: -50px;
+            right: -50px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 75%);
+            bottom: -100px;
+            left: -100px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Barra Lateral (Sidebar) Estética Premium */
+        .sidebar {
+            width: 270px;
+            background: rgba(10, 15, 30, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            padding: 25px 0;
+            z-index: 10;
+            position: relative;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 35px;
+            font-weight: 800;
+            font-size: 24px;
+            letter-spacing: -1px;
+            color: var(--primary);
+            text-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .sidebar h2 span {
+            color: var(--white);
+        }
+
+        .nav-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 15px;
+        }
+
+        /* Personalización de Scroll en Sidebar */
+        .nav-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .nav-container::-webkit-scrollbar-thumb {
+            background: var(--glass-border);
+            border-radius: 10px;
+        }
+
+        .nav-link {
+            padding: 12px 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-weight: 500;
+            font-size: 14px;
+            border-radius: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 6px;
+            border: 1px solid transparent;
+        }
+
+        .nav-link i {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        /* Animaciones en Hover */
+        .nav-link:hover {
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.05);
+            padding-left: 24px;
+        }
+
+        .nav-link:hover i {
+            transform: scale(1.15);
+        }
+
+        /* Estado Activo de Barra Lateral con Cristal Líquido */
+        .nav-link.active {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--primary);
+            border-color: rgba(16, 185, 129, 0.25);
+            font-weight: 600;
+            box-shadow: inset 0 0 12px rgba(16, 185, 129, 0.05), 0 4px 12px rgba(16, 185, 129, 0.1);
+            padding-left: 24px;
+        }
+
+        /* Contenedor de Contenido Principal */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            z-index: 5;
+            position: relative;
+        }
+
+        /* Navbar de Encabezado Superior */
+        .navbar {
+            background: rgba(10, 15, 30, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .navbar h2 {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+
+        /* Espacio de Trabajo Compartido */
+        .workspace {
+            display: flex;
+            gap: 30px;
+            padding: 35px 40px;
+            flex: 1;
+            overflow: hidden;
+        }
+
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <aside class="sidebar">
+        <h2>Eco<span>CRM</span></h2>
+        <div class="nav-container">
+            <a href="/" class="nav-link" id="nav-inicio"><i class="fa-solid fa-house"></i> Inicio</a>
+            <a href="/pageclientes/" class="nav-link" id="nav-clientes"><i class="fa-solid fa-users"></i> Clientes</a>
+            <a href="/pagecompras/" class="nav-link" id="nav-compras"><i class="fa-solid fa-bag-shopping"></i> Compras</a>
+            <a href="/pageempleados/" class="nav-link" id="nav-empleados"><i class="fa-solid fa-id-badge"></i> Empleados</a>
+            <a href="/pagegrupos/" class="nav-link" id="nav-grupos"><i class="fa-solid fa-folder-tree"></i> Grupos / Roles</a>
+            <a href="/pageinventarios/" class="nav-link" id="nav-inventarios"><i class="fa-solid fa-boxes-stacked"></i> Inventarios</a>
+            <a href="/pagenomina/" class="nav-link" id="nav-nomina"><i class="fa-solid fa-money-check-dollar"></i> Nómina</a>
+            <a href="/pageproductos/" class="nav-link" id="nav-productos"><i class="fa-solid fa-box"></i> Productos</a>
+            <a href="/pageproveedores/" class="nav-link" id="nav-proveedores"><i class="fa-solid fa-truck-ramp-box"></i> Proveedores</a>
+            <a href="/pagesucursal/" class="nav-link" id="nav-sucursal"><i class="fa-solid fa-shop"></i> Sucursales</a>
+            <a href="/pageusuarios/" class="nav-link" id="nav-usuarios"><i class="fa-solid fa-user-shield"></i> Usuarios</a>
+            <a href="/pageventas/" class="nav-link" id="nav-ventas"><i class="fa-solid fa-barcode"></i> Ventas</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <nav class="navbar">
+            <h2>{% block section_title %}<i class="fa-solid fa-circle-nodes"></i> Panel Central{% endblock %}</h2>
+            <div class="user-info">
+                <i class="fa-solid fa-circle-user" style="color: var(--primary);"></i>
+                <span>Administrador</span>
+            </div>
+        </nav>
+        
+        <div class="workspace">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentPath = window.location.pathname;
+            
+            // Removemos clases activas por defecto
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Mapeo automático de URL a botones de barra lateral
+            if (currentPath === '/' || currentPath === '') {
+                document.getElementById('nav-inicio').classList.add('active');
+            } else if (currentPath.includes('/pageclientes/')) {
+                document.getElementById('nav-clientes').classList.add('active');
+            } else if (currentPath.includes('/pagecompras/')) {
+                document.getElementById('nav-compras').classList.add('active');
+            } else if (currentPath.includes('/pageempleados/')) {
+                document.getElementById('nav-empleados').classList.add('active');
+            } else if (currentPath.includes('/pagegrupos/')) {
+                document.getElementById('nav-grupos').classList.add('active');
+            } else if (currentPath.includes('/pageinventarios/')) {
+                document.getElementById('nav-inventarios').classList.add('active');
+            } else if (currentPath.includes('/pagenomina/')) {
+                document.getElementById('nav-nomina').classList.add('active');
+            } else if (currentPath.includes('/pageproductos/')) {
+                document.getElementById('nav-productos').classList.add('active');
+            } else if (currentPath.includes('/pageproveedores/')) {
+                document.getElementById('nav-proveedores').classList.add('active');
+            } else if (currentPath.includes('/pagesucursal/')) {
+                document.getElementById('nav-sucursal').classList.add('active');
+            } else if (currentPath.includes('/pageusuarios/')) {
+                document.getElementById('nav-usuarios').classList.add('active');
+            } else if (currentPath.includes('/pageventas/')) {
+                document.getElementById('nav-ventas').classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>
