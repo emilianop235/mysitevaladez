@@ -8,16 +8,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* Variables Neon Cyberpunk + Eco Green */
+        /* Variables Neon Cyberpunk - Paleta Limpia Verde + Cian (Sin Rojos) */
         :root {
             --bg-dark: #07090f; 
             --glass-bg: rgba(10, 15, 30, 0.65);
             
-            /* Paleta Neón */
-            --neon-green: #00ffaa;    /* Verde Cyberpunk */
-            --neon-cyan: #00f2fe;     /* Azul Eléctrico */
-            --neon-magenta: #ff0844;  /* Rosa Neón */
-            --neon-purple: #89216b;
+            /* Paleta Neón Unificada */
+            --neon-green: #00ffaa;    /* Verde Cyber */
+            --neon-cyan: #00f2fe;     /* Cian Eléctrico */
+            --neon-blue: #0066ff;     /* Azul Profundo */
             
             /* Textos */
             --text-main: #f8fafc;
@@ -36,7 +35,7 @@
             position: relative;
         }
 
-        /* 1. LUCES DE FONDO ANIMADAS (AHORA CON VERDE NEÓN) */
+        /* 1. LUCES DE FONDO EN MOVIMIENTO (Verde y Cian Fluido) */
         @keyframes float {
             0% { transform: translate(0, 0) scale(1); }
             33% { transform: translate(30px, -50px) scale(1.1); }
@@ -46,25 +45,25 @@
 
         body::before { 
             content: ''; position: absolute; width: 600px; height: 600px; 
-            background: radial-gradient(circle, rgba(0, 255, 170, 0.12) 0%, transparent 60%); /* Luz Verde */
+            background: radial-gradient(circle, rgba(0, 255, 170, 0.12) 0%, transparent 60%); 
             top: -150px; right: -100px; z-index: 0; pointer-events: none;
             animation: float 12s ease-in-out infinite;
         }
         body::after { 
             content: ''; position: absolute; width: 700px; height: 700px; 
-            background: radial-gradient(circle, rgba(255, 8, 68, 0.12) 0%, transparent 60%); /* Luz Magenta */
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.12) 0%, transparent 60%); /* Cambiado a Cian */
             bottom: -200px; left: -150px; z-index: 0; pointer-events: none;
             animation: float 15s ease-in-out infinite reverse;
         }
 
-        /* 2. BARRA LATERAL CON BORDE MULTICOLOR */
+        /* 2. BARRA LATERAL CON REFLEJO VERDE */
         .sidebar {
             width: 260px;
             background: var(--glass-bg);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border-right: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: inset -1px 0 0 0 rgba(0, 255, 170, 0.15); /* Reflejo verde sutil */
+            box-shadow: inset -1px 0 0 0 rgba(0, 255, 170, 0.15); 
             display: flex;
             flex-direction: column;
             padding: 20px 0;
@@ -80,7 +79,7 @@
 
         .brand-container { display: flex; align-items: center; justify-content: space-between; padding: 0 20px; margin-bottom: 30px; }
         
-        /* 3. ANIMACIÓN DE TEXTO CON VERDE ECO INCLUIDO */
+        /* 3. ANIMACIÓN DEL LOGO CORREGIDA (Verde Cyber <-> Cian Eléctrico) */
         @keyframes rainbow-text {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -90,12 +89,12 @@
         .brand-logo { font-size: 24px; font-weight: 800; display: flex; align-items: center; gap: 10px; white-space: nowrap; }
         .brand-logo i { color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
         .brand-logo span.logo-text {
-            /* Degradado fluyendo: Verde -> Cian -> Magenta -> Verde */
-            background: linear-gradient(270deg, var(--neon-green), var(--neon-cyan), var(--neon-magenta), var(--neon-green));
-            background-size: 300% 300%;
+            /* Transición limpia y fluida puramente entre verdes y cianes */
+            background: linear-gradient(270deg, var(--neon-green), var(--neon-cyan), var(--neon-green));
+            background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: rainbow-text 6s ease infinite;
+            animation: rainbow-text 4s ease infinite;
         }
 
         .toggle-btn { background: transparent; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; transition: color 0.3s; padding: 5px; }
@@ -116,7 +115,6 @@
         
         .nav-link:hover { color: var(--white); background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.1); }
         
-        /* Estado Activo brillando en Verde */
         .nav-link.active { 
             color: var(--white); font-weight: 700;
             background: linear-gradient(90deg, rgba(0, 255, 170, 0.15) 0%, transparent 100%);
@@ -143,7 +141,7 @@
 
         .workspace { display: flex; gap: 30px; padding: 30px 40px; flex: 1; overflow: hidden; }
 
-        /* REESCRITURA GLOBAL - Botones Verde/Cian */
+        /* ESTILOS GLOBALES PARA COMPONENTES HIJOS */
         .glass-panel {
             background: var(--glass-bg) !important;
             border: 1px solid rgba(255,255,255,0.1) !important;
@@ -151,7 +149,7 @@
         }
         .btn-submit {
             background: linear-gradient(135deg, var(--neon-green) 0%, var(--neon-cyan) 100%) !important;
-            color: #000 !important; /* Texto negro para que resalte más en el botón neón brillante */
+            color: #07090f !important; 
             font-weight: 700 !important;
             border: none !important;
             box-shadow: 0 4px 15px rgba(0, 255, 170, 0.3) !important;
