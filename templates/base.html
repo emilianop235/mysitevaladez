@@ -2,46 +2,33 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}EcoCRM - Sistema Integral{% endblock %}</title>
+    <title>{% block title %}EcoCRM - Cyberpunk Edition{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* Variables de Diseño - Paleta de Colores Profesional SaaS Dark */
+        /* Variables Neon Cyberpunk + Eco Green */
         :root {
-            --bg-gradient: radial-gradient(circle at 50% 50%, #111827 0%, #030712 100%);
-            --glass-bg: rgba(17, 24, 39, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.07);
-            --glass-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --bg-dark: #07090f; 
+            --glass-bg: rgba(10, 15, 30, 0.65);
             
-            /* Colores de Marca y Acciones */
-            --primary: #10b981;       /* Verde Esmeralda Neon */
-            --primary-glow: rgba(16, 185, 129, 0.25);
-            --info: #3b82f6;          /* Azul Eléctrico */
-            --info-glow: rgba(59, 130, 246, 0.25);
-            --warning: #f59e0b;       /* Ámbar Cálido */
-            --warning-glow: rgba(245, 158, 11, 0.25);
-            --danger: #ef4444;        /* Rojo Coral */
-            --danger-glow: rgba(239, 68, 68, 0.25);
+            /* Paleta Neón */
+            --neon-green: #00ffaa;    /* Verde Cyberpunk */
+            --neon-cyan: #00f2fe;     /* Azul Eléctrico */
+            --neon-magenta: #ff0844;  /* Rosa Neón */
+            --neon-purple: #89216b;
             
             /* Textos */
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --text-dark: #111827;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
             --white: #ffffff;
         }
 
-        /* Reseteo General de Estilos */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
         body {
-            background: var(--bg-gradient);
+            background-color: var(--bg-dark);
             color: var(--text-main);
             display: flex;
             height: 100vh;
@@ -49,202 +36,168 @@
             position: relative;
         }
 
-        /* Efectos de Luces de Fondo (Simulación de Brillo Líquido) */
-        body::before {
-            content: '';
-            position: absolute;
-            width: 350px;
-            height: 350px;
-            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
-            top: -50px;
-            right: -50px;
-            z-index: 0;
-            pointer-events: none;
+        /* 1. LUCES DE FONDO ANIMADAS (AHORA CON VERDE NEÓN) */
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
         }
 
-        body::after {
-            content: '';
-            position: absolute;
-            width: 450px;
-            height: 450px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 75%);
-            bottom: -100px;
-            left: -100px;
-            z-index: 0;
-            pointer-events: none;
+        body::before { 
+            content: ''; position: absolute; width: 600px; height: 600px; 
+            background: radial-gradient(circle, rgba(0, 255, 170, 0.12) 0%, transparent 60%); /* Luz Verde */
+            top: -150px; right: -100px; z-index: 0; pointer-events: none;
+            animation: float 12s ease-in-out infinite;
+        }
+        body::after { 
+            content: ''; position: absolute; width: 700px; height: 700px; 
+            background: radial-gradient(circle, rgba(255, 8, 68, 0.12) 0%, transparent 60%); /* Luz Magenta */
+            bottom: -200px; left: -150px; z-index: 0; pointer-events: none;
+            animation: float 15s ease-in-out infinite reverse;
         }
 
-        /* Barra Lateral (Sidebar) Estética Premium */
+        /* 2. BARRA LATERAL CON BORDE MULTICOLOR */
         .sidebar {
-            width: 270px;
-            background: rgba(10, 15, 30, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-right: 1px solid var(--glass-border);
+            width: 260px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: inset -1px 0 0 0 rgba(0, 255, 170, 0.15); /* Reflejo verde sutil */
             display: flex;
             flex-direction: column;
-            padding: 25px 0;
+            padding: 20px 0;
             z-index: 10;
-            position: relative;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .sidebar h2 {
-            text-align: center;
-            margin-bottom: 35px;
-            font-weight: 800;
-            font-size: 24px;
-            letter-spacing: -1px;
-            color: var(--primary);
-            text-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+        .sidebar.collapsed { width: 80px; }
+        .sidebar.collapsed .link-text, .sidebar.collapsed .logo-text { display: none; }
+        .sidebar.collapsed .nav-link { justify-content: center; padding: 12px 0; }
+        .sidebar.collapsed .nav-link i { margin: 0; font-size: 20px; }
+        .sidebar.collapsed .brand-container { justify-content: center; }
+
+        .brand-container { display: flex; align-items: center; justify-content: space-between; padding: 0 20px; margin-bottom: 30px; }
+        
+        /* 3. ANIMACIÓN DE TEXTO CON VERDE ECO INCLUIDO */
+        @keyframes rainbow-text {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .brand-logo { font-size: 24px; font-weight: 800; display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+        .brand-logo i { color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
+        .brand-logo span.logo-text {
+            /* Degradado fluyendo: Verde -> Cian -> Magenta -> Verde */
+            background: linear-gradient(270deg, var(--neon-green), var(--neon-cyan), var(--neon-magenta), var(--neon-green));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow-text 6s ease infinite;
         }
 
-        .sidebar h2 span {
-            color: var(--white);
+        .toggle-btn { background: transparent; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; transition: color 0.3s; padding: 5px; }
+        .toggle-btn:hover { color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
+
+        .nav-container { flex: 1; overflow-y: auto; padding: 0 15px; overflow-x: hidden; }
+        .nav-container::-webkit-scrollbar { width: 4px; }
+        .nav-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+
+        /* 4. BOTONES DE LA BARRA LATERAL */
+        .nav-link { 
+            padding: 12px 15px; color: var(--text-muted); text-decoration: none; display: flex; align-items: center; gap: 15px; 
+            font-weight: 500; font-size: 14px; border-radius: 10px; transition: all 0.3s ease; margin-bottom: 6px; 
+            position: relative; overflow: hidden; border: 1px solid transparent;
+        }
+        .nav-link i { font-size: 16px; width: 20px; text-align: center; z-index: 2; transition: 0.3s; }
+        .nav-link .link-text { z-index: 2; }
+        
+        .nav-link:hover { color: var(--white); background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.1); }
+        
+        /* Estado Activo brillando en Verde */
+        .nav-link.active { 
+            color: var(--white); font-weight: 700;
+            background: linear-gradient(90deg, rgba(0, 255, 170, 0.15) 0%, transparent 100%);
+            border-left: 3px solid var(--neon-green);
+            box-shadow: inset 10px 0 20px -10px var(--neon-green);
+        }
+        .nav-link.active i { color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
+
+        .main-content { flex: 1; display: flex; flex-direction: column; height: 100vh; z-index: 5; position: relative; }
+        
+        .navbar { 
+            background: rgba(7, 9, 15, 0.4); backdrop-filter: blur(12px); padding: 18px 40px; 
+            display: flex; justify-content: space-between; align-items: center; 
+            border-bottom: 1px solid rgba(255,255,255,0.05); 
+        }
+        .navbar h2 { font-size: 18px; font-weight: 600; color: var(--white); display: flex; align-items: center; gap: 10px; }
+        
+        .user-info { 
+            display: flex; align-items: center; gap: 12px; background: rgba(255, 255, 255, 0.03); 
+            padding: 8px 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); 
+            font-size: 13px; font-weight: 500; transition: 0.3s;
+        }
+        .user-info:hover { border-color: var(--neon-green); box-shadow: 0 0 10px rgba(0, 255, 170, 0.3); }
+
+        .workspace { display: flex; gap: 30px; padding: 30px 40px; flex: 1; overflow: hidden; }
+
+        /* REESCRITURA GLOBAL - Botones Verde/Cian */
+        .glass-panel {
+            background: var(--glass-bg) !important;
+            border: 1px solid rgba(255,255,255,0.1) !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(0, 255, 170, 0.1) !important;
+        }
+        .btn-submit {
+            background: linear-gradient(135deg, var(--neon-green) 0%, var(--neon-cyan) 100%) !important;
+            color: #000 !important; /* Texto negro para que resalte más en el botón neón brillante */
+            font-weight: 700 !important;
+            border: none !important;
+            box-shadow: 0 4px 15px rgba(0, 255, 170, 0.3) !important;
+        }
+        .btn-submit:hover {
+            box-shadow: 0 6px 20px rgba(0, 242, 254, 0.5) !important;
+            background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-green) 100%) !important;
         }
 
-        .nav-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 0 15px;
-        }
-
-        /* Personalización de Scroll en Sidebar */
-        .nav-container::-webkit-scrollbar {
-            width: 4px;
-        }
-        .nav-container::-webkit-scrollbar-thumb {
-            background: var(--glass-border);
-            border-radius: 10px;
-        }
-
-        .nav-link {
-            padding: 12px 20px;
-            color: var(--text-muted);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            font-weight: 500;
-            font-size: 14px;
-            border-radius: 10px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            margin-bottom: 6px;
-            border: 1px solid transparent;
-        }
-
-        .nav-link i {
-            font-size: 16px;
-            width: 20px;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        /* Animaciones en Hover */
-        .nav-link:hover {
-            color: var(--white);
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.05);
-            padding-left: 24px;
-        }
-
-        .nav-link:hover i {
-            transform: scale(1.15);
-        }
-
-        /* Estado Activo de Barra Lateral con Cristal Líquido */
-        .nav-link.active {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--primary);
-            border-color: rgba(16, 185, 129, 0.25);
-            font-weight: 600;
-            box-shadow: inset 0 0 12px rgba(16, 185, 129, 0.05), 0 4px 12px rgba(16, 185, 129, 0.1);
-            padding-left: 24px;
-        }
-
-        /* Contenedor de Contenido Principal */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            z-index: 5;
-            position: relative;
-        }
-
-        /* Navbar de Encabezado Superior */
-        .navbar {
-            background: rgba(10, 15, 30, 0.4);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 18px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .navbar h2 {
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            color: var(--white);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 8px 16px;
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-main);
-        }
-
-        /* Espacio de Trabajo Compartido */
-        .workspace {
-            display: flex;
-            gap: 30px;
-            padding: 35px 40px;
-            flex: 1;
-            overflow: hidden;
-        }
-
+        
     </style>
-
     {% block extra_css %}{% endblock %}
 </head>
 <body>
 
-    <aside class="sidebar">
-        <h2>Eco<span>CRM</span></h2>
+    <aside class="sidebar" id="sidebar">
+        <div class="brand-container">
+            <div class="brand-logo">
+                <i class="fa-solid fa-leaf"></i> 
+                <span class="logo-text">EcoCRM</span>
+            </div>
+            <button class="toggle-btn" id="toggleSidebarBtn"><i class="fa-solid fa-bars-staggered"></i></button>
+        </div>
+
         <div class="nav-container">
-            <a href="/" class="nav-link" id="nav-inicio"><i class="fa-solid fa-house"></i> Inicio</a>
-            <a href="/pageclientes/" class="nav-link" id="nav-clientes"><i class="fa-solid fa-users"></i> Clientes</a>
-            <a href="/pagecompras/" class="nav-link" id="nav-compras"><i class="fa-solid fa-bag-shopping"></i> Compras</a>
-            <a href="/pageempleados/" class="nav-link" id="nav-empleados"><i class="fa-solid fa-id-badge"></i> Empleados</a>
-            <a href="/pagegrupos/" class="nav-link" id="nav-grupos"><i class="fa-solid fa-folder-tree"></i> Grupos / Roles</a>
-            <a href="/pageinventarios/" class="nav-link" id="nav-inventarios"><i class="fa-solid fa-boxes-stacked"></i> Inventarios</a>
-            <a href="/pagenomina/" class="nav-link" id="nav-nomina"><i class="fa-solid fa-money-check-dollar"></i> Nómina</a>
-            <a href="/pageproductos/" class="nav-link" id="nav-productos"><i class="fa-solid fa-box"></i> Productos</a>
-            <a href="/pageproveedores/" class="nav-link" id="nav-proveedores"><i class="fa-solid fa-truck-ramp-box"></i> Proveedores</a>
-            <a href="/pagesucursal/" class="nav-link" id="nav-sucursal"><i class="fa-solid fa-shop"></i> Sucursales</a>
-            <a href="/pageusuarios/" class="nav-link" id="nav-usuarios"><i class="fa-solid fa-user-shield"></i> Usuarios</a>
-            <a href="/pageventas/" class="nav-link" id="nav-ventas"><i class="fa-solid fa-barcode"></i> Ventas</a>
+            <a href="/" class="nav-link" id="nav-inicio"><i class="fa-solid fa-house"></i> <span class="link-text">Inicio</span></a>
+            <a href="/pageclientes/" class="nav-link" id="nav-clientes"><i class="fa-solid fa-users"></i> <span class="link-text">Clientes</span></a>
+            <a href="/pagecompras/" class="nav-link" id="nav-compras"><i class="fa-solid fa-bag-shopping"></i> <span class="link-text">Compras</span></a>
+            <a href="/pageempleados/" class="nav-link" id="nav-empleados"><i class="fa-solid fa-id-badge"></i> <span class="link-text">Empleados</span></a>
+            <a href="/pagegrupos/" class="nav-link" id="nav-grupos"><i class="fa-solid fa-folder-tree"></i> <span class="link-text">Grupos / Roles</span></a>
+            <a href="/pageinventarios/" class="nav-link" id="nav-inventarios"><i class="fa-solid fa-boxes-stacked"></i> <span class="link-text">Inventarios</span></a>
+            <a href="/pagenomina/" class="nav-link" id="nav-nomina"><i class="fa-solid fa-money-check-dollar"></i> <span class="link-text">Nómina</span></a>
+            <a href="/pageproductos/" class="nav-link" id="nav-productos"><i class="fa-solid fa-box"></i> <span class="link-text">Productos</span></a>
+            <a href="/pageproveedores/" class="nav-link" id="nav-proveedores"><i class="fa-solid fa-truck-ramp-box"></i> <span class="link-text">Proveedores</span></a>
+            <a href="/pagesucursal/" class="nav-link" id="nav-sucursal"><i class="fa-solid fa-shop"></i> <span class="link-text">Sucursales</span></a>
+            <a href="/pageusuarios/" class="nav-link" id="nav-usuarios"><i class="fa-solid fa-user-shield"></i> <span class="link-text">Usuarios</span></a>
+            <a href="/pageventas/" class="nav-link" id="nav-ventas"><i class="fa-solid fa-barcode"></i> <span class="link-text">Ventas</span></a>
         </div>
     </aside>
 
     <main class="main-content">
         <nav class="navbar">
-            <h2>{% block section_title %}<i class="fa-solid fa-circle-nodes"></i> Panel Central{% endblock %}</h2>
+            <h2>{% block section_title %}<i class="fa-solid fa-circle-nodes" style="color: var(--neon-green);"></i> Panel Central{% endblock %}</h2>
             <div class="user-info">
-                <i class="fa-solid fa-circle-user" style="color: var(--primary);"></i>
-                <span>Administrador</span>
+                <i class="fa-solid fa-user-astronaut" style="color: var(--neon-green);"></i>
+                <span>SysAdmin</span>
             </div>
         </nav>
         
@@ -254,40 +207,29 @@
     </main>
 
     <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('toggleSidebarBtn');
+        
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+        });
+
         document.addEventListener("DOMContentLoaded", function() {
             const currentPath = window.location.pathname;
-            
-            // Removemos clases activas por defecto
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('active');
-            });
+            document.querySelectorAll('.nav-link').forEach(link => { link.classList.remove('active'); });
 
-            // Mapeo automático de URL a botones de barra lateral
-            if (currentPath === '/' || currentPath === '') {
-                document.getElementById('nav-inicio').classList.add('active');
-            } else if (currentPath.includes('/pageclientes/')) {
-                document.getElementById('nav-clientes').classList.add('active');
-            } else if (currentPath.includes('/pagecompras/')) {
-                document.getElementById('nav-compras').classList.add('active');
-            } else if (currentPath.includes('/pageempleados/')) {
-                document.getElementById('nav-empleados').classList.add('active');
-            } else if (currentPath.includes('/pagegrupos/')) {
-                document.getElementById('nav-grupos').classList.add('active');
-            } else if (currentPath.includes('/pageinventarios/')) {
-                document.getElementById('nav-inventarios').classList.add('active');
-            } else if (currentPath.includes('/pagenomina/')) {
-                document.getElementById('nav-nomina').classList.add('active');
-            } else if (currentPath.includes('/pageproductos/')) {
-                document.getElementById('nav-productos').classList.add('active');
-            } else if (currentPath.includes('/pageproveedores/')) {
-                document.getElementById('nav-proveedores').classList.add('active');
-            } else if (currentPath.includes('/pagesucursal/')) {
-                document.getElementById('nav-sucursal').classList.add('active');
-            } else if (currentPath.includes('/pageusuarios/')) {
-                document.getElementById('nav-usuarios').classList.add('active');
-            } else if (currentPath.includes('/pageventas/')) {
-                document.getElementById('nav-ventas').classList.add('active');
-            }
+            if (currentPath === '/' || currentPath === '') { document.getElementById('nav-inicio').classList.add('active'); }
+            else if (currentPath.includes('/pageclientes/')) { document.getElementById('nav-clientes').classList.add('active'); }
+            else if (currentPath.includes('/pagecompras/')) { document.getElementById('nav-compras').classList.add('active'); }
+            else if (currentPath.includes('/pageempleados/')) { document.getElementById('nav-empleados').classList.add('active'); }
+            else if (currentPath.includes('/pagegrupos/')) { document.getElementById('nav-grupos').classList.add('active'); }
+            else if (currentPath.includes('/pageinventarios/')) { document.getElementById('nav-inventarios').classList.add('active'); }
+            else if (currentPath.includes('/pagenomina/')) { document.getElementById('nav-nomina').classList.add('active'); }
+            else if (currentPath.includes('/pageproductos/')) { document.getElementById('nav-productos').classList.add('active'); }
+            else if (currentPath.includes('/pageproveedores/')) { document.getElementById('nav-proveedores').classList.add('active'); }
+            else if (currentPath.includes('/pagesucursal/')) { document.getElementById('nav-sucursal').classList.add('active'); }
+            else if (currentPath.includes('/pageusuarios/')) { document.getElementById('nav-usuarios').classList.add('active'); }
+            else if (currentPath.includes('/pageventas/')) { document.getElementById('nav-ventas').classList.add('active'); }
         });
     </script>
 </body>

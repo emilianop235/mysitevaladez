@@ -8,40 +8,69 @@
 
 {% block extra_css %}
 <style>
-    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 35px; box-shadow: var(--glass-glow); width: 450px; margin: 20px auto; }
+    /* Corrección: max-height y overflow para que los botones nunca se salgan */
+    .glass-panel { 
+        background: var(--glass-bg); 
+        backdrop-filter: blur(12px); 
+        border: 1px solid var(--glass-border); 
+        border-radius: 12px; 
+        padding: 35px; 
+        box-shadow: var(--glass-glow); 
+        width: 450px; 
+        margin: 10px auto; 
+        max-height: 85vh; 
+        overflow-y: auto; 
+    }
+    
+    /* Scroll interno suave para la tarjeta */
+    .glass-panel::-webkit-scrollbar { width: 6px; }
+    .glass-panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+
     .form-group { margin-bottom: 15px; }
     .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
     .glass-input { width: 100%; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--glass-border); color: var(--white); padding: 10px 12px; border-radius: 8px; font-size: 14px; outline: none; }
-    .glass-input:focus { border-color: var(--warning); }
-    .btn-submit { width: 100%; background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%); color: var(--white); border: none; padding: 12px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; margin-top: 15px; margin-bottom: 10px; }
-    .btn-cancel { width: 100%; background: rgba(255, 255, 255, 0.1); color: var(--white); border: 1px solid var(--glass-border); padding: 12px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; display: block; text-align: center; text-decoration: none; }
+    .glass-input:focus { border-color: var(--warning); background: rgba(0, 0, 0, 0.4); }
+    
+    .btn-submit { width: 100%; background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%); color: var(--white); border: none; padding: 12px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; margin-top: 10px; margin-bottom: 10px; transition: 0.3s; }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); }
+    
+    .btn-cancel { width: 100%; background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--glass-border); padding: 12px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; display: block; text-align: center; text-decoration: none; transition: 0.3s; }
+    .btn-cancel:hover { background: rgba(255, 255, 255, 0.1); color: var(--white); }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="glass-panel">
-    <h3 style="text-align: center; color: var(--warning); margin-bottom: 25px;"><i class="fa-solid fa-user-pen"></i> Actualizar Datos</h3>
-    <form method="POST" action="/pageclientes/editar/{{ cliente.id }}/">
-        {% csrf_token %}
-        <div class="form-group"><label>Nombre</label><input type="text" name="nombre" value="{{ cliente.nombre }}" class="glass-input" required></div>
-        <div class="form-group"><label>Apellido</label><input type="text" name="apellido" value="{{ cliente.apellido }}" class="glass-input" required></div>
-        <div class="form-group"><label>Sexo</label>
-            <select name="sexo" class="glass-input" required>
-                <option value="Masculino" {% if cliente.sexo == 'Masculino' %}selected{% endif %} style="color: black;">Masculino</option>
-                <option value="Femenino" {% if cliente.sexo == 'Femenino' %}selected{% endif %} style="color: black;">Femenino</option>
-                <option value="Otro" {% if cliente.sexo == 'Otro' %}selected{% endif %} style="color: black;">Otro</option>
-            </select>
-        </div>
-        <div class="form-group"><label>Tipo</label>
-            <select name="tipo" class="glass-input" required>
-                <option value="Minorista" {% if cliente.tipo == 'Minorista' %}selected{% endif %} style="color: black;">Minorista</option>
-                <option value="Mayorista" {% if cliente.tipo == 'Mayorista' %}selected{% endif %} style="color: black;">Mayorista</option>
-                <option value="VIP" {% if cliente.tipo == 'VIP' %}selected{% endif %} style="color: black;">VIP</option>
-            </select>
-        </div>
-        <div class="form-group"><label>Dirección</label><input type="text" name="direccion" value="{{ cliente.direccion }}" class="glass-input" required></div>
-        <button type="submit" class="btn-submit">Guardar Cambios</button>
-        <a href="/pageclientes/" class="btn-cancel">Cancelar</a>
-    </form>
+<div style="width: 100%; display: flex; align-items: center; justify-content: center;">
+    <div class="glass-panel">
+        <h3 style="text-align: center; color: var(--warning); margin-bottom: 25px;"><i class="fa-solid fa-user-pen"></i> Actualizar Datos</h3>
+        
+        <form method="POST" action="/pageclientes/editar/{{ cliente.id }}/">
+            {% csrf_token %}
+            <div class="form-group"><label>Nombre</label><input type="text" name="nombre" value="{{ cliente.nombre }}" class="glass-input" required></div>
+            
+            <div class="form-group"><label>Apellido</label><input type="text" name="apellido" value="{{ cliente.apellido }}" class="glass-input" required></div>
+            
+            <div class="form-group"><label>Sexo</label>
+                <select name="sexo" class="glass-input" required>
+                    <option value="Masculino" {% if cliente.sexo == 'Masculino' %}selected{% endif %} style="color: black;">Masculino</option>
+                    <option value="Femenino" {% if cliente.sexo == 'Femenino' %}selected{% endif %} style="color: black;">Femenino</option>
+                    <option value="Otro" {% if cliente.sexo == 'Otro' %}selected{% endif %} style="color: black;">Otro</option>
+                </select>
+            </div>
+            
+            <div class="form-group"><label>Tipo</label>
+                <select name="tipo" class="glass-input" required>
+                    <option value="Minorista" {% if cliente.tipo == 'Minorista' %}selected{% endif %} style="color: black;">Minorista</option>
+                    <option value="Mayorista" {% if cliente.tipo == 'Mayorista' %}selected{% endif %} style="color: black;">Mayorista</option>
+                    <option value="VIP" {% if cliente.tipo == 'VIP' %}selected{% endif %} style="color: black;">VIP</option>
+                </select>
+            </div>
+            
+            <div class="form-group"><label>Dirección</label><input type="text" name="direccion" value="{{ cliente.direccion }}" class="glass-input" required></div>
+            
+            <button type="submit" class="btn-submit">Guardar Cambios</button>
+            <a href="/pageclientes/" class="btn-cancel">Cancelar</a>
+        </form>
+    </div>
 </div>
 {% endblock %}
