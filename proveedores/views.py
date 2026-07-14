@@ -3,13 +3,11 @@ from .models import proveedores
 
 def listarproveedores(request):
     consultaproveedores = proveedores.objects.filter(estatus=True).order_by('-id')[:5]
-    context = {'consultaproveedores': consultaproveedores, 'mostrar_todos': False}
-    return render(request, 'proveedores/proveedores.html', context)
+    return render(request, 'proveedores/proveedores.html', {'consultaproveedores': consultaproveedores, 'mostrar_todos': False})
 
 def listar_todos_proveedores(request):
     consultaproveedores = proveedores.objects.filter(estatus=True).order_by('-id')
-    context = {'consultaproveedores': consultaproveedores, 'mostrar_todos': True}
-    return render(request, 'proveedores/proveedores.html', context)
+    return render(request, 'proveedores/proveedores.html', {'consultaproveedores': consultaproveedores, 'mostrar_todos': True})
 
 def crearproveedor(request):
     if request.method == 'POST':
@@ -22,22 +20,22 @@ def crearproveedor(request):
     return redirect('/pageproveedores/')
 
 def desactivarproveedor(request, id):
-    proveedor = get_object_or_404(proveedores, id=id)
-    proveedor.estatus = False
-    proveedor.save()
+    prov = get_object_or_404(proveedores, id=id)
+    prov.estatus = False
+    prov.save()
     return redirect('/pageproveedores/')
 
 def editarproveedor(request, id):
-    proveedor = get_object_or_404(proveedores, id=id)
+    prov = get_object_or_404(proveedores, id=id)
     if request.method == 'POST':
-        proveedor.nombre = request.POST['nombre']
-        proveedor.apellido = request.POST['apellido']
-        proveedor.direccion = request.POST['direccion']
-        proveedor.telefono = request.POST['telefono']
-        proveedor.save()
+        prov.nombre = request.POST['nombre']
+        prov.apellido = request.POST['apellido']
+        prov.direccion = request.POST['direccion']
+        prov.telefono = request.POST['telefono']
+        prov.save()
         return redirect('/pageproveedores/')
-    return render(request, 'proveedores/editar_proveedor.html', {'proveedor': proveedor})
+    return render(request, 'proveedores/editar_proveedor.html', {'proveedor': prov})
 
 def consultarproveedor(request, id):
-    proveedor = get_object_or_404(proveedores, id=id)
-    return render(request, 'proveedores/consultar_proveedor.html', {'proveedor': proveedor})
+    prov = get_object_or_404(proveedores, id=id)
+    return render(request, 'proveedores/consultar_proveedor.html', {'proveedor': prov})

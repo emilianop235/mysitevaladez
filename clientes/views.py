@@ -3,20 +3,20 @@ from .models import Cliente
 
 def listarclientes(request):
     consultaclientes = Cliente.objects.filter(estatus=True).order_by('-id')[:5]
-    context = {'consultaclientes': consultaclientes, 'mostrar_todos': False}
-    return render(request, 'clientes/clientes.html', context)
+    return render(request, 'clientes/clientes.html', {'consultaclientes': consultaclientes, 'mostrar_todos': False})
 
 def listar_todos_clientes(request):
     consultaclientes = Cliente.objects.filter(estatus=True).order_by('-id')
-    context = {'consultaclientes': consultaclientes, 'mostrar_todos': True}
-    return render(request, 'clientes/clientes.html', context)
+    return render(request, 'clientes/clientes.html', {'consultaclientes': consultaclientes, 'mostrar_todos': True})
 
 def crearcliente(request):
     if request.method == 'POST':
         Cliente.objects.create(
             nombre=request.POST['nombre'],
             apellido=request.POST['apellido'],
-            telefono=request.POST['telefono']
+            sexo=request.POST['sexo'],
+            tipo=request.POST['tipo'],
+            direccion=request.POST['direccion']
         )
     return redirect('/pageclientes/')
 
@@ -31,7 +31,9 @@ def editarcliente(request, id):
     if request.method == 'POST':
         cliente.nombre = request.POST['nombre']
         cliente.apellido = request.POST['apellido']
-        cliente.telefono = request.POST['telefono']
+        cliente.sexo = request.POST['sexo']
+        cliente.tipo = request.POST['tipo']
+        cliente.direccion = request.POST['direccion']
         cliente.save()
         return redirect('/pageclientes/')
     return render(request, 'clientes/editar_cliente.html', {'cliente': cliente})

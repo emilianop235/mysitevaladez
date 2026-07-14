@@ -3,13 +3,11 @@ from .models import producto
 
 def listarproductos(request):
     consultaproductos = producto.objects.filter(estatus=True).order_by('-id')[:5]
-    context = {'consultaproductos': consultaproductos, 'mostrar_todos': False}
-    return render(request, 'productos/productos.html', context)
+    return render(request, 'productos/productos.html', {'consultaproductos': consultaproductos, 'mostrar_todos': False})
 
 def listar_todos_productos(request):
     consultaproductos = producto.objects.filter(estatus=True).order_by('-id')
-    context = {'consultaproductos': consultaproductos, 'mostrar_todos': True}
-    return render(request, 'productos/productos.html', context)
+    return render(request, 'productos/productos.html', {'consultaproductos': consultaproductos, 'mostrar_todos': True})
 
 def crearproducto(request):
     if request.method == 'POST':
@@ -22,22 +20,22 @@ def crearproducto(request):
     return redirect('/pageproductos/')
 
 def desactivarproducto(request, id):
-    item_producto = get_object_or_404(producto, id=id)
-    item_producto.estatus = False
-    item_producto.save()
+    prod = get_object_or_404(producto, id=id)
+    prod.estatus = False
+    prod.save()
     return redirect('/pageproductos/')
 
 def editarproducto(request, id):
-    item_producto = get_object_or_404(producto, id=id)
+    prod = get_object_or_404(producto, id=id)
     if request.method == 'POST':
-        item_producto.nombre = request.POST['nombre']
-        item_producto.descripcion = request.POST['descripcion']
-        item_producto.precio = request.POST['precio']
-        item_producto.stock = request.POST['stock']
-        item_producto.save()
+        prod.nombre = request.POST['nombre']
+        prod.descripcion = request.POST['descripcion']
+        prod.precio = request.POST['precio']
+        prod.stock = request.POST['stock']
+        prod.save()
         return redirect('/pageproductos/')
-    return render(request, 'productos/editar_producto.html', {'producto': item_producto})
+    return render(request, 'productos/editar_producto.html', {'producto': prod})
 
 def consultarproducto(request, id):
-    item_producto = get_object_or_404(producto, id=id)
-    return render(request, 'productos/consultar_producto.html', {'producto': item_producto})
+    prod = get_object_or_404(producto, id=id)
+    return render(request, 'productos/consultar_producto.html', {'producto': prod})

@@ -5,8 +5,6 @@ class sucursal(models.Model):
     direccion = models.CharField(max_length=200)
     telefono = models.CharField(max_length=15)
     encargado = models.CharField(max_length=100, default="Por asignar")
-    
-    # Campo para borrado lógico
     estatus = models.BooleanField(default=True)
 
     def __str__(self):

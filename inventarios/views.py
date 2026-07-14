@@ -3,13 +3,11 @@ from .models import inventarios
 
 def listarinventarios(request):
     consultainventarios = inventarios.objects.filter(estatus=True).order_by('-id')[:5]
-    context = {'consultainventarios': consultainventarios, 'mostrar_todos': False}
-    return render(request, 'inventarios/inventarios.html', context)
+    return render(request, 'inventarios/inventarios.html', {'consultainventarios': consultainventarios, 'mostrar_todos': False})
 
 def listar_todos_inventarios(request):
     consultainventarios = inventarios.objects.filter(estatus=True).order_by('-id')
-    context = {'consultainventarios': consultainventarios, 'mostrar_todos': True}
-    return render(request, 'inventarios/inventarios.html', context)
+    return render(request, 'inventarios/inventarios.html', {'consultainventarios': consultainventarios, 'mostrar_todos': True})
 
 def crearinventario(request):
     if request.method == 'POST':
@@ -22,22 +20,22 @@ def crearinventario(request):
     return redirect('/pageinventarios/')
 
 def desactivarinventario(request, id):
-    inventario = get_object_or_404(inventarios, id=id)
-    inventario.estatus = False
-    inventario.save()
+    inv = get_object_or_404(inventarios, id=id)
+    inv.estatus = False
+    inv.save()
     return redirect('/pageinventarios/')
 
 def editarinventario(request, id):
-    inventario = get_object_or_404(inventarios, id=id)
+    inv = get_object_or_404(inventarios, id=id)
     if request.method == 'POST':
-        inventario.nombre = request.POST['nombre']
-        inventario.descripcion = request.POST['descripcion']
-        inventario.precio = request.POST['precio']
-        inventario.cantidad = request.POST['cantidad']
-        inventario.save()
+        inv.nombre = request.POST['nombre']
+        inv.descripcion = request.POST['descripcion']
+        inv.precio = request.POST['precio']
+        inv.cantidad = request.POST['cantidad']
+        inv.save()
         return redirect('/pageinventarios/')
-    return render(request, 'inventarios/editar_inventario.html', {'inventario': inventario})
+    return render(request, 'inventarios/editar_inventario.html', {'inventario': inv})
 
 def consultarinventario(request, id):
-    inventario = get_object_or_404(inventarios, id=id)
-    return render(request, 'inventarios/consultar_inventario.html', {'inventario': inventario})
+    inv = get_object_or_404(inventarios, id=id)
+    return render(request, 'inventarios/consultar_inventario.html', {'inventario': inv})

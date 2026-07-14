@@ -1,15 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Empleado, nomina
+from .models import Empleado
 
 def listarempleados(request):
     consultaempleados = Empleado.objects.filter(estatus=True).order_by('-id')[:5]
-    context = {'consultaempleados': consultaempleados, 'mostrar_todos': False}
-    return render(request, 'empleados/empleados.html', context)
+    return render(request, 'empleados/empleados.html', {'consultaempleados': consultaempleados, 'mostrar_todos': False})
 
 def listar_todos_empleados(request):
     consultaempleados = Empleado.objects.filter(estatus=True).order_by('-id')
-    context = {'consultaempleados': consultaempleados, 'mostrar_todos': True}
-    return render(request, 'empleados/empleados.html', context)
+    return render(request, 'empleados/empleados.html', {'consultaempleados': consultaempleados, 'mostrar_todos': True})
 
 def crearempleado(request):
     if request.method == 'POST':

@@ -5,10 +5,7 @@ class usuarios(models.Model):
     usuario = models.CharField(max_length=50)
     passwd = models.CharField(max_length=50)
     correo = models.EmailField()
-    # Referencia en texto, con null=True para evitar choques con datos viejos
     grupo = models.ForeignKey('grupos.grupos', on_delete=models.CASCADE, null=True)
-    
-    # Campo para borrado lógico
     estatus = models.BooleanField(default=True)
 
     def __str__(self):

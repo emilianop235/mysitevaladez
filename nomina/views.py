@@ -1,25 +1,20 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import nomina
-# Importamos la clase Empleado para poder seleccionarlo en el formulario
-from empleados.models import Empleado
+from empleados.models import Empleado  # Importación relacional
 
 def listarnominas(request):
     consultanominas = nomina.objects.filter(estatus=True).order_by('-id')[:5]
-    empleados_activos = Empleado.objects.filter(estatus=True)
-    context = {'consultanominas': consultanominas, 'empleados': empleados_activos, 'mostrar_todos': False}
-    return render(request, 'nomina/nominas.html', context)
+    emp_lista = Empleado.objects.filter(estatus=True)
+    return render(request, 'nomina/nominas.html', {'consultanominas': consultanominas, 'empleados': emp_lista, 'mostrar_todos': False})
 
 def listar_todas_nominas(request):
     consultanominas = nomina.objects.filter(estatus=True).order_by('-id')
-    empleados_activos = Empleado.objects.filter(estatus=True)
-    context = {'consultanominas': consultanominas, 'empleados': empleados_activos, 'mostrar_todos': True}
-    return render(request, 'nomina/nominas.html', context)
+    emp_lista = Empleado.objects.filter(estatus=True)
+    return render(request, 'nomina/nominas.html', {'consultanominas': consultanominas, 'empleados': emp_lista, 'mostrar_todos': True})
 
 def crearnomina(request):
     if request.method == 'POST':
-        # Obtenemos la instancia del empleado seleccionado
-        empleado_seleccionado = get_object_or_404(Empleado, id=request.POST['empleado_id'])
-        
+        emp_obj = get_object_or_404(Empleado, id=request.POST['empleado_id'])
         nomina.objects.create(
             numperiodo=request.POST['numperiodo'],
             fecha=request.POST['fecha'],
@@ -27,38 +22,31 @@ def crearnomina(request):
             perceciones=request.POST['perceciones'],
             deducciones=request.POST['deducciones'],
             total=request.POST['total'],
-            empleado=empleado_seleccionado
+            empleado=emp_obj
         )
     return redirect('/pagenomina/')
 
 def desactivarnomina(request, id):
-    registro_nomina = get_object_or_404(nomina, id=id)
-    registro_nomina.estatus = False
-    registro_nomina.save()
+    nom = get_object_or_404(nomina, id=id)
+    nom.estatus = False
+    nom.save()
     return redirect('/pagenomina/')
 
 def editarnomina(request, id):
-    registro_nomina = get_object_or_404(nomina, id=id)
-    empleados_activos = Empleado.objects.filter(estatus=True)
-    
+    nom = get_object_or_404(nomina, id=id)
+    emp_lista = Empleado.objects.filter(estatus=True)
     if request.method == 'POST':
-        empleado_seleccionado = get_object_or_404(Empleado, id=request.POST['empleado_id'])
-        
-        registro_nomina.numperiodo = request.POST['numperiodo']
-        registro_nomina.fecha = request.POST['fecha']
-        registro_nomina.salario = request.POST['salario']
-        registro_nomina.perceciones = request.POST['perceciones']
-        registro_nomina.deducciones = request.POST['deducciones']
-        registro_nomina.total = request.POST['total']
-        registro_nomina.empleado = empleado_seleccionado
-        registro_nomina.save()
+        nom.numperiodo = request.POST['numperiodo']
+        nom.fecha = request.POST['fecha']
+        nom.salario = request.POST['salario']
+        nom.perceciones = request.POST['perceciones']
+        nom.deducciones = request.POST['deducciones']
+        nom.total = request.POST['total']
+        nom.empleado = get_object_or_404(Empleado, id=request.POST['empleado_id'])
+        nom.save()
         return redirect('/pagenomina/')
-        
-    return render(request, 'nomina/editar_nomina.html', {
-        'nomina': registro_nomina, 
-        'empleados': empleados_activos
-    })
+    return render(request, 'nomina/editar_nomina.html', {'nomina': nom, 'empleados': emp_lista})
 
 def consultarnomina(request, id):
-    registro_nomina = get_object_or_404(nomina, id=id)
-    return render(request, 'nomina/consultar_nomina.html', {'nomina': registro_nomina})
+    nom = get_object_or_404(nomina, id=id)
+    return render(request, 'nomina/consultar_nomina.html', {'nomina': nom})
