@@ -1,31 +1,58 @@
 {% extends 'base.html' %}
-
 {% block title %}Detalle de Venta - EcoCRM{% endblock %}
-
-{% block section_title %}
-    <i class="fa-solid fa-receipt" style="color: var(--neon-cyan);"></i> Auditoría de Comprobante
-{% endblock %}
+{% block section_title %}<i class="fa-solid fa-receipt" style="color: var(--neon-cyan);"></i> Auditoría de Comprobante{% endblock %}
 
 {% block extra_css %}
 <style>
-    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 35px; box-shadow: var(--glass-glow); width: 450px; margin: 20px auto; }
-    .info-group { margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; }
-    .info-group label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
-    .info-group p { font-size: 16px; color: var(--white); font-weight: 500; }
-    .btn-back { width: 100%; background: rgba(255,255,255,0.05); color: var(--white); border: 1px solid var(--glass-border); padding: 12px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; display: block; text-align: center; text-decoration: none; margin-top: 30px; }
-    .btn-back:hover { background: rgba(255,255,255,0.1); }
+    .glass-panel-center { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 35px; width: 450px; margin: 20px auto; box-shadow: var(--glass-glow); }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="glass-panel">
-    <h3 style="text-align: center; color: var(--neon-cyan); margin-bottom: 25px;"><i class="fa-solid fa-file-invoice-dollar"></i> Desglose de Operación</h3>
+<div class="glass-panel-center">
+    <h3 style="text-align: center; color: var(--neon-cyan); margin-bottom: 25px;"><i class="fa-solid fa-file-invoice-dollar"></i> Ticket #{{ venta.id }}</h3>
     
-    <div class="info-group"><label>Folio del Ticket</label><p style="color: var(--neon-cyan); font-weight: 700; font-size: 18px;">{{ venta.folio }}</p></div>
-    <div class="info-group"><label>Fecha de Operación</label><p>{{ venta.fecha|date:"d/m/Y - H:i:s" }}</p></div>
-    <div class="info-group"><label>Monto Neto Asignado</label><p style="color: var(--neon-green); font-weight: 700; font-size: 20px;">${{ venta.total }}</p></div>
-    <div class="info-group" style="border: none;"><label>Estatus Financiero</label><p style="color: var(--neon-green);"><i class="fa-solid fa-circle-check"></i> Transacción Cerrada Exitosamente</p></div>
+    <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px; padding-bottom: 15px;">
+        <div>
+            <label style="display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Folio Asignado</label>
+            <p style="color: var(--neon-cyan); font-weight: 700; font-size: 18px;">{{ venta.folio }}</p>
+        </div>
+        <div style="text-align: right;">
+            <label style="display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Fecha de Cobro</label>
+            <p style="color: var(--white); font-size: 14px;">{{ venta.fecha|date:"d/m/Y H:i" }}</p>
+        </div>
+    </div>
+
+    <div class="info-group">
+        <label><i class="fa-solid fa-user"></i> Cliente Receptor</label>
+        <p style="font-size: 15px; font-weight: 600;">
+            {% for c in venta.clientes.all %}
+                {{ c.nombre }} {{ c.apellido }}
+            {% empty %}
+                <span style="color: var(--text-muted);">Sin cliente (Público General)</span>
+            {% endfor %}
+        </p>
+    </div>
+
+    <div class="info-group">
+        <label><i class="fa-solid fa-barcode"></i> Artículos Despachados</label>
+        <div style="font-size: 13px; color: var(--text-muted); background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;">
+            {% for prod in venta.productos.all %}
+                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                    <span>- {{ prod.nombre }}</span>
+                    <span style="color: var(--white);">${{ prod.precio }}</span>
+                </div>
+            {% empty %}
+                <span style="color: var(--danger);">Cesta vacía</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="info-group" style="border: none; text-align: right; margin-top: 20px;">
+        <label style="display: block; font-size: 12px;">Monto Total</label>
+        <span style="color: var(--neon-green); font-weight: 800; font-size: 24px;">${{ venta.total }}</span>
+    </div>
     
-    <a href="/pageventas/" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver al Historial</a>
+    <a href="/pageventas/" class="btn-submit" style="background: rgba(255,255,255,0.05) !important; color: var(--white) !important; box-shadow: none;"><i class="fa-solid fa-arrow-left"></i> Cerrar Ticket</a>
 </div>
 {% endblock %}

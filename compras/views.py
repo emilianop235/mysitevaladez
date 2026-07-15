@@ -44,19 +44,30 @@ def desactivarcompra(request, id):
     comp.save()
     return redirect('/pagecompras/')
 
-def editarcompra(request, id):
-    comp = get_object_or_404(compras, id=id)
-    if request.method == 'POST':
-        comp.folio = request.POST.get('folio', comp.folio)
-        comp.subtotal = request.POST.get('subtotal', comp.subtotal)
-        comp.iva = request.POST.get('iva', comp.iva)
-        comp.total = request.POST.get('total', comp.total)
-        comp.proveedor.set(request.POST.getlist('proveedores_seleccionados'))
-        comp.producto.set(request.POST.getlist('productos_seleccionados'))
-        comp.save()
-        return redirect('/pagecompras/')
-    return render(request, 'compras/editar_compra.html', {'compra': comp})
+# Asegúrate de tener importados los modelos arriba:
+# from proveedores.models import Proveedor (o como se llame tu modelo)
+# from productos.models import Producto
 
+def editarcompra(request, id):
+    compra = get_object_or_404(compras, id=id) # O como se llame tu modelo de compra
+    
+    if request.method == 'POST':
+        # ... Aquí va tu lógica de guardado que ya tenías ...
+        compra.folio = request.POST.get('folio')
+        # ...
+        compra.save()
+        return redirect('/pagecompras/')
+        
+    # ESTO ES LO QUE FALTABA: Traer las listas para enviarlas al HTML
+    proveedores_lista = proveedores.objects.filter(estatus=True) # Ajusta el nombre de tu modelo
+    productos_lista = producto.objects.filter(estatus=True)      # Ajusta el nombre de tu modelo
+
+    # Y aquí se las mandamos al diccionario de contexto:
+    return render(request, 'compras/editar_compra.html', {
+        'compra': compra,
+        'proveedores_lista': proveedores_lista,
+        'productos_lista': productos_lista
+    })
 def consultarcompra(request, id):
     comp = get_object_or_404(compras, id=id)
     return render(request, 'compras/consultar_compra.html', {'compra': comp})

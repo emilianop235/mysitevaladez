@@ -1,30 +1,61 @@
 {% extends 'base.html' %}
-
 {% block title %}Consulta de Suministro - EcoCRM{% endblock %}
-
-{% block section_title %}
-    <i class="fa-solid fa-eye" style="color: var(--neon-cyan);"></i> Auditoría de Entrada
-{% endblock %}
+{% block section_title %}<i class="fa-solid fa-eye" style="color: var(--neon-cyan);"></i> Auditoría de Entrada{% endblock %}
 
 {% block extra_css %}
 <style>
-    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 35px; box-shadow: var(--glass-glow); width: 450px; margin: 20px auto; }
-    .info-group { margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; }
-    .info-group label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; }
-    .info-group p { font-size: 16px; color: var(--white); font-weight: 500; }
-    .btn-back { width: 100%; background: rgba(255,255,255,0.05); color: var(--white); border: 1px solid var(--glass-border); padding: 12px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; display: block; text-align: center; text-decoration: none; margin-top: 30px; }
+    .glass-panel-center { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 35px; width: 450px; margin: 20px auto; box-shadow: var(--glass-glow); }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="glass-panel">
-    <h3 style="text-align: center; color: var(--neon-cyan); margin-bottom: 25px;"><i class="fa-solid fa-boxes-packing"></i> Ficha de Compra</h3>
+<div class="glass-panel-center">
+    <h3 style="text-align: center; color: var(--neon-cyan); margin-bottom: 25px;"><i class="fa-solid fa-boxes-packing"></i> Ficha de Orden #{{ compra.id }}</h3>
     
-    <div class="info-group"><label>Folio Matriz</label><p style="color: var(--neon-cyan); font-weight: 700;">{{ compra.folio }}</p></div>
-    <div class="info-group"><label>Fecha de Expedición</label><p>{{ compra.fecha|date:"d/m/Y - H:i" }}</p></div>
-    <div class="info-group"><label>Subtotal / IVA</label><p>${{ compra.subtotal }} / ${{ compra.iva }}</p></div>
-    <div class="info-group"><label>Costo Total de Adquisición</label><p style="color: var(--neon-green); font-weight: 700; font-size: 18px;">${{ compra.total }}</p></div>
+    <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px; padding-bottom: 15px;">
+        <div>
+            <label style="display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Folio Matriz</label>
+            <p style="color: var(--neon-cyan); font-weight: 700; font-size: 18px;">{{ compra.folio }}</p>
+        </div>
+        <div style="text-align: right;">
+            <label style="display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Fecha Expedición</label>
+            <p style="color: var(--white); font-size: 14px;">{{ compra.fecha|date:"d/m/Y" }}</p>
+        </div>
+    </div>
+
+    <div class="info-group">
+        <label><i class="fa-solid fa-building"></i> Proveedores Involucrados</label>
+        <p style="font-size: 14px;">
+            {% for prov in compra.proveedores.all %}
+                {{ prov.nombre }} {{ prov.apellido }}<br>
+            {% empty %}
+                <span style="color: var(--danger);">No asignados</span>
+            {% endfor %}
+        </p>
+    </div>
+
+    <div class="info-group">
+        <label><i class="fa-solid fa-box"></i> Artículos Detallados</label>
+        <p style="font-size: 14px; color: var(--text-muted);">
+            {% for prod in compra.productos.all %}
+                - {{ prod.nombre }} <span style="color: var(--neon-green);">(${{ prod.precio }})</span><br>
+            {% empty %}
+                <span style="color: var(--danger);">Sin artículos</span>
+            {% endfor %}
+        </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px;">
+        <div>
+            <label style="font-size: 11px; color: var(--text-muted);">Subtotal: ${{ compra.subtotal }}</label><br>
+            <label style="font-size: 11px; color: var(--text-muted);">IVA: ${{ compra.iva }}</label>
+        </div>
+        <div style="text-align: right;">
+            <label style="font-size: 11px; color: var(--text-muted); display: block;">Total Operación</label>
+            <span style="color: var(--neon-green); font-weight: 800; font-size: 20px;">${{ compra.total }}</span>
+        </div>
+    </div>
     
-    <a href="/pagecompras/" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Regresar al Listado</a>
+    <a href="/pagecompras/" class="btn-submit" style="background: rgba(255,255,255,0.05) !important; color: var(--white) !important; box-shadow: none; margin-top: 20px;"><i class="fa-solid fa-arrow-left"></i> Regresar</a>
 </div>
 {% endblock %}

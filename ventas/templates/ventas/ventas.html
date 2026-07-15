@@ -10,31 +10,56 @@
 <div class="glass-panel" style="flex: 0 0 350px; height: fit-content; max-height: 85vh; overflow-y: auto;">
     <h3 style="color: var(--white); margin-bottom: 20px; font-size: 14px; text-transform: uppercase;"><i class="fa-solid fa-cart-plus" style="color: var(--neon-green);"></i> Nueva Venta</h3>
     <form action="/pageventas/nuevo/" method="POST">
-        {% csrf_token %}
-        <div class="form-group"><label>Folio del Ticket</label><input type="text" name="folio" placeholder="V-001" class="glass-input" required></div>
-        
-        <div class="form-group">
-            <label>Seleccionar Cliente(s)</label>
-            <select name="clientes_seleccionados" multiple class="glass-input" style="height: 90px;" required>
-                {% for c in clientes_lista %}
-                    <option value="{{ c.id }}">{{ c.nombre }} {{ c.apellido }}</option>
-                {% endfor %}
-            </select>
-            <small style="color: var(--text-muted); font-size: 10px; display:block; margin-top:4px;">Ctrl + Click para seleccionar varios</small>
-        </div>
+    {% csrf_token %}
+    <div class="form-group"><label>Folio del Ticket</label><input type="text" name="folio" placeholder="V-001" class="glass-input" required></div>
+    
+    <div class="form-group">
+        <label>Seleccionar Cliente</label>
+        <select name="clientes_seleccionados" class="glass-input" required>
+            {% for c in clientes_lista %}
+                <option value="{{ c.id }}">{{ c.nombre }} {{ c.apellido }}</option>
+            {% endfor %}
+        </select>
+    </div>
 
-        <div class="form-group">
-            <label>Artículos Vendidos</label>
-            <select name="productos_seleccionados" multiple class="glass-input" style="height: 90px;" required>
-                {% for p in productos_lista %}
-                    <option value="{{ p.id }}">{{ p.nombre }} (${{ p.precio }})</option>
-                {% endfor %}
-            </select>
+    <div class="form-group">
+        <label>Artículos Vendidos (Selecciona varios)</label>
+        <div class="glass-input" style="height: 120px; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px;">
+            {% for p in productos_lista %}
+                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--white); font-size: 13px;">
+                    <input type="checkbox" name="productos_seleccionados" value="{{ p.id }}" data-precio="{{ p.precio }}" class="producto-check" style="accent-color: var(--neon-green); width: 16px; height: 16px;">
+                    {{ p.nombre }} <span style="color: var(--neon-green); font-weight: bold;">(${{ p.precio }})</span>
+                </label>
+            {% endfor %}
         </div>
+    </div>
 
-        <div class="form-group"><label>Monto Total ($)</label><input type="number" step="0.01" name="total" class="glass-input" required></div>
-        <button type="submit" class="btn-submit">Procesar Venta</button>
-    </form>
+    <div class="form-group"><label>Monto Total a Cobrar ($)</label><input type="number" step="0.01" name="total" id="venta-total" class="glass-input" style="background: rgba(0,255,170,0.1); color: var(--neon-green); font-weight: bold; font-size: 16px;" readonly required></div>
+    
+    <button type="submit" class="btn-submit">Procesar Venta</button>
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const checkboxes = document.querySelectorAll('.producto-check');
+        const inputTotal = document.getElementById('venta-total');
+
+        function calcularTotalVenta() {
+            let total = 0;
+            checkboxes.forEach(chk => {
+                if (chk.checked) {
+                    // Si tiene palomita, suma el precio
+                    total += parseFloat(chk.getAttribute('data-precio')) || 0;
+                }
+            });
+            inputTotal.value = total.toFixed(2);
+        }
+
+        checkboxes.forEach(chk => {
+            chk.addEventListener('change', calcularTotalVenta);
+        });
+    });
+</script>
 </div>
 
 <div class="glass-panel" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">

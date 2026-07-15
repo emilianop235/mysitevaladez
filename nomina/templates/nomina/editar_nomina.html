@@ -1,25 +1,16 @@
 {% extends 'base.html' %}
-
 {% block title %}Modificar Nómina - EcoCRM{% endblock %}
-
-{% block section_title %}
-    <i class="fa-solid fa-pen-to-square" style="color: var(--warning);"></i> Rectificación de Comprobante Financiero
-{% endblock %}
+{% block section_title %}<i class="fa-solid fa-pen-to-square" style="color: var(--warning);"></i> Rectificación Financiera{% endblock %}
 
 {% block extra_css %}
 <style>
-    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 30px; box-shadow: var(--glass-glow); width: 440px; margin: 5px auto; max-height: 85vh; overflow-y: auto; }
-    .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
-    .glass-input { width: 100%; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--glass-border); color: var(--white); padding: 9px 12px; border-radius: 8px; font-size: 14px; outline: none; }
-    .btn-update { width: 100%; background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%); color: black; border: none; padding: 12px; font-size: 14px; font-weight: 700; border-radius: 8px; cursor: pointer; margin-top: 15px; margin-bottom: 10px; }
-    .btn-cancel { width: 100%; background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--glass-border); padding: 12px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; display: block; text-align: center; text-decoration: none; }
+    .glass-panel-center { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 30px; width: 440px; margin: 5px auto; box-shadow: var(--glass-glow); max-height: 85vh; overflow-y: auto; }
 </style>
 {% endblock %}
 
 {% block content %}
-<div style="width: 100%; display: flex; align-items: center; justify-content: center;">
-    <div class="glass-panel">
+<div style="width: 100%; display: flex; justify-content: center;">
+    <div class="glass-panel-center">
         <h3 style="text-align: center; color: var(--warning); margin-bottom: 20px;"><i class="fa-solid fa-signature"></i> Ajustar Recibo</h3>
         <form method="POST" action="/pagenomina/editar/{{ nomina.id }}/">
             {% csrf_token %}
@@ -28,23 +19,38 @@
             
             <div class="form-group">
                 <label>Colaborador</label>
-                <select name="empleado_id" class="glass-input" required>
-                    {% for e in empleados %}
-                        <option value="{{ e.id }}" {% if e.id == nomina.empleado.id %}selected{% endif %} style="color: black;">
-                            {{ e.nombre }} {{ e.apellido }}
-                        </option>
-                    {% endfor %}
+                <select name="empleado_id" class="glass-input" style="pointer-events: none; opacity: 0.7;" readonly required>
+                    <option value="{{ nomina.empleado.id }}" selected>{{ nomina.empleado.nombre }} {{ nomina.empleado.apellido }}</option>
                 </select>
             </div>
 
-            <div class="form-group"><label>Salario Base ($)</label><input type="number" step="0.01" name="salario" value="{{ nomina.salario }}" class="glass-input" required></div>
-            <div class="form-group"><label>Percepciones ($)</label><input type="number" step="0.01" name="perceciones" value="{{ nomina.perceciones }}" class="glass-input" required></div>
-            <div class="form-group"><label>Deducciones ($)</label><input type="number" step="0.01" name="deducciones" value="{{ nomina.deducciones }}" class="glass-input" required></div>
-            <div class="form-group"><label>Total ($)</label><input type="number" step="0.01" name="total" value="{{ nomina.total }}" class="glass-input" required></div>
+            <div class="form-group"><label>Salario Base ($)</label><input type="number" step="0.01" name="salario" id="calc-salario" value="{{ nomina.salario }}" class="glass-input" readonly required></div>
+            <div class="form-group"><label>Percepciones ($)</label><input type="number" step="0.01" name="perceciones" id="calc-percepciones" value="{{ nomina.perceciones }}" class="glass-input" required></div>
+            <div class="form-group"><label>Deducciones ($)</label><input type="number" step="0.01" name="deducciones" id="calc-deducciones" value="{{ nomina.deducciones }}" class="glass-input" required></div>
+            <div class="form-group"><label>Total Neto ($)</label><input type="number" step="0.01" name="total" id="calc-total" value="{{ nomina.total }}" class="glass-input" style="background: rgba(0,255,170,0.1); color: var(--neon-green); font-weight: bold;" readonly required></div>
             
-            <button type="submit" class="btn-update">Guardar Corrección</button>
-            <a href="/pagenomina/" class="btn-cancel">Cancelar</a>
+            <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);">Guardar Corrección</button>
+            <a href="/pagenomina/" class="btn-submit" style="background: rgba(255,255,255,0.05) !important; color: var(--text-muted) !important; box-shadow: none;">Cancelar</a>
         </form>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const inputSalario = document.getElementById('calc-salario');
+        const inputPercepciones = document.getElementById('calc-percepciones');
+        const inputDeducciones = document.getElementById('calc-deducciones');
+        const inputTotal = document.getElementById('calc-total');
+
+        function calcularNomina() {
+            let s = parseFloat(inputSalario.value) || 0;
+            let p = parseFloat(inputPercepciones.value) || 0;
+            let d = parseFloat(inputDeducciones.value) || 0;
+            inputTotal.value = (s + p - d).toFixed(2); 
+        }
+
+        inputPercepciones.addEventListener('input', calcularNomina);
+        inputDeducciones.addEventListener('input', calcularNomina);
+    });
+</script>
 {% endblock %}

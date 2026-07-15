@@ -36,11 +36,24 @@ def crearventa(request):
         nueva_venta.producto.set(request.POST.getlist('productos_seleccionados'))
     return redirect('/pageventas/')
 
-def desactivarventa(request, id):
-    venta = get_object_or_404(ventas, id=id)
-    venta.estatus = False
-    venta.save()
-    return redirect('/pageventas/')
+def editarventa(request, id):
+    venta = get_object_or_404(ventas, id=id) 
+    
+    if request.method == 'POST':
+        # ... Tu lógica de guardado ...
+        venta.save()
+        return redirect('/pageventas/')
+        
+    # TRAEMOS LAS LISTAS
+    clientes_lista = Cliente.objects.filter(estatus=True)
+    productos_lista = producto.objects.filter(estatus=True)
+
+    # SE LAS MANDAMOS AL HTML
+    return render(request, 'ventas/editar_venta.html', {
+        'venta': venta,
+        'clientes_lista': clientes_lista,
+        'productos_lista': productos_lista
+    })
 
 def editarventa(request, id):
     venta = get_object_or_404(ventas, id=id)
@@ -65,4 +78,15 @@ def restaurarventa(request, id):
     venta = get_object_or_404(ventas, id=id)
     venta.estatus = True
     venta.save()
+    return redirect('/pageventas/')
+
+def desactivarventa(request, id):
+    # Buscamos la venta por su ID (Asegúrate de que 'ventas' sea el nombre de tu modelo)
+    venta = get_object_or_404(ventas, id=id) 
+    
+    # En lugar de borrarla de la base de datos, solo la ocultamos
+    venta.estatus = False 
+    venta.save()
+    
+    # Recargamos la página principal
     return redirect('/pageventas/')

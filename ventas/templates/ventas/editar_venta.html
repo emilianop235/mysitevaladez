@@ -1,36 +1,64 @@
 {% extends 'base.html' %}
-
 {% block title %}Modificar Venta - EcoCRM{% endblock %}
-
-{% block section_title %}
-    <i class="fa-solid fa-pen-to-square" style="color: var(--warning);"></i> Ajustar Parámetros de Ticket
-{% endblock %}
+{% block section_title %}<i class="fa-solid fa-pen-to-square" style="color: var(--warning);"></i> Ajustar Parámetros de Ticket{% endblock %}
 
 {% block extra_css %}
 <style>
-    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 35px; box-shadow: var(--glass-glow); width: 420px; margin: 15px auto; max-height: 85vh; overflow-y: auto; }
-    .glass-panel::-webkit-scrollbar { width: 6px; }
-    .glass-panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
-    .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
-    .glass-input { width: 100%; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--glass-border); color: var(--white); padding: 10px 12px; border-radius: 8px; font-size: 14px; outline: none; }
-    .glass-input:focus { border-color: var(--warning); }
-    .btn-update { width: 100%; background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%); color: black; border: none; padding: 12px; font-size: 14px; font-weight: 700; border-radius: 8px; cursor: pointer; margin-top: 15px; margin-bottom: 10px; }
-    .btn-cancel { width: 100%; background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--glass-border); padding: 12px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; display: block; text-align: center; text-decoration: none; }
+    .glass-panel-center { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 35px; width: 440px; margin: 10px auto; max-height: 85vh; overflow-y: auto; box-shadow: var(--glass-glow); }
+    .glass-input-scroll::-webkit-scrollbar { width: 6px; }
+    .glass-input-scroll::-webkit-scrollbar-thumb { background: rgba(245, 158, 11, 0.5); border-radius: 8px; }
 </style>
 {% endblock %}
 
 {% block content %}
-<div style="width: 100%; display: flex; align-items: center; justify-content: center;">
-    <div class="glass-panel">
-        <h3 style="text-align: center; color: var(--warning); margin-bottom: 25px;"><i class="fa-solid fa-sliders"></i> Editar Venta</h3>
+<div style="width: 100%; display: flex; justify-content: center;">
+    <div class="glass-panel-center">
+        <h3 style="text-align: center; color: var(--warning); margin-bottom: 25px;"><i class="fa-solid fa-sliders"></i> Editar Ticket</h3>
         <form method="POST" action="/pageventas/editar/{{ venta.id }}/">
             {% csrf_token %}
             <div class="form-group"><label>Folio</label><input type="text" name="folio" value="{{ venta.folio }}" class="glass-input" required></div>
-            <div class="form-group"><label>Total Facturado ($)</label><input type="number" step="0.01" name="total" value="{{ venta.total }}" class="glass-input" required></div>
-            <button type="submit" class="btn-update">Guardar Cambios</button>
-            <a href="/pageventas/" class="btn-cancel">Cancelar</a>
+            
+            <div class="form-group">
+                <label>Cliente Facturado</label>
+                <select name="clientes_seleccionados" class="glass-input" required>
+                    {% for c in clientes_lista %}
+                        <option value="{{ c.id }}" {% if c in venta.clientes.all %}selected{% endif %}>{{ c.nombre }} {{ c.apellido }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Artículos Vendidos</label>
+                <div class="glass-input glass-input-scroll" style="height: 120px; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px;">
+                    {% for p in productos_lista %}
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--white); font-size: 13px;">
+                            <input type="checkbox" name="productos_seleccionados" value="{{ p.id }}" data-precio="{{ p.precio }}" class="venta-check" style="accent-color: var(--warning);" {% if p in venta.productos.all %}checked{% endif %}>
+                            {{ p.nombre }} <span style="color: var(--warning);">(${{ p.precio }})</span>
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="form-group"><label>Total Facturado ($)</label><input type="number" step="0.01" name="total" id="venta-total" value="{{ venta.total }}" class="glass-input" style="color: var(--warning); font-weight: bold;" readonly required></div>
+            
+            <button type="submit" class="btn-submit" style="background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);">Guardar Cambios</button>
+            <a href="/pageventas/" class="btn-submit" style="background: rgba(255,255,255,0.05) !important; color: var(--text-muted) !important; box-shadow: none;">Cancelar</a>
         </form>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const checkboxes = document.querySelectorAll('.venta-check');
+        const inputTotal = document.getElementById('venta-total');
+
+        function calcularTotalVenta() {
+            let total = 0;
+            checkboxes.forEach(chk => { if (chk.checked) total += parseFloat(chk.getAttribute('data-precio')) || 0; });
+            inputTotal.value = total.toFixed(2);
+        }
+
+        checkboxes.forEach(chk => { chk.addEventListener('change', calcularTotalVenta); });
+    });
+</script>
 {% endblock %}

@@ -1,17 +1,22 @@
 from django.urls import path
 from .views import (
-    listar_inactivos, listarempleados, listar_todos_empleados, crearempleado, 
-    desactivarempleado, editarempleado, consultarempleado, restaurarempleado,
-    # Si tienes las de nómina, impórtalas también: listarnominas, crearnomina
+    pageempleados,
+    pageempleados_todos,
+    nuevo_empleado,
+    editar_empleado,
+    consultar_empleado,
+    desactivar_empleado,
+    listar_inactivos,
+    restaurarempleado,
 )
 
 urlpatterns = [
-    path('', listarempleados),
-    path('todos/', listar_todos_empleados),
-    path('nuevo/', crearempleado),
-    path('desactivar/<int:id>/', desactivarempleado),
-    path('editar/<int:id>/', editarempleado),
-    path('consultar/<int:id>/', consultarempleado),
+    path('', pageempleados),
+    path('todos/', pageempleados_todos),
+    path('nuevo/', nuevo_empleado),
+    path('desactivar/<int:id>/', desactivar_empleado),
+    path('editar/<int:id>/', editar_empleado),
+    path('consultar/<int:id>/', consultar_empleado),
     path('inactivos/', listar_inactivos, name='listar_inactivos'),
     path('restaurar/<int:id>/', restaurarempleado, name='restaurarempleado'),
 ]

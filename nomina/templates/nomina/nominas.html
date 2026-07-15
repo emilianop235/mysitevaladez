@@ -4,9 +4,7 @@
 
 {% block section_title %}
     <i class="fa-solid fa-money-check-dollar" style="color: var(--neon-green);"></i> Finanzas y Cálculo de Nómina
-{% endblock %}
-
-{% block content %}
+{% endblock %} {% block content %}
 <div class="glass-panel" style="flex: 0 0 360px; height: fit-content; max-height: 85vh; overflow-y: auto;">
     <h3 style="color: var(--white); margin-bottom: 20px; font-size: 14px; text-transform: uppercase;"><i class="fa-solid fa-calculator" style="color: var(--neon-green);"></i> Calcular Periodo</h3>
     <form action="/pagenomina/nuevo/" method="POST">
@@ -16,20 +14,21 @@
         
         <div class="form-group">
             <label>Colaborador Beneficiario</label>
-            <select name="empleado_id" class="glass-input" required>
-                <option value="">-- Selecciona un Colaborador --</option>
+            <select name="empleado_id" id="select-empleado" class="glass-input" required>
+                <option value="" data-salario="0">-- Selecciona un Colaborador --</option>
                 {% for e in empleados %}
-                    <option value="{{ e.id }}">{{ e.nombre }} {{ e.apellido }}</option>
+                    <option value="{{ e.id }}" data-salario="{{ e.salario_base }}">{{ e.nombre }} {{ e.apellido }}</option>
                 {% endfor %}
             </select>
         </div>
 
-        <div class="form-group"><label>Salario Base ($)</label><input type="number" step="0.01" name="salario" class="glass-input" required></div>
-        <div class="form-group"><label>Percepciones Adicionales ($)</label><input type="number" step="0.01" name="perceciones" class="glass-input" required></div>
-        <div class="form-group"><label>Deducciones ($)</label><input type="number" step="0.01" name="deducciones" class="glass-input" required></div>
-        <div class="form-group"><label>Monto Neto a Pagar ($)</label><input type="number" step="0.01" name="total" class="glass-input" required></div>
+        <div class="form-group"><label>Salario Base ($)</label><input type="number" step="0.01" name="salario" id="calc-salario" class="glass-input" style="background: rgba(255,255,255,0.05); color: var(--text-muted);" readonly required></div>
+        <div class="form-group"><label>Percepciones Adicionales ($)</label><input type="number" step="0.01" name="perceciones" id="calc-percepciones" class="glass-input" required></div>
+        <div class="form-group"><label>Deducciones ($)</label><input type="number" step="0.01" name="deducciones" id="calc-deducciones" class="glass-input" required></div>
         
-        <button type="submit" class="btn-submit">Efectuar Pago</button>
+        <div class="form-group"><label>Monto Neto a Pagar ($)</label><input type="number" step="0.01" name="total" id="calc-total" class="glass-input" style="background: rgba(0,255,170,0.1); color: var(--neon-green); font-weight: bold; font-size: 16px;" readonly required></div>
+        
+        <button type="submit" class="btn-submit">Efectuar Pago Automático</button>
     </form>
 </div>
 
@@ -75,4 +74,31 @@
         </table>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const selectEmpleado = document.getElementById('select-empleado');
+        const inputSalario = document.getElementById('calc-salario');
+        const inputPercepciones = document.getElementById('calc-percepciones');
+        const inputDeducciones = document.getElementById('calc-deducciones');
+        const inputTotal = document.getElementById('calc-total');
+
+        function calcularNomina() {
+            let s = parseFloat(inputSalario.value) || 0;
+            let p = parseFloat(inputPercepciones.value) || 0;
+            let d = parseFloat(inputDeducciones.value) || 0;
+            inputTotal.value = (s + p - d).toFixed(2); 
+        }
+
+        selectEmpleado.addEventListener('change', function() {
+            const opcionSeleccionada = this.options[this.selectedIndex];
+            const salarioFijo = opcionSeleccionada.getAttribute('data-salario');
+            inputSalario.value = salarioFijo;
+            calcularNomina();
+        });
+
+        inputPercepciones.addEventListener('input', calcularNomina);
+        inputDeducciones.addEventListener('input', calcularNomina);
+    });
+</script>
 {% endblock %}
