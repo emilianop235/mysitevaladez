@@ -1,11 +1,13 @@
 from django.urls import path
 from .views import (
+    listar_inactivos,
     listarproductos, 
     listar_todos_productos, 
     crearproducto, 
     desactivarproducto, 
     editarproducto, 
-    consultarproducto
+    consultarproducto,
+    restaurarproducto
 )
 
 urlpatterns = [
@@ -15,4 +17,6 @@ urlpatterns = [
     path('desactivar/<int:id>/', desactivarproducto),
     path('editar/<int:id>/', editarproducto),
     path('consultar/<int:id>/', consultarproducto),
+    path('inactivos/', listar_inactivos, name='listar_inactivos'),
+    path('restaurar/<int:id>/', restaurarproducto, name='restaurarproducto'),
 ]

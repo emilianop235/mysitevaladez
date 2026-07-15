@@ -39,3 +39,13 @@ def editarinventario(request, id):
 def consultarinventario(request, id):
     inv = get_object_or_404(inventarios, id=id)
     return render(request, 'inventarios/consultar_inventario.html', {'inventario': inv})
+
+def listar_inactivos(request):
+    consultainventarios = inventarios.objects.filter(estatus=False).order_by('-id')
+    return render(request, 'inventarios/inactivos.html', {'consultainventarios': consultainventarios})
+
+def restaurarinventario(request, id):
+    inv = get_object_or_404(inventarios, id=id)
+    inv.estatus = True
+    inv.save()
+    return redirect('/pageinventarios/')

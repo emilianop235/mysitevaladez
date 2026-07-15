@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
+
 {% block title %}Productos - EcoCRM{% endblock %}
-{% block section_title %}<i class="fa-solid fa-box" style="color: var(--neon-cyan);"></i> Catálogo de Productos{% endblock %}
+
+{% block section_title %}
+    <i class="fa-solid fa-box" style="color: var(--neon-cyan);"></i> Catálogo de Productos
+{% endblock %}
 
 {% block content %}
 <div class="glass-panel" style="flex: 0 0 350px; height: fit-content; max-height: 85vh; overflow-y: auto;">
@@ -18,12 +22,16 @@
 <div class="glass-panel" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <h3 style="color: var(--white); font-size: 14px; text-transform: uppercase; margin: 0;"><i class="fa-solid fa-list"></i> Listado Comercial</h3>
-        {% if mostrar_todos %}
-            <a href="/pageproductos/" class="btn-submit" style="width: auto; padding: 8px 15px; background: rgba(255,255,255,0.1) !important; color: white !important; box-shadow: none; margin-top: 0 !important;"><i class="fa-solid fa-clock-rotate-left"></i> Recientes</a>
-        {% else %}
-            <a href="/pageproductos/todos/" class="btn-submit" style="width: auto; padding: 8px 15px; margin-top: 0 !important;"><i class="fa-solid fa-table-list"></i> Ver Todos</a>
-        {% endif %}
+        <div style="display: flex; gap: 10px; align-items: center;">
+            {% if mostrar_todos %}
+                <a href="/pageproductos/" class="btn-submit" style="width: auto; padding: 8px 15px; background: rgba(255,255,255,0.08) !important; color: white !important; box-shadow: none; margin-top: 0 !important;"><i class="fa-solid fa-clock-rotate-left"></i> Recientes</a>
+            {% else %}
+                <a href="/pageproductos/todos/" class="btn-submit" style="width: auto; padding: 8px 15px; margin-top: 0 !important;"><i class="fa-solid fa-table-list"></i> Ver Todos</a>
+            {% endif %}
+            <a href="/pageproductos/inactivos/" class="btn-submit" style="width: auto; padding: 8px 15px; margin-top: 0 !important; background: rgba(239, 68, 68, 0.1) !important; border: 1px solid var(--danger) !important; color: var(--danger) !important; box-shadow: none;"><i class="fa-solid fa-trash-can-arrow-up"></i> Papelera</a>
+        </div>
     </div>
+    
     <div style="flex: 1; overflow-y: auto; margin-top: 15px;">
         <table class="glass-table">
             <thead>
@@ -38,11 +46,11 @@
                     <td style="text-align: center;">
                         <a href="/pageproductos/consultar/{{ p.id }}/" class="action-btn btn-view"><i class="fa-solid fa-eye"></i></a>
                         <a href="/pageproductos/editar/{{ p.id }}/" class="action-btn btn-edit"><i class="fa-solid fa-pen"></i></a>
-                        <a href="/pageproductos/desactivar/{{ p.id }}/" class="action-btn btn-delete"><i class="fa-solid fa-trash"></i></a>
+                        <a href="/pageproductos/desactivar/{{ p.id }}/" class="action-btn btn-delete" onclick="return confirm('¿Desactivar producto?');"><i class="fa-solid fa-trash"></i></a>
                     </td>
                 </tr>
                 {% empty %}
-                <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Sin productos.</td></tr>
+                <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Sin productos registrados.</td></tr>
                 {% endfor %}
             </tbody>
         </table>

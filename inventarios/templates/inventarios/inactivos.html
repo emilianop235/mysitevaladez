@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Papelera Almacén - EcoCRM{% endblock %}
+{% block section_title %}<i class="fa-solid fa-trash-can-arrow-up" style="color: var(--danger);"></i> Registros Inactivos{% endblock %}
+
+{% block content %}
+<div class="glass-panel-danger">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 style="color: var(--danger); font-size: 14px; text-transform: uppercase; margin: 0;"><i class="fa-solid fa-triangle-exclamation"></i> Lotes Retirados</h3>
+        <a href="/pageinventarios/" class="btn-submit" style="width: auto; padding: 8px 15px; margin-top: 0 !important; background: rgba(255,255,255,0.1) !important; color: white !important; box-shadow: none;"><i class="fa-solid fa-arrow-left"></i> Volver a Activos</a>
+    </div>
+    <div style="flex: 1; overflow-y: auto;">
+        <table class="glass-table">
+            <thead><tr><th>Lote / Artículo</th><th>Valor</th><th>Stock</th><th style="text-align: center;">Acción</th></tr></thead>
+            <tbody>
+                {% for i in consultainventarios %}
+                <tr style="opacity: 0.7;">
+                    <td style="font-weight: 600; color: var(--danger); text-decoration: line-through;">{{ i.nombre }}</td>
+                    <td>${{ i.precio }}</td><td>{{ i.cantidad }} Unds.</td>
+                    <td style="text-align: center;"><a href="/pageinventarios/restaurar/{{ i.id }}/" class="btn-restore" onclick="return confirm('¿Restaurar lote?');"><i class="fa-solid fa-rotate-left"></i> Restaurar</a></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Papelera vacía.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

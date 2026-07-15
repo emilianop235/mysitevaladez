@@ -39,3 +39,13 @@ def editarempleado(request, id):
 def consultarempleado(request, id):
     empleado = get_object_or_404(Empleado, id=id)
     return render(request, 'empleados/consultar_empleado.html', {'empleado': empleado})
+
+def listar_inactivos(request):
+    consultaempleados = Empleado.objects.filter(estatus=False).order_by('-id')
+    return render(request, 'empleados/inactivos.html', {'consultaempleados': consultaempleados})
+
+def restaurarempleado(request, id):
+    empleado = get_object_or_404(Empleado, id=id)
+    empleado.estatus = True
+    empleado.save()
+    return redirect('/pageempleados/')

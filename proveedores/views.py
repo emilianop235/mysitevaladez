@@ -39,3 +39,13 @@ def editarproveedor(request, id):
 def consultarproveedor(request, id):
     prov = get_object_or_404(proveedores, id=id)
     return render(request, 'proveedores/consultar_proveedor.html', {'proveedor': prov})
+
+def listar_inactivos(request):
+    consultaproveedores = proveedores.objects.filter(estatus=False).order_by('-id')
+    return render(request, 'proveedores/inactivos.html', {'consultaproveedores': consultaproveedores})
+
+def restaurarproveedor(request, id):
+    prov = get_object_or_404(proveedores, id=id)
+    prov.estatus = True
+    prov.save()
+    return redirect('/pageproveedores/')

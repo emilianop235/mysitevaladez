@@ -60,3 +60,13 @@ def editarcompra(request, id):
 def consultarcompra(request, id):
     comp = get_object_or_404(compras, id=id)
     return render(request, 'compras/consultar_compra.html', {'compra': comp})
+
+def listar_inactivos(request):
+    consultacompras = compras.objects.filter(estatus=False).order_by('-id')
+    return render(request, 'compras/inactivos.html', {'consultacompras': consultacompras})
+
+def restaurarcompra(request, id):
+    comp = get_object_or_404(compras, id=id)
+    comp.estatus = True
+    comp.save()
+    return redirect('/pagecompras/')

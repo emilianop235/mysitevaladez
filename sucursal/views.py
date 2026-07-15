@@ -39,3 +39,13 @@ def editarsucursal(request, id):
 def consultarsucursal(request, id):
     suc = get_object_or_404(sucursal, id=id)
     return render(request, 'sucursal/consultar_sucursal.html', {'sucursal': suc})
+
+def listar_inactivos(request):
+    consultasucursales = sucursal.objects.filter(estatus=False).order_by('-id')
+    return render(request, 'sucursal/inactivos.html', {'consultasucursales': consultasucursales})
+
+def restaurarsucursal(request, id):
+    suc = get_object_or_404(sucursal, id=id)
+    suc.estatus = True
+    suc.save()
+    return redirect('/pagesucursal/')

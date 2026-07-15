@@ -6,24 +6,9 @@
     <i class="fa-solid fa-user-shield" style="color: var(--neon-green);"></i> Control de Usuarios y Seguridad
 {% endblock %}
 
-{% block extra_css %}
-<style>
-    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 25px; box-shadow: var(--glass-glow); }
-    .section-label { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
-    .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
-    .glass-input { width: 100%; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--glass-border); color: var(--white); padding: 10px 12px; border-radius: 8px; font-size: 14px; outline: none; }
-    .glass-input:focus { border-color: var(--neon-green); }
-    .glass-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-    .glass-table th { background: rgba(255, 255, 255, 0.05); color: var(--text-muted); font-size: 11px; font-weight: 700; padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--glass-border); }
-    .glass-table td { padding: 14px 15px; color: var(--text-main); font-size: 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.03); }
-    .action-btn { background: none; border: none; cursor: pointer; font-size: 16px; margin-right: 10px; text-decoration: none; display: inline-block; }
-</style>
-{% endblock %}
-
 {% block content %}
 <div class="glass-panel" style="flex: 0 0 350px; height: fit-content; max-height: 85vh; overflow-y: auto;">
-    <h3 class="section-label"><i class="fa-solid fa-user-plus" style="color: var(--neon-green);"></i> Crear Credencial</h3>
+    <h3 style="color: var(--white); margin-bottom: 20px; font-size: 14px; text-transform: uppercase;"><i class="fa-solid fa-user-plus" style="color: var(--neon-green);"></i> Crear Credencial</h3>
     <form action="/pageusuarios/nuevo/" method="POST">
         {% csrf_token %}
         <div class="form-group"><label>Nombre Completo</label><input type="text" name="nombre" class="glass-input" required></div>
@@ -34,25 +19,27 @@
         <div class="form-group">
             <label>Nivel de Permisos (Grupo)</label>
             <select name="grupo_id" class="glass-input" required>
-                <option value="" style="color: black;">-- Selecciona un Rol --</option>
+                <option value="">-- Selecciona un Rol --</option>
                 {% for g in grupos_lista %}
-                    <option value="{{ g.id }}" style="color: black;">{{ g.nombre }}</option>
+                    <option value="{{ g.id }}">{{ g.nombre }}</option>
                 {% endfor %}
             </select>
         </div>
-
         <button type="submit" class="btn-submit">Dar de Alta Cuenta</button>
     </form>
 </div>
 
 <div class="glass-panel" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
     <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h3 class="section-label" style="margin-bottom: 0;"><i class="fa-solid fa-users-gear"></i> Credenciales de Acceso</h3>
-        {% if mostrar_todos %}
-            <a href="/pageusuarios/" class="btn-submit" style="width: auto; padding: 8px 15px; background: rgba(255,255,255,0.1) !important; color: white !important; box-shadow: none;"><i class="fa-solid fa-clock-rotate-left"></i> Recientes</a>
-        {% else %}
-            <a href="/pageusuarios/todos/" class="btn-submit" style="width: auto; padding: 8px 15px;"><i class="fa-solid fa-table-list"></i> Ver Todos</a>
-        {% endif %}
+        <h3 style="color: var(--white); font-size: 14px; text-transform: uppercase; margin: 0;"><i class="fa-solid fa-users-gear"></i> Credenciales de Acceso</h3>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            {% if mostrar_todos %}
+                <a href="/pageusuarios/" class="btn-submit" style="width: auto; padding: 8px 15px; background: rgba(255,255,255,0.08) !important; color: white !important; box-shadow: none; margin-top: 0 !important;"><i class="fa-solid fa-clock-rotate-left"></i> Recientes</a>
+            {% else %}
+                <a href="/pageusuarios/todos/" class="btn-submit" style="width: auto; padding: 8px 15px; margin-top: 0 !important;"><i class="fa-solid fa-table-list"></i> Ver Todos</a>
+            {% endif %}
+            <a href="/pageusuarios/inactivos/" class="btn-submit" style="width: auto; padding: 8px 15px; margin-top: 0 !important; background: rgba(239, 68, 68, 0.1) !important; border: 1px solid var(--danger) !important; color: var(--danger) !important; box-shadow: none;"><i class="fa-solid fa-trash-can-arrow-up"></i> Papelera</a>
+        </div>
     </div>
     
     <div style="flex: 1; overflow-y: auto; margin-top: 15px;">
@@ -80,11 +67,11 @@
                         <td style="text-align: center;">
                             <a href="/pageusuarios/consultar/{{ u.id }}/" class="action-btn btn-view"><i class="fa-solid fa-eye"></i></a>
                             <a href="/pageusuarios/editar/{{ u.id }}/" class="action-btn btn-edit"><i class="fa-solid fa-pen"></i></a>
-                            <a href="/pageusuarios/desactivar/{{ u.id }}/" class="action-btn btn-delete" onclick="return confirm('¿Bloquear acceso a este operador?');"><i class="fa-solid fa-ban"></i></a>
+                            <a href="/pageusuarios/desactivar/{{ u.id }}/" class="action-btn btn-delete" onclick="return confirm('¿Bloquear acceso?');"><i class="fa-solid fa-ban"></i></a>
                         </td>
                     </tr>
                 {% empty %}
-                    <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">No hay operadores registrados en la base de datos.</td></tr>
+                    <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">No hay operadores activos.</td></tr>
                 {% endfor %}
             </tbody>
         </table>

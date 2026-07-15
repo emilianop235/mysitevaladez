@@ -50,3 +50,13 @@ def editarnomina(request, id):
 def consultarnomina(request, id):
     nom = get_object_or_404(nomina, id=id)
     return render(request, 'nomina/consultar_nomina.html', {'nomina': nom})
+
+def listar_inactivos(request):
+    consultanominas = nomina.objects.filter(estatus=False).order_by('-id')
+    return render(request, 'nomina/inactivos.html', {'consultanominas': consultanominas})
+
+def restaurarnomina(request, id):
+    nom = get_object_or_404(nomina, id=id)
+    nom.estatus = True
+    nom.save()
+    return redirect('/pagenomina/')

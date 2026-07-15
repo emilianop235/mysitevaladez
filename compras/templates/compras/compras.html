@@ -3,30 +3,12 @@
 {% block title %}Compras - EcoCRM{% endblock %}
 
 {% block section_title %}
-    <i class="fa-solid fa-bag-shopping" style="color: var(--neon-green);"></i> Abastecimiento y Órdenes de Compra
-{% endblock %}
-
-{% block extra_css %}
-<style>
-    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 25px; box-shadow: var(--glass-glow); }
-    .section-label { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
-    .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
-    .glass-input { width: 100%; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--glass-border); color: var(--white); padding: 10px 12px; border-radius: 8px; font-size: 14px; outline: none; }
-    .glass-input:focus { border-color: var(--neon-green); }
-    .glass-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-    .glass-table th { background: rgba(255, 255, 255, 0.05); color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--glass-border); }
-    .glass-table td { padding: 14px 15px; color: var(--text-main); font-size: 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.03); }
-    .action-btn { background: none; border: none; cursor: pointer; font-size: 16px; margin-right: 10px; transition: 0.3s; text-decoration: none; display: inline-block; }
-    .btn-view { color: var(--neon-cyan); }
-    .btn-edit { color: var(--warning); }
-    .btn-delete { color: var(--danger); }
-</style>
+    <i class="fa-solid fa-bag-shopping" style="color: var(--neon-green);"></i> Suministro de Mercancías
 {% endblock %}
 
 {% block content %}
-<div class="glass-panel" style="flex: 0 0 350px; height: fit-content; overflow-y: auto;">
-    <h3 class="section-label"><i class="fa-solid fa-cart-flatbed-suitcase" style="color: var(--neon-green);"></i> Alta de Suministro</h3>
+<div class="glass-panel" style="flex: 0 0 350px; height: fit-content; max-height: 85vh; overflow-y: auto;">
+    <h3 style="color: var(--white); margin-bottom: 20px; font-size: 14px; text-transform: uppercase;"><i class="fa-solid fa-cart-flatbed-suitcase" style="color: var(--neon-green);"></i> Alta de Suministro</h3>
     <form action="/pagecompras/nuevo/" method="POST">
         {% csrf_token %}
         <div class="form-group"><label>Folio de Compra</label><input type="text" name="folio" placeholder="C-001" class="glass-input" required></div>
@@ -35,7 +17,7 @@
             <label>Seleccionar Proveedor(es)</label>
             <select name="proveedores_seleccionados" multiple class="glass-input" style="height: 80px;" required>
                 {% for p in proveedores_lista %}
-                    <option value="{{ p.id }}" style="color: black;">{{ p.nombre }} {{ p.apellido }}</option>
+                    <option value="{{ p.id }}">{{ p.nombre }} {{ p.apellido }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -44,7 +26,7 @@
             <label>Artículos a Solicitar</label>
             <select name="productos_seleccionados" multiple class="glass-input" style="height: 80px;" required>
                 {% for prod in productos_lista %}
-                    <option value="{{ prod.id }}" style="color: black;">{{ prod.nombre }}</option>
+                    <option value="{{ prod.id }}">{{ prod.nombre }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -61,12 +43,15 @@
 
 <div class="glass-panel" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
     <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h3 class="section-label" style="margin-bottom: 0;"><i class="fa-solid fa-list-check"></i> Órdenes en Sistema</h3>
-        {% if mostrar_todos %}
-            <a href="/pagecompras/" class="btn-submit" style="width: auto; padding: 8px 15px; background: rgba(255,255,255,0.1) !important; color: white !important; box-shadow: none;"><i class="fa-solid fa-clock-rotate-left"></i> Recientes</a>
-        {% else %}
-            <a href="/pagecompras/todos/" class="btn-submit" style="width: auto; padding: 8px 15px;"><i class="fa-solid fa-table-list"></i> Ver Todas</a>
-        {% endif %}
+        <h3 style="color: var(--white); font-size: 14px; text-transform: uppercase; margin: 0;"><i class="fa-solid fa-list-check"></i> Órdenes en Sistema</h3>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            {% if mostrar_todos %}
+                <a href="/pagecompras/" class="btn-submit" style="width: auto; padding: 8px 15px; background: rgba(255,255,255,0.08) !important; color: white !important; box-shadow: none; margin-top: 0 !important;"><i class="fa-solid fa-clock-rotate-left"></i> Recientes</a>
+            {% else %}
+                <a href="/pagecompras/todos/" class="btn-submit" style="width: auto; padding: 8px 15px; margin-top: 0 !important;"><i class="fa-solid fa-list-check"></i> Ver Todas</a>
+            {% endif %}
+            <a href="/pagecompras/inactivos/" class="btn-submit" style="width: auto; padding: 8px 15px; margin-top: 0 !important; background: rgba(239, 68, 68, 0.1) !important; border: 1px solid var(--danger) !important; color: var(--danger) !important; box-shadow: none;"><i class="fa-solid fa-trash-can-arrow-up"></i> Papelera</a>
+        </div>
     </div>
     
     <div style="flex: 1; overflow-y: auto; margin-top: 15px;">

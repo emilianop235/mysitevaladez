@@ -1,59 +1,41 @@
 {% extends 'base.html' %}
+
 {% block title %}Inventarios - EcoCRM{% endblock %}
 
 {% block section_title %}
     <i class="fa-solid fa-boxes-stacked" style="color: var(--neon-green);"></i> Control Logístico de Almacén
 {% endblock %}
 
-{% block extra_css %}
-<!-- Utiliza el mismo CSS base para mantener la integridad visual -->
-<style>
-    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 25px; box-shadow: var(--glass-glow); }
-    .section-label { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
-    .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
-    .glass-input { width: 100%; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--glass-border); color: var(--white); padding: 10px 12px; border-radius: 8px; font-size: 14px; outline: none; }
-    .glass-input:focus { border-color: var(--neon-green); }
-    .glass-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-    .glass-table th { background: rgba(255, 255, 255, 0.05); color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--glass-border); }
-    .glass-table td { padding: 12px 15px; color: var(--text-main); font-size: 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.03); }
-    .action-btn { background: none; border: none; cursor: pointer; font-size: 16px; margin-right: 10px; text-decoration: none; display: inline-block; }
-    .btn-view { color: var(--neon-cyan); } .btn-edit { color: var(--warning); } .btn-delete { color: var(--danger); }
-</style>
-{% endblock %}
-
 {% block content %}
 <div class="glass-panel" style="flex: 0 0 350px; height: fit-content; max-height: 85vh; overflow-y: auto;">
-    <h3 class="section-label"><i class="fa-solid fa-box-open" style="color: var(--neon-green);"></i> Registrar Existencia</h3>
+    <h3 style="color: var(--white); margin-bottom: 20px; font-size: 14px; text-transform: uppercase;"><i class="fa-solid fa-box-open" style="color: var(--neon-green);"></i> Registrar Existencia</h3>
     <form action="/pageinventarios/nuevo/" method="POST">
         {% csrf_token %}
         <div class="form-group"><label>Nombre del Elemento</label><input type="text" name="nombre" class="glass-input" required></div>
         <div class="form-group"><label>Descripción Técnica</label><textarea name="descripcion" class="glass-input" rows="3" required></textarea></div>
         <div class="form-group"><label>Valor Unitario ($)</label><input type="number" step="0.01" name="precio" class="glass-input" required></div>
         <div class="form-group"><label>Cantidad en Stock</label><input type="number" name="cantidad" class="glass-input" required></div>
-        <button type="submit" class="btn-submit" style="margin-top: 10px;">Añadir al Stock</button>
+        <button type="submit" class="btn-submit">Añadir al Stock</button>
     </form>
 </div>
 
 <div class="glass-panel" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
     <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h3 class="section-label" style="margin-bottom: 0;"><i class="fa-solid fa-warehouse"></i> Existencias Físicas</h3>
-        {% if mostrar_todos %}
-            <a href="/pageinventarios/" class="btn-submit" style="width: auto; padding: 8px 15px; background: rgba(255,255,255,0.1) !important; color: white !important; box-shadow: none;"><i class="fa-solid fa-clock-rotate-left"></i> Recientes</a>
-        {% else %}
-            <a href="/pageinventarios/todos/" class="btn-submit" style="width: auto; padding: 8px 15px;"><i class="fa-solid fa-table-list"></i> Ver Todos</a>
-        {% endif %}
+        <h3 style="color: var(--white); font-size: 14px; text-transform: uppercase; margin: 0;"><i class="fa-solid fa-warehouse"></i> Existencias Físicas</h3>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            {% if mostrar_todos %}
+                <a href="/pageinventarios/" class="btn-submit" style="width: auto; padding: 8px 15px; background: rgba(255,255,255,0.08) !important; color: white !important; box-shadow: none; margin-top: 0 !important;"><i class="fa-solid fa-clock-rotate-left"></i> Recientes</a>
+            {% else %}
+                <a href="/pageinventarios/todos/" class="btn-submit" style="width: auto; padding: 8px 15px; margin-top: 0 !important;"><i class="fa-solid fa-table-list"></i> Ver Todos</a>
+            {% endif %}
+            <a href="/pageinventarios/inactivos/" class="btn-submit" style="width: auto; padding: 8px 15px; margin-top: 0 !important; background: rgba(239, 68, 68, 0.1) !important; border: 1px solid var(--danger) !important; color: var(--danger) !important; box-shadow: none;"><i class="fa-solid fa-trash-can-arrow-up"></i> Papelera</a>
+        </div>
     </div>
     
     <div style="flex: 1; overflow-y: auto; margin-top: 15px;">
         <table class="glass-table">
             <thead>
-                <tr>
-                    <th>Lote / Artículo</th>
-                    <th>Valor Ref.</th>
-                    <th>Stock Físico</th>
-                    <th style="text-align: center;">Acciones</th>
-                </tr>
+                <tr><th>Lote / Artículo</th><th>Valor Ref.</th><th>Stock Físico</th><th style="text-align: center;">Acciones</th></tr>
             </thead>
             <tbody>
                 {% for i in consultainventarios %}
@@ -68,7 +50,7 @@
                         </td>
                     </tr>
                 {% empty %}
-                    <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Almacén general vacío.</td></tr>
+                    <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Almacén vacío.</td></tr>
                 {% endfor %}
             </tbody>
         </table>

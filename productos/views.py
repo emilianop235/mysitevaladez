@@ -39,3 +39,13 @@ def editarproducto(request, id):
 def consultarproducto(request, id):
     prod = get_object_or_404(producto, id=id)
     return render(request, 'productos/consultar_producto.html', {'producto': prod})
+
+def listar_inactivos(request):
+    consultaproductos = producto.objects.filter(estatus=False).order_by('-id')
+    return render(request, 'productos/inactivos.html', {'consultaproductos': consultaproductos})
+
+def restaurarproducto(request, id):
+    prod = get_object_or_404(producto, id=id)
+    prod.estatus = True
+    prod.save()
+    return redirect('/pageproductos/')

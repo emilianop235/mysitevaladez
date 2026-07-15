@@ -41,3 +41,13 @@ def editarcliente(request, id):
 def consultarcliente(request, id):
     cliente = get_object_or_404(Cliente, id=id)
     return render(request, 'clientes/consultar_cliente.html', {'cliente': cliente})
+
+def listar_inactivos(request):
+    consultaclientes = Cliente.objects.filter(estatus=False).order_by('-id')
+    return render(request, 'clientes/inactivos.html', {'consultaclientes': consultaclientes})
+
+def restaurarcliente(request, id):
+    cliente = get_object_or_404(Cliente, id=id)
+    cliente.estatus = True
+    cliente.save()
+    return redirect('/pageclientes/')

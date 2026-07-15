@@ -35,3 +35,13 @@ def editargrupo(request, id):
 def consultargrupo(request, id):
     grupo = get_object_or_404(grupos, id=id)
     return render(request, 'grupos/consultar_grupo.html', {'grupo': grupo})
+
+def listar_inactivos(request):
+    consultagrupos = grupos.objects.filter(estatus=False).order_by('-id')
+    return render(request, 'grupos/inactivos.html', {'consultagrupos': consultagrupos})
+
+def restaurargrupo(request, id):
+    grupo = get_object_or_404(grupos, id=id)
+    grupo.estatus = True
+    grupo.save()
+    return redirect('/pagegrupos/')

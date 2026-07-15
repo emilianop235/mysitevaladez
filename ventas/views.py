@@ -56,3 +56,13 @@ def editarventa(request, id):
 def consultarventa(request, id):
     venta = get_object_or_404(ventas, id=id)
     return render(request, 'ventas/consultar_venta.html', {'venta': venta})
+
+def listar_inactivos(request):
+    consultaventas = ventas.objects.filter(estatus=False).order_by('-id')
+    return render(request, 'ventas/inactivos.html', {'consultaventas': consultaventas})
+
+def restaurarventa(request, id):
+    venta = get_object_or_404(ventas, id=id)
+    venta.estatus = True
+    venta.save()
+    return redirect('/pageventas/')

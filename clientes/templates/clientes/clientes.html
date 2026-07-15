@@ -3,54 +3,28 @@
 {% block title %}Clientes - EcoCRM{% endblock %}
 
 {% block section_title %}
-    <i class="fa-solid fa-users" style="color: var(--primary);"></i> Gestión de Clientes
-{% endblock %}
-
-{% block extra_css %}
-<style>
-    /* Clases Reutilizables de Cristal para Formularios y Tablas */
-    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 25px; box-shadow: var(--glass-glow); }
-    .section-label { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1px; }
-    
-    .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
-    .glass-input { width: 100%; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--glass-border); color: var(--white); padding: 10px 12px; border-radius: 8px; font-size: 14px; outline: none; transition: border 0.3s; }
-    .glass-input:focus { border-color: var(--primary); background: rgba(0, 0, 0, 0.4); }
-    
-    .btn-submit { width: 100%; background: linear-gradient(135deg, var(--primary) 0%, #059669 100%); color: var(--white); border: none; padding: 12px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px var(--primary-glow); text-align: center; text-decoration: none; display: inline-block; margin-top: 10px;}
-    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4); }
-    
-    .glass-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-    .glass-table th { background: rgba(255, 255, 255, 0.05); color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--glass-border); }
-    .glass-table td { padding: 14px 15px; color: var(--text-main); font-size: 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.03); }
-    .glass-table tr:hover { background: rgba(255, 255, 255, 0.02); }
-    
-    .action-btn { background: none; border: none; cursor: pointer; font-size: 16px; margin-right: 10px; transition: 0.3s; text-decoration: none; }
-    .btn-view { color: var(--info); } .btn-view:hover { color: #60a5fa; transform: scale(1.1); }
-    .btn-edit { color: var(--warning); } .btn-edit:hover { color: #fbbf24; transform: scale(1.1); }
-    .btn-delete { color: var(--danger); } .btn-delete:hover { color: #f87171; transform: scale(1.1); }
-</style>
+    <i class="fa-solid fa-users" style="color: var(--neon-green);"></i> Gestión de Clientes
 {% endblock %}
 
 {% block content %}
-<div class="glass-panel" style="flex: 0 0 350px; height: fit-content; overflow-y: auto;">
-    <h3 class="section-label"><i class="fa-solid fa-user-plus" style="color: var(--primary);"></i> Nuevo Cliente</h3>
+<div class="glass-panel" style="flex: 0 0 350px; height: fit-content; max-height: 85vh; overflow-y: auto;">
+    <h3 style="color: var(--white); margin-bottom: 20px; font-size: 14px; text-transform: uppercase;"><i class="fa-solid fa-user-plus" style="color: var(--neon-green);"></i> Nuevo Cliente</h3>
     <form action="/pageclientes/nuevo/" method="POST">
         {% csrf_token %}
         <div class="form-group"><label>Nombre(s)</label><input type="text" name="nombre" class="glass-input" required></div>
         <div class="form-group"><label>Apellidos</label><input type="text" name="apellido" class="glass-input" required></div>
         <div class="form-group"><label>Sexo</label>
             <select name="sexo" class="glass-input" required>
-                <option value="Masculino" style="color: black;">Masculino</option>
-                <option value="Femenino" style="color: black;">Femenino</option>
-                <option value="Otro" style="color: black;">Otro</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Otro">Otro</option>
             </select>
         </div>
         <div class="form-group"><label>Tipo de Cliente</label>
             <select name="tipo" class="glass-input" required>
-                <option value="Minorista" style="color: black;">Minorista</option>
-                <option value="Mayorista" style="color: black;">Mayorista</option>
-                <option value="VIP" style="color: black;">VIP</option>
+                <option value="Minorista">Minorista</option>
+                <option value="Mayorista">Mayorista</option>
+                <option value="VIP">VIP</option>
             </select>
         </div>
         <div class="form-group"><label>Dirección</label><input type="text" name="direccion" class="glass-input" required></div>
@@ -60,15 +34,15 @@
 
 <div class="glass-panel" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
     <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h3 class="section-label" style="margin-bottom: 0;">
-            <i class="fa-solid fa-list" style="color: var(--text-muted);"></i> 
-            {% if mostrar_todos %}Directorio Completo{% else %}Últimos 5 Registros{% endif %}
-        </h3>
-        {% if mostrar_todos %}
-            <a href="/pageclientes/" class="btn-submit" style="width: auto; padding: 8px 15px; background: rgba(255,255,255,0.1); box-shadow: none;"><i class="fa-solid fa-clock-rotate-left"></i> Recientes</a>
-        {% else %}
-            <a href="/pageclientes/todos/" class="btn-submit" style="width: auto; padding: 8px 15px;"><i class="fa-solid fa-table-list"></i> Ver Todos</a>
-        {% endif %}
+        <h3 style="color: var(--white); font-size: 14px; text-transform: uppercase; margin: 0;"><i class="fa-solid fa-list"></i> Directorio de Clientes</h3>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            {% if mostrar_todos %}
+                <a href="/pageclientes/" class="btn-submit" style="width: auto; padding: 8px 15px; background: rgba(255,255,255,0.08) !important; color: white !important; box-shadow: none; margin-top: 0 !important;"><i class="fa-solid fa-clock-rotate-left"></i> Recientes</a>
+            {% else %}
+                <a href="/pageclientes/todos/" class="btn-submit" style="width: auto; padding: 8px 15px; margin-top: 0 !important;"><i class="fa-solid fa-table-list"></i> Ver Todos</a>
+            {% endif %}
+            <a href="/pageclientes/inactivos/" class="btn-submit" style="width: auto; padding: 8px 15px; margin-top: 0 !important; background: rgba(239, 68, 68, 0.1) !important; border: 1px solid var(--danger) !important; color: var(--danger) !important; box-shadow: none;"><i class="fa-solid fa-trash-can-arrow-up"></i> Papelera</a>
+        </div>
     </div>
     
     <div style="flex: 1; overflow-y: auto; margin-top: 15px;">
@@ -85,12 +59,12 @@
                 {% for c in consultaclientes %}
                     <tr>
                         <td style="font-weight: 600; color: var(--white);">{{ c.nombre }} {{ c.apellido }}</td>
-                        <td><span style="background: rgba(16, 185, 129, 0.1); color: var(--primary); padding: 4px 8px; border-radius: 4px; font-size: 11px;">{{ c.tipo }}</span></td>
+                        <td><span style="background: rgba(0, 255, 170, 0.1); color: var(--neon-green); padding: 4px 8px; border-radius: 4px; font-size: 11px;">{{ c.tipo }}</span></td>
                         <td>{{ c.direccion|truncatechars:30 }}</td>
                         <td style="text-align: center;">
-                            <a href="/pageclientes/consultar/{{ c.id }}/" class="action-btn btn-view" title="Ver"><i class="fa-solid fa-eye"></i></a>
-                            <a href="/pageclientes/editar/{{ c.id }}/" class="action-btn btn-edit" title="Editar"><i class="fa-solid fa-pen"></i></a>
-                            <a href="/pageclientes/desactivar/{{ c.id }}/" class="action-btn btn-delete" title="Borrar" onclick="return confirm('¿Desactivar este cliente?');"><i class="fa-solid fa-trash"></i></a>
+                            <a href="/pageclientes/consultar/{{ c.id }}/" class="action-btn btn-view"><i class="fa-solid fa-eye"></i></a>
+                            <a href="/pageclientes/editar/{{ c.id }}/" class="action-btn btn-edit"><i class="fa-solid fa-pen"></i></a>
+                            <a href="/pageclientes/desactivar/{{ c.id }}/" class="action-btn btn-delete" onclick="return confirm('¿Desactivar cliente?');"><i class="fa-solid fa-trash"></i></a>
                         </td>
                     </tr>
                 {% empty %}

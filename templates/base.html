@@ -207,9 +207,7 @@
         .glass-table tbody tr:hover {
             background-color: rgba(0, 255, 170, 0.05) !important;
         }
-        /* =========================================
-           CLASES FALTANTES: TABLAS Y FORMULARIOS
-           ========================================= */
+
         .glass-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         .glass-table th { background: rgba(255, 255, 255, 0.05); color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--glass-border); }
         .glass-table td { padding: 14px 15px; color: var(--text-main); font-size: 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.03); }
@@ -234,9 +232,14 @@
         .module-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px; }
         .module-action { font-size: 13px; font-weight: 600; color: var(--neon-cyan); display: flex; align-items: center; gap: 6px; margin-top: auto; transition: 0.3s; }
         .glass-card:hover .module-action { color: var(--neon-green); transform: translateX(5px); }
+    
+        .glass-panel-danger { background: var(--glass-bg) !important; border: 1px solid rgba(239, 68, 68, 0.4) !important; border-radius: 12px !important; padding: 25px !important; box-shadow: 0 8px 32px 0 rgba(239, 68, 68, 0.15) !important; flex: 1; display: flex; flex-direction: column; }
+        .btn-restore { color: var(--neon-green) !important; background: rgba(0, 255, 170, 0.1) !important; border: 1px solid rgba(0, 255, 170, 0.3) !important; padding: 6px 12px !important; border-radius: 6px !important; font-size: 13px !important; font-weight: 600 !important; text-decoration: none !important; transition: 0.3s !important; display: inline-block; }
+        .btn-restore:hover { background: var(--neon-green) !important; color: #090d16 !important; box-shadow: 0 0 10px var(--neon-green) !important; transform: scale(1.05); }
+    
     </style>
     
-    <!-- AQUI ESTÁ LA SOLUCIÓN: El bloque está AFUERA de la etiqueta style -->
+
     {% block extra_css %}{% endblock %}
 
 </head>

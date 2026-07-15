@@ -48,3 +48,13 @@ def editarusuario(request, id):
 def consultarusuario(request, id):
     user = get_object_or_404(usuarios, id=id)
     return render(request, 'usuarios/consultar_usuario.html', {'usuario_obj': user})
+
+def listar_inactivos(request):
+    consultausuarios = usuarios.objects.filter(estatus=False).order_by('-id')
+    return render(request, 'usuarios/inactivos.html', {'consultausuarios': consultausuarios})
+
+def restaurarusuario(request, id):
+    user = get_object_or_404(usuarios, id=id)
+    user.estatus = True
+    user.save()
+    return redirect('/pageusuarios/')
