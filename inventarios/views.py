@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import inventarios
+from productos.models import producto 
 
 def listarinventarios(request):
     consultainventarios = inventarios.objects.filter(estatus=True).order_by('-id')[:5]
@@ -11,11 +12,14 @@ def listar_todos_inventarios(request):
 
 def crearinventario(request):
     if request.method == 'POST':
+        # Obtenemos el ID del producto que el usuario seleccionó en el HTML
+        prod_id = request.POST.get('producto_id')
+        prod_obj = get_object_or_404(producto, id=prod_id)
+        
         inventarios.objects.create(
-            nombre=request.POST['nombre'],
-            descripcion=request.POST['descripcion'],
-            precio=request.POST['precio'],
-            cantidad=request.POST['cantidad']
+            producto=prod_obj, # Vinculamos el producto
+            cantidad=request.POST.get('cantidad'),
+            ubicacion=request.POST.get('ubicacion')
         )
     return redirect('/pageinventarios/')
 
@@ -28,13 +32,15 @@ def desactivarinventario(request, id):
 def editarinventario(request, id):
     inv = get_object_or_404(inventarios, id=id)
     if request.method == 'POST':
-        inv.nombre = request.POST['nombre']
-        inv.descripcion = request.POST['descripcion']
-        inv.precio = request.POST['precio']
-        inv.cantidad = request.POST['cantidad']
+        inv.cantidad = request.POST.get('cantidad')
+        inv.ubicacion = request.POST.get('ubicacion')
         inv.save()
         return redirect('/pageinventarios/')
-    return render(request, 'inventarios/editar_inventario.html', {'inventario': inv})
+    # Pasamos los productos por si el usuario quiere cambiar qué producto es (opcional)
+    return render(request, 'inventarios/editar_inventario.html', {
+        'inventario': inv,
+        'productos_lista': producto.objects.filter(estatus=True)
+    })
 
 def consultarinventario(request, id):
     inv = get_object_or_404(inventarios, id=id)
