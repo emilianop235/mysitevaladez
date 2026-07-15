@@ -12,12 +12,11 @@ def listar_todos_inventarios(request):
 
 def crearinventario(request):
     if request.method == 'POST':
-        # Obtenemos el ID del producto que el usuario seleccionó en el HTML
         prod_id = request.POST.get('producto_id')
         prod_obj = get_object_or_404(producto, id=prod_id)
         
         inventarios.objects.create(
-            producto=prod_obj, # Vinculamos el producto
+            producto=prod_obj, 
             cantidad=request.POST.get('cantidad'),
             ubicacion=request.POST.get('ubicacion')
         )
@@ -36,7 +35,6 @@ def editarinventario(request, id):
         inv.ubicacion = request.POST.get('ubicacion')
         inv.save()
         return redirect('/pageinventarios/')
-    # Pasamos los productos por si el usuario quiere cambiar qué producto es (opcional)
     return render(request, 'inventarios/editar_inventario.html', {
         'inventario': inv,
         'productos_lista': producto.objects.filter(estatus=True)
