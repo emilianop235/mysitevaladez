@@ -33,8 +33,8 @@ def crearcompra(request):
             iva=request.POST.get('iva'),
             total=request.POST.get('total')
         )
-        nueva_compra.proveedores.set(request.POST.getlist('proveedores_seleccionados'))
-        nueva_compra.productos.set(request.POST.getlist('productos_seleccionados'))
+        nueva_compra.proveedor.set(request.POST.getlist('proveedores_seleccionados'))
+        nueva_compra.producto.set(request.POST.getlist('productos_seleccionados'))
         return redirect('/pagecompras/')
     return redirect('/pagecompras/')
 
@@ -52,8 +52,8 @@ def editarcompra(request, id):
         compra.iva = request.POST.get('iva')
         compra.total = request.POST.get('total')
         compra.save()
-        compra.proveedores.set(request.POST.getlist('proveedores_seleccionados'))
-        compra.productos.set(request.POST.getlist('productos_seleccionados'))
+        compra.proveedor.set(request.POST.getlist('proveedores_seleccionados'))
+        compra.producto.set(request.POST.getlist('productos_seleccionados'))
         return redirect('/pagecompras/')
     
     return render(request, 'compras/editar_compra.html', {
