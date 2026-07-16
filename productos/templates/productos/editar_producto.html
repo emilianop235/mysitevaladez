@@ -1,23 +1,39 @@
 {% extends 'base.html' %}
-{% block title %}Editar Producto - EcoCRM{% endblock %}
-{% block section_title %}<i class="fa-solid fa-pen-to-square" style="color: var(--warning);"></i> Actualizar Catálogo{% endblock %}
+{% block title %}Ajuste Producto - EcoCRM{% endblock %}
+
+{% block section_title %}
+<i class="fa-solid fa-pen-to-square" style="color: var(--warning);"></i> Modificación de Ficha de Producto
+{% endblock %}
+
 {% block extra_css %}
 <style>
-    .glass-panel-center { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 35px; width: 420px; margin: 15px auto; box-shadow: var(--glass-glow); }
-    .btn-update { width: 100%; background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%); color: black; border: none; padding: 12px; font-size: 14px; font-weight: 700; border-radius: 8px; cursor: pointer; margin-top: 15px; margin-bottom: 10px; }
-    .btn-cancel { width: 100%; background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--glass-border); padding: 12px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; display: block; text-align: center; text-decoration: none; }
+    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 35px; box-shadow: var(--glass-glow); width: 428px; margin: 15px auto; max-height: 85vh; overflow-y: auto; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+    .glass-input { width: 100%; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--glass-border); color: var(--white); padding: 10px 12px; border-radius: 8px; font-size: 14px; outline: none; }
+    .btn-update { width: 100%; background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%); color: black; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 15px; margin-bottom: 10px; }
+    .btn-cancel { width: 100%; background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--glass-border); padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; text-align: center; display: block; text-decoration: none; }
 </style>
 {% endblock %}
+
 {% block content %}
-<div style="width: 100%; display: flex; justify-content: center;">
-    <div class="glass-panel-center">
-        <h3 style="text-align: center; color: var(--warning); margin-bottom: 25px;"><i class="fa-solid fa-box-open"></i> Modificar Artículo</h3>
+<div style="width: 100%; display: flex; align-items: center; justify-content: center;">
+    <div class="glass-panel">
+        <h3 style="text-align: center; color: var(--warning); margin-bottom: 25px;"><i class="fa-solid fa-box-open"></i> Editar Características</h3>
         <form method="POST" action="/pageproductos/editar/{{ producto.id }}/">
             {% csrf_token %}
-            <div class="form-group"><label>Nombre del Producto</label><input type="text" name="nombre" value="{{ producto.nombre }}" class="glass-input" required></div>
-            <div class="form-group"><label>Descripción</label><textarea name="descripcion" class="glass-input" required>{{ producto.descripcion }}</textarea></div>
-            <div class="form-group"><label>Precio ($)</label><input type="number" step="0.01" name="precio" value="{{ producto.precio }}" class="glass-input" required></div>
-            <div class="form-group"><label>Stock Disponible</label><input type="number" name="stock" value="{{ producto.stock }}" class="glass-input" required></div>
+            <div class="form-group">
+                <label>Nombre del Artículo</label>
+                <input type="text" name="nombre" value="{{ producto.nombre }}" class="glass-input" required>
+            </div>
+            <div class="form-group">
+                <label>Descripción Técnica</label>
+                <textarea name="descripcion" class="glass-input" rows="3" required>{{ producto.descripcion }}</textarea>
+            </div>
+            <div class="form-group">
+                <label>Precio de Coste ($)</label>
+                <input type="number" name="precio" step="0.01" value="{{ producto.precio }}" class="glass-input" required>
+            </div>
             <button type="submit" class="btn-update">Guardar Cambios</button>
             <a href="/pageproductos/" class="btn-cancel">Cancelar</a>
         </form>

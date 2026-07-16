@@ -2,32 +2,59 @@
 {% block title %}Kardex Artículo - EcoCRM{% endblock %}
 
 {% block section_title %}
-    <i class="fa-solid fa-magnifying-glass" style="color: var(--neon-cyan);"></i> Trazabilidad de Almacén
+<i class="fa-solid fa-magnifying-glass" style="color: var(--neon-cyan);"></i> Trazabilidad de Almacén
 {% endblock %}
 
 {% block extra_css %}
 <style>
-    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 35px; box-shadow: var(--glass-glow); width: 450px; margin: 20px auto; }
+    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 35px 35px 40px 35px; box-shadow: var(--glass-glow); width: 450px; margin: 20px auto; }
     .info-group { margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; }
     .info-group label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; }
     .info-group p { font-size: 16px; color: var(--white); font-weight: 500; }
-    .btn-back { width: 100%; background: rgba(255,255,255,0.05); color: var(--white); border: 1px solid var(--glass-border); padding: 12px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; display: block; text-align: center; text-decoration: none; margin-top: 30px; }
+    .btn-back { width: 100%; background: rgba(255,255,255,0.05); color: var(--white); border: 1px solid var(--glass-border); padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; text-align: center; display: block; text-decoration: none; margin-top: 25px; margin-bottom: 5px; transition: all 0.3s ease; }
+    .btn-back:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--neon-cyan); }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="glass-panel">
     <h3 style="text-align: center; color: var(--neon-cyan); margin-bottom: 25px;"><i class="fa-solid fa-clipboard-check"></i> Ficha de Stock</h3>
-    <div class="info-group"><label>Identificador del Elemento</label><p style="color: var(--neon-cyan); font-weight: 700; font-size: 18px;">{{ inventario.nombre }}</p></div>
-    <div class="info-group"><label>Detalle Físico</label><p>{{ inventario.descripcion }}</p></div>
-    
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-        <div class="info-group"><label>Valor Unitario Base</label><p>${{ inventario.precio }}</p></div>
-        <div class="info-group"><label>Existencia Física</label><p style="color: var(--neon-green); font-weight: 700;">{{ inventario.cantidad }} Unds.</p></div>
+    <div class="info-group">
+        <label>Identificador del Elemento</label>
+        <p style="color: var(--neon-cyan); font-weight: 700; font-size: 18px;">{{ inventario.nombre }}</p>
     </div>
-    
-    <div class="info-group"><label>Fecha de Ingreso Inicial</label><p>{{ inventario.fecha_income|date:"d/m/Y - H:i" }}</p></div>
-    <div class="info-group" style="border: none;"><label>Validación de Almacén</label><p style="color: var(--neon-green);"><i class="fa-solid fa-box-check"></i> Verificado</p></div>
+    <div class="info-group">
+        <label>Detalle Físico</label>
+        <p>{{ inventario.descripcion }}</p>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <div class="info-group">
+            <label>Valor Unitario Base</label>
+            <p>${{ inventario.precio }}</p>
+        </div>
+        <div class="info-group">
+            <label>Existencia Física</label>
+            <p style="color: var(--neon-green); font-weight: 700;">{{ inventario.cantidad }} Unds.</p>
+        </div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <div class="info-group">
+            <label>Ubicación Física</label>
+            <p>{{ inventario.ubicacion }}</p>
+        </div>
+        <div class="info-group">
+            <label>Sucursal Destino</label>
+            <p style="color: var(--warning);">{% if inventario.sucursal %}{{ inventario.sucursal.nombre }}{% else %}Central{% endif %}</p>
+        </div>
+    </div>
+    <div class="info-group">
+        <label>Fecha de Ingreso Inicial</label>
+        <p>{{ inventario.fecha_income|date:"d/m/Y - H:i" }}</p>
+    </div>
+    <div class="info-group" style="border: none; padding-bottom: 0; margin-bottom: 0;">
+        <label>Validación de Almacén</label>
+        <p style="color: var(--neon-green);"><i class="fa-solid fa-box-check"></i> Verificado</p>
+    </div>
     <a href="/pageinventarios/" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver a Logística</a>
 </div>
 {% endblock %}

@@ -1,20 +1,50 @@
 {% extends 'base.html' %}
-
 {% block title %}Inventarios - EcoCRM{% endblock %}
 
 {% block section_title %}
-    <i class="fa-solid fa-boxes-stacked" style="color: var(--neon-green);"></i> Control Logístico de Almacén
+<i class="fa-solid fa-boxes-stacked" style="color: var(--neon-green);"></i> Control Logístico de Almacén
 {% endblock %}
 
 {% block content %}
 <div class="glass-panel" style="flex: 0 0 350px; height: fit-content; max-height: 85vh; overflow-y: auto;">
-    <h3 style="color: var(--white); margin-bottom: 20px; font-size: 14px; text-transform: uppercase;"><i class="fa-solid fa-box-open" style="color: var(--neon-green);"></i> Registrar Existencia</h3>
+    <h3 style="color: var(--white); margin-bottom: 12px; font-size: 14px; text-transform: uppercase;"><i class="fa-solid fa-box-open" style="color: var(--neon-green);"></i> Registrar Existencia</h3>
     <form action="/pageinventarios/nuevo/" method="POST">
         {% csrf_token %}
-        <div class="form-group"><label>Nombre del Elemento</label><input type="text" name="nombre" class="glass-input" required></div>
-        <div class="form-group"><label>Descripción Técnica</label><textarea name="descripcion" class="glass-input" rows="3" required></textarea></div>
-        <div class="form-group"><label>Valor Unitario ($)</label><input type="number" step="0.01" name="precio" class="glass-input" required></div>
-        <div class="form-group"><label>Cantidad en Stock</label><input type="number" name="cantidad" class="glass-input" required></div>
+        <div class="form-group">
+            <label>Producto del Catálogo</label>
+            <select name="producto_id" class="glass-input" required>
+                <option value="">-- Selecciona un producto --</option>
+                {% for p in productos_lista %}
+                    <option value="{{ p.id }}">{{ p.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Sucursal Destino</label>
+            <select name="sucursal_id" class="glass-input" required>
+                <option value="">-- Selecciona una sucursal --</option>
+                {% for suc in sucursales_lista %}
+                    <option value="{{ suc.id }}">{{ suc.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Proveedor (Opcional)</label>
+            <select name="proveedor_id" class="glass-input">
+                <option value="">-- Sin proveedor --</option>
+                {% for prov in proveedores_lista %}
+                    <option value="{{ prov.id }}">{{ prov.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Ubicación Física</label>
+            <input type="text" name="ubicacion" class="glass-input" placeholder="Ej. Pasillo 3, Estante B" required>
+        </div>
+        <div class="form-group">
+            <label>Cantidad en Stock</label>
+            <input type="number" name="cantidad" class="glass-input" required>
+        </div>
         <button type="submit" class="btn-submit">Añadir al Stock</button>
     </form>
 </div>
@@ -31,26 +61,41 @@
             <a href="/pageinventarios/inactivos/" class="btn-submit" style="width: auto; padding: 8px 15px; margin-top: 0 !important; background: rgba(239, 68, 68, 0.1) !important; border: 1px solid var(--danger) !important; color: var(--danger) !important; box-shadow: none;"><i class="fa-solid fa-trash-can-arrow-up"></i> Papelera</a>
         </div>
     </div>
-    
+
     <div style="flex: 1; overflow-y: auto; margin-top: 15px;">
         <table class="glass-table">
             <thead>
-                <tr><th>Lote / Artículo</th><th>Valor Ref.</th><th>Stock Físico</th><th style="text-align: center;">Acciones</th></tr>
+                <tr>
+                    <th>Lote / Artículo</th>
+                    <th>Valor Ref.</th>
+                    <th>Stock Físico</th>
+                    <th>Ubicación</th>
+                    <th>Sucursal</th>
+                    <th style="text-align: center;">Acciones</th>
+                </tr>
             </thead>
             <tbody>
                 {% for i in consultainventarios %}
-                    <tr>
-                        <td style="font-weight: 700; color: var(--neon-cyan);">{{ i.nombre }}</td>
-                        <td>${{ i.precio }}</td>
-                        <td><span style="background: rgba(0, 255, 170, 0.1); color: var(--neon-green); padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 700;">{{ i.cantidad }} Unidades</span></td>
-                        <td style="text-align: center;">
-                            <a href="/pageinventarios/consultar/{{ i.id }}/" class="action-btn btn-view"><i class="fa-solid fa-eye"></i></a>
-                            <a href="/pageinventarios/editar/{{ i.id }}/" class="action-btn btn-edit"><i class="fa-solid fa-pen"></i></a>
-                            <a href="/pageinventarios/desactivar/{{ i.id }}/" class="action-btn btn-delete" onclick="return confirm('¿Retirar artículo del almacén?');"><i class="fa-solid fa-trash"></i></a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td style="font-weight: 700; color: var(--neon-cyan);">{{ i.nombre }}</td>
+                    <td>${{ i.precio }}</td>
+                    <td><span style="background: rgba(0, 255, 178, 0.1); color: var(--neon-green); padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 700;">{{ i.cantidad }} Unidades</span></td>
+                    <td>{{ i.ubicacion }}</td>
+                    <td>
+                        {% if i.sucursal %}
+                            {{ i.sucursal.nombre }}
+                        {% else %}
+                            <span style="color: var(--text-muted); font-size: 11px;">Central</span>
+                        {% endif %}
+                    </td>
+                    <td style="text-align: center;">
+                        <a href="/pageinventarios/consultar/{{ i.id }}/" class="action-btn btn-view"><i class="fa-solid fa-eye"></i></a>
+                        <a href="/pageinventarios/editar/{{ i.id }}/" class="action-btn btn-edit"><i class="fa-solid fa-pen"></i></a>
+                        <a href="/pageinventarios/desactivar/{{ i.id }}/" class="action-btn btn-delete" onclick="return confirm('¿Retirar artículo del almacén?');"><i class="fa-solid fa-trash"></i></a>
+                    </td>
+                </tr>
                 {% empty %}
-                    <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Almacén vacío.</td></tr>
+                <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Almacén vacío.</td></tr>
                 {% endfor %}
             </tbody>
         </table>

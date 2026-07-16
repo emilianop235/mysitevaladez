@@ -1,21 +1,35 @@
 {% extends 'base.html' %}
-{% block title %}Ficha de Producto - EcoCRM{% endblock %}
-{% block section_title %}<i class="fa-solid fa-eye" style="color: var(--neon-cyan);"></i> Detalles del Artículo{% endblock %}
+{% block title %}Kardex Producto - EcoCRM{% endblock %}
+
+{% block section_title %}
+<i class="fa-solid fa-magnifying-glass" style="color: var(--neon-cyan);"></i> Detalle de Catálogo
+{% endblock %}
+
 {% block extra_css %}
 <style>
-    .glass-panel-center { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 35px; width: 420px; margin: 15px auto; box-shadow: var(--glass-glow); }
-    .btn-back { width: 100%; background: rgba(255,255,255,0.05); color: var(--white); border: 1px solid var(--glass-border); padding: 12px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; display: block; text-align: center; text-decoration: none; margin-top: 30px; }
+    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 35px; box-shadow: var(--glass-glow); width: 450px; margin: 20px auto; }
+    .info-group { margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; }
+    .info-group label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; }
+    .info-group p { font-size: 16px; color: var(--white); font-weight: 500; }
+    .btn-back { width: 100%; background: rgba(255,255,255,0.05); color: var(--white); border: 1px solid var(--glass-border); padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; text-align: center; display: block; text-decoration: none; margin-top: 30px; }
 </style>
 {% endblock %}
+
 {% block content %}
-<div class="glass-panel-center">
-    <h3 style="text-align: center; color: var(--neon-cyan); margin-bottom: 25px;"><i class="fa-solid fa-tags"></i> Información Comercial</h3>
-    <div class="info-group"><label>Producto</label><p style="color: var(--neon-cyan); font-weight: 700; font-size: 18px;">{{ producto.nombre }}</p></div>
-    <div class="info-group"><label>Especificaciones</label><p>{{ producto.descripcion }}</p></div>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-        <div class="info-group"><label>Precio Venta</label><p style="color: var(--neon-green); font-weight: 700;">${{ producto.precio }}</p></div>
-        <div class="info-group"><label>Existencias</label><p>{{ producto.stock }} Unds.</p></div>
+<div class="glass-panel">
+    <h3 style="text-align: center; color: var(--neon-cyan); margin-bottom: 25px;"><i class="fa-solid fa-clipboard-check"></i> Ficha Maestra del Producto</h3>
+    <div class="info-group">
+        <label>Identificador del Elemento</label>
+        <p style="color: var(--neon-cyan); font-weight: 700; font-size: 18px;">{{ producto.nombre }}</p>
     </div>
-    <a href="/pageproductos/" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver a Productos</a>
+    <div class="info-group">
+        <label>Descripción Base</label>
+        <p style="line-height: 1.5;">{{ producto.descripcion }}</p>
+    </div>
+    <div class="info-group" style="border: none;">
+        <label>Valor Unitario Base</label>
+        <p style="color: var(--neon-green); font-weight: 700; font-size: 20px;">${{ producto.precio }}</p>
+    </div>
+    <a href="/pageproductos/" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Volver al Catálogo</a>
 </div>
 {% endblock %}

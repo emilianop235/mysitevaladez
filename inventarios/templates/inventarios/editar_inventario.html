@@ -2,30 +2,52 @@
 {% block title %}Ajuste Stock - EcoCRM{% endblock %}
 
 {% block section_title %}
-    <i class="fa-solid fa-pen-to-square" style="color: var(--warning);"></i> Modificación de Inventario
+<i class="fa-solid fa-pen-to-square" style="color: var(--warning);"></i> Modificación de Inventario
 {% endblock %}
 
 {% block extra_css %}
 <style>
-    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 35px; box-shadow: var(--glass-glow); width: 420px; margin: 15px auto; max-height: 85vh; overflow-y: auto; }
+    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 35px; box-shadow: var(--glass-glow); width: 428px; margin: 15px auto; max-height: 85vh; overflow-y: auto; }
     .form-group { margin-bottom: 12px; }
     .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
     .glass-input { width: 100%; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--glass-border); color: var(--white); padding: 10px 12px; border-radius: 8px; font-size: 14px; outline: none; }
-    .btn-update { width: 100%; background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%); color: black; border: none; padding: 12px; font-size: 14px; font-weight: 700; border-radius: 8px; cursor: pointer; margin-top: 15px; margin-bottom: 10px; }
-    .btn-cancel { width: 100%; background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--glass-border); padding: 12px; font-size: 14px; font-weight: 600; border-radius: 8px; cursor: pointer; display: block; text-align: center; text-decoration: none; }
+    .btn-update { width: 100%; background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%); color: black; border: none; padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 15px; margin-bottom: 10px; }
+    .btn-cancel { width: 100%; background: rgba(255, 255, 255, 0.05); color: var(--text-muted); border: 1px solid var(--glass-border); padding: 12px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; text-align: center; display: block; text-decoration: none; }
 </style>
 {% endblock %}
 
 {% block content %}
 <div style="width: 100%; display: flex; align-items: center; justify-content: center;">
     <div class="glass-panel">
-        <h3 style="text-align: center; color: var(--warning); margin-bottom: 25px;"><i class="fa-solid fa-box-open"></i> Cuadre de Existencias</h3>
+        <h3 style="text-align: center; color: var(--warning); margin-bottom: 25px;"><i class="fa-solid fa-box-open"></i> Cuadro de Existencias</h3>
         <form method="POST" action="/pageinventarios/editar/{{ inventario.id }}/">
             {% csrf_token %}
-            <div class="form-group"><label>Nombre del Artículo</label><input type="text" name="nombre" value="{{ inventario.nombre }}" class="glass-input" required></div>
-            <div class="form-group"><label>Descripción</label><textarea name="descripcion" class="glass-input" rows="3" required>{{ inventario.descripcion }}</textarea></div>
-            <div class="form-group"><label>Precio de Coste ($)</label><input type="number" step="0.01" name="precio" value="{{ inventario.precio }}" class="glass-input" required></div>
-            <div class="form-group"><label>Stock Disponible</label><input type="number" name="cantidad" value="{{ inventario.cantidad }}" class="glass-input" required></div>
+            <div class="form-group">
+                <label>Nombre del Artículo</label>
+                <input type="text" value="{{ inventario.nombre }}" class="glass-input" required disabled style="opacity: 0.7;">
+            </div>
+            <div class="form-group">
+                <label>Descripción Técnica</label>
+                <textarea class="glass-input" rows="3" required disabled style="opacity: 0.7;">{{ inventario.descripcion }}</textarea>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="form-group">
+                    <label>Proveedor Origen</label>
+                    <input type="text" value="{% if inventario.proveedor %}{{ inventario.proveedor.nombre }}{% else %}N/A{% endif %}" class="glass-input" disabled style="opacity: 0.7;">
+                </div>
+                <div class="form-group">
+                    <label>Sucursal Actual</label>
+                    <input type="text" value="{% if inventario.sucursal %}{{ inventario.sucursal.nombre }}{% else %}Central{% endif %}" class="glass-input" disabled style="opacity: 0.7;">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Stock Disponible</label>
+                <input type="number" name="cantidad" value="{{ inventario.cantidad }}" class="glass-input" required>
+            </div>
+            <div class="form-group">
+                <label>Ubicación Física</label>
+                <input type="text" name="ubicacion" value="{{ inventario.ubicacion }}" class="glass-input" required>
+            </div>
             <button type="submit" class="btn-update">Guardar Conciliación</button>
             <a href="/pageinventarios/" class="btn-cancel">Cancelar</a>
         </form>

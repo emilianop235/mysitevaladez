@@ -14,8 +14,7 @@ def crearproducto(request):
         producto.objects.create(
             nombre=request.POST['nombre'],
             descripcion=request.POST['descripcion'],
-            precio=request.POST['precio'],
-            stock=request.POST['stock']
+            precio=request.POST['precio']
         )
     return redirect('/pageproductos/')
 
@@ -31,7 +30,6 @@ def editarproducto(request, id):
         prod.nombre = request.POST['nombre']
         prod.descripcion = request.POST['descripcion']
         prod.precio = request.POST['precio']
-        prod.stock = request.POST['stock']
         prod.save()
         return redirect('/pageproductos/')
     return render(request, 'productos/editar_producto.html', {'producto': prod})
