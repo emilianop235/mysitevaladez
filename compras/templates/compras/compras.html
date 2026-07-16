@@ -90,7 +90,7 @@
                         <td>
                             <div style="font-weight: 600; color: var(--white); margin-bottom: 4px; font-size: 12px;">
                                 <i class="fa-solid fa-building" style="color: var(--neon-green); margin-right: 5px;"></i>
-                                {% for prov in c.proveedores.all %}
+                                {% for prov in c.proveedor.all %}
                                     {{ prov.nombre }} {{ prov.apellido }}{% if not forloop.last %}, {% endif %}
                                 {% empty %}
                                     <span style="color: var(--text-muted);">Sin proveedor asignado</span>
@@ -99,7 +99,7 @@
                             
                             <div style="font-size: 11px; color: var(--text-muted);">
                                 <i class="fa-solid fa-box" style="margin-right: 5px;"></i>
-                                {% for prod in c.productos.all %}
+                                {% for prod in c.producto.all %}
                                     {{ prod.nombre }}{% if not forloop.last %}, {% endif %}
                                 {% empty %}
                                     Sin artículos

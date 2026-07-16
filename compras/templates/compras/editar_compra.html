@@ -23,7 +23,7 @@
                 <div class="glass-input glass-input-scroll" style="height: 100px; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px;">
                     {% for p in proveedores_lista %}
                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--white); font-size: 13px;">
-                            <input type="checkbox" name="proveedores_seleccionados" value="{{ p.id }}" style="accent-color: var(--warning);" {% if p in compra.proveedores.all %}checked{% endif %}>
+                            <input type="checkbox" name="proveedores_seleccionados" value="{{ p.id }}" style="accent-color: var(--warning);" {% if p in compra.proveedor.all %}checked{% endif %}>
                             {{ p.nombre }} {{ p.apellido }}
                         </label>
                     {% endfor %}
@@ -35,7 +35,7 @@
                 <div class="glass-input glass-input-scroll" style="height: 120px; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 8px;">
                     {% for prod in productos_lista %}
                         <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--white); font-size: 13px;">
-                            <input type="checkbox" name="productos_seleccionados" value="{{ prod.id }}" data-precio="{{ prod.precio }}" class="compra-check" style="accent-color: var(--warning);" {% if prod in compra.productos.all %}checked{% endif %}>
+                            <input type="checkbox" name="productos_seleccionados" value="{{ prod.id }}" data-precio="{{ prod.precio }}" class="compra-check" style="accent-color: var(--warning);" {% if prod in compra.producto.all %}checked{% endif %}>
                             {{ prod.nombre }} <span style="color: var(--warning);">(${{ prod.precio }})</span>
                         </label>
                     {% endfor %}

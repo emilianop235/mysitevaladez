@@ -26,7 +26,7 @@
     <div class="info-group">
         <label><i class="fa-solid fa-building"></i> Proveedores Involucrados</label>
         <p style="font-size: 14px;">
-            {% for prov in compra.proveedores.all %}
+            {% for prov in compra.proveedor.all %}
                 {{ prov.nombre }} {{ prov.apellido }}<br>
             {% empty %}
                 <span style="color: var(--danger);">No asignados</span>
@@ -37,7 +37,7 @@
     <div class="info-group">
         <label><i class="fa-solid fa-box"></i> Artículos Detallados</label>
         <p style="font-size: 14px; color: var(--text-muted);">
-            {% for prod in compra.productos.all %}
+            {% for prod in compra.producto.all %}
                 - {{ prod.nombre }} <span style="color: var(--neon-green);">(${{ prod.precio }})</span><br>
             {% empty %}
                 <span style="color: var(--danger);">Sin artículos</span>
