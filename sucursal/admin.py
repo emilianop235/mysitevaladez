@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import sucursal
 
-# Register your models here.
+class SucursalAdmin(admin.ModelAdmin):
+    list_display = ('id', 'nombre', 'direccion', 'telefono')
+admin.site.register(sucursal, SucursalAdmin)

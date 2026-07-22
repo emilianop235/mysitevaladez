@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import inventarios
 
-# Register your models here.
+
+class InventariosAdmin(admin.ModelAdmin):
+    list_display = ('id', 'producto', 'cantidad', 'ubicacion')
+admin.site.register(inventarios, InventariosAdmin)
